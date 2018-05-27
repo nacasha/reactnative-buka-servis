@@ -20,19 +20,24 @@ const ApplicationStyles = {
     },
     container: {
       flex: 1,
-      paddingTop: Metrics.baseMargin,
-      backgroundColor: Colors.transparent
+      backgroundColor: '#FFF',
+      padding: Metrics.baseMargin,
     },
-    section: {
-      margin: Metrics.section,
-      padding: Metrics.baseMargin
+    sectionHeader: {
+      paddingHorizontal: Metrics.baseMargin,
+      paddingTop: Metrics.baseMargin,
+      flexDirection: 'row',
+      alignItems: 'center'
+    },
+    sectionIcon: {
+      marginRight: 5,
+      fontSize: Fonts.size.regular
+    },
+    sectionLabel: {
+      ...Fonts.style.normal,
     },
     sectionText: {
-      ...Fonts.style.normal,
-      paddingVertical: Metrics.doubleBaseMargin,
-      color: Colors.snow,
-      marginVertical: Metrics.smallMargin,
-      textAlign: 'center'
+      marginBottom: Metrics.smallMargin,
     },
     subtitle: {
       color: Colors.snow,
@@ -44,6 +49,31 @@ const ApplicationStyles = {
       ...Fonts.style.h2,
       fontSize: 14,
       color: Colors.text
+    }
+  },
+  listWithIcon: {
+    container: {
+      flex: 1,
+      backgroundColor: '#FFF',
+      padding: 0
+    },
+    item: {
+      flexDirection: 'row',
+      paddingLeft: Metrics.smallMargin
+    },
+    itemLeft: {
+      width: 60,
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginRight: Metrics.smallMargin
+    },
+    itemRight: {
+      flex: 1,
+      paddingVertical: Metrics.baseMargin
+    },
+    itemSeparator: {
+      borderBottomWidth: 1,
+      borderBottomColor: '#DDD',
     }
   },
   darkLabelContainer: {

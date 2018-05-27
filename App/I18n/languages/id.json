@@ -1,1 +1,23 @@
-{}
+{
+  "signIn": "Masuk",
+  "logOut": "Keluar",
+  "forgotPassword": "Lupa Password",
+  "username": "Username",
+  "password": "Kata Kunci",
+  "cancel": "Batal",
+  "welcome": "Selamat Datang",
+  "login": "Masuk",
+  "noItems": "Tidak ada ",
+  "search": "Pencarian",
+  "tabbarHome": "Utama",
+  "tabbarChat": "Pesan",
+  "tabbarHelp": "Bantuan",
+  "tabbarAccount": "Akun",
+
+  "helpTitle_App": "Application benefits",
+  "helpContent_App": "This application to be usefull for  ...",
+  "helpTitle_Chat": "Send messages to store",
+  "helpContent_Chat": "This application to be usefull for  ...",
+  "helpTitle_Store": "How to register service",
+  "helpContent_Store": "This application to be usefull for  ..."
+}
