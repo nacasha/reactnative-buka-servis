@@ -1,11 +1,14 @@
 import React from 'react'
-import { View, Text, FlatList } from 'react-native'
+import { View, Text, SectionList, Image, TouchableNativeFeedback } from 'react-native'
 import { connect } from 'react-redux'
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
+import CATEGORIES from '../../Fixtures/categories.json'
 
 // More info here: https://facebook.github.io/react-native/docs/flatlist.html
 
 // Styles
 import styles from './CategoryTabStyle'
+import { Metrics, Colors } from '../../Themes'
 
 class CategoryTab extends React.PureComponent {
   /* ***********************************************************
@@ -14,58 +17,69 @@ class CategoryTab extends React.PureComponent {
   * Usually this should come from Redux mapStateToProps
   *************************************************************/
   state = {
-    dataObjects: [
-      {title: 'First Title', description: 'First Description'},
-      {title: 'Second Title', description: 'Second Description'},
-      {title: 'Third Title', description: 'Third Description'},
-      {title: 'Fourth Title', description: 'Fourth Description'},
-      {title: 'Fifth Title', description: 'Fifth Description'},
-      {title: 'Sixth Title', description: 'Sixth Description'},
-      {title: 'Seventh Title', description: 'Seventh Description'}
-    ]
+    data: CATEGORIES
+  }
+
+  onPress = (value, title) => () => {
+    if (this.props.onChange) {
+      this.props.onChange(value, title)
+    }
   }
 
   /* ***********************************************************
-  * STEP 2
-  * `renderRow` function. How each cell/row should be rendered
+  * STEP 3
+  * `renderItem` function - How each cell should be rendered
   * It's our best practice to place a single component here:
   *
   * e.g.
-    return <MyCustomCell title={item.title} description={item.description} />
+  *   return <MyCustomCell title={item.title} description={item.description} />
+  *
+  * For sections with different cells (heterogeneous lists), you can do branch
+  * logic here based on section.key OR at the data level, you can provide
+  * `renderItem` functions in each section.
+  *
+  * Note: You can remove section/separator functions and jam them in here
   *************************************************************/
-  renderRow ({item}) {
+  renderItem = ({ section, item }) => {
     return (
-      <View style={styles.row}>
-        <Text style={styles.boldLabel}>{item.title}</Text>
-        <Text style={styles.label}>{item.description}</Text>
+      <TouchableNativeFeedback onPress={this.onPress(item.icon, item.title)}>
+        <View style={styles.item}>
+          <View style={styles.itemLeft} pointerEvents="none">
+            <Icon name={item.icon} size={22} />
+          </View>
+          <View style={styles.itemRight} pointerEvents="none">
+            <Text style={styles.username}>{item.title}</Text>
+          </View>
+        </View>
+      </TouchableNativeFeedback>
+    )
+  }
+
+  renderSectionHeader({ section }) {
+    return (
+      <View style={styles.section}>
+        <Text style={styles.sectionTitle}>{section.key}</Text>
       </View>
     )
   }
 
   /* ***********************************************************
-  * STEP 3
+  * STEP 2
   * Consider the configurations we've set below.  Customize them
   * to your liking!  Each with some friendly advice.
+  *
+  * Removing a function here will make SectionList use default
   *************************************************************/
-  // Render a header?
-  renderHeader = () =>
-    <Text style={[styles.label, styles.sectionHeader]}> - Header - </Text>
+  renderSectionFooter = () =>
+    <View style={styles.sectionFooter} />
 
-  // Render a footer?
-  renderFooter = () =>
-    <Text style={[styles.label, styles.sectionHeader]}> - Footer - </Text>
-
-  // Show this when data is empty
-  renderEmpty = () =>
-    <Text style={styles.label}> - Nothing to See Here - </Text>
-
-  renderSeparator = () =>
-    <Text style={styles.label}> - ~~~~~ - </Text>
+  renderItemSeparator = () =>
+    <View style={[styles.itemSeparator, { marginLeft: 50 }]} />
 
   // The default function if no Key is provided is index
   // an identifiable key is important if you plan on
   // item reordering.  Otherwise index is fine
-  keyExtractor = (item, index) => item.title
+  keyExtractor = (item, index) => index
 
   // How many items should be kept im memory as we scroll?
   oneScreensWorth = 20
@@ -84,19 +98,17 @@ class CategoryTab extends React.PureComponent {
   //   {length: ITEM_HEIGHT, offset: ITEM_HEIGHT * index, index}
   // )}
 
-  render () {
+  render() {
     return (
       <View style={styles.container}>
-        <FlatList
+        <SectionList
+          renderSectionHeader={this.renderSectionHeader}
+          sections={this.state.data}
           contentContainerStyle={styles.listContent}
-          data={this.state.dataObjects}
-          renderItem={this.renderRow}
+          renderItem={this.renderItem}
           keyExtractor={this.keyExtractor}
           initialNumToRender={this.oneScreensWorth}
-          ListHeaderComponent={this.renderHeader}
-          ListFooterComponent={this.renderFooter}
-          ListEmptyComponent={this.renderEmpty}
-          ItemSeparatorComponent={this.renderSeparator}
+          renderSectionFooter={this.renderSectionFooter}
         />
       </View>
     )

@@ -17,5 +17,15 @@ export default StyleSheet.create({
     paddingHorizontal: 14,
     alignItems: 'center',
     justifyContent: 'center'
+  },
+  rightButton: {
+    flexDirection: 'row',
+    paddingHorizontal: 14,
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'flex-end'
+  },
+  rightIcon: {
+    paddingLeft: 14,
   }
 })

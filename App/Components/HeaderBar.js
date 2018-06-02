@@ -20,6 +20,14 @@ export default class HeaderBar extends Component {
     this.props.dispatch({ type: 'Navigation/BACK' })
   }
 
+  renderRight() {
+    return this.props.right.map(item => (
+      <TouchableOpacity key={item.icon} onPress={item.action}>
+        <Icon name={item.icon} size={27} color="#FFF" style={styles.rightIcon} />
+      </TouchableOpacity>
+    ))
+  }
+
   render () {
     return (
       <View style={styles.container}>
@@ -34,6 +42,14 @@ export default class HeaderBar extends Component {
         }
 
         <Text style={styles.title}>{this.props.title}</Text>
+
+        {this.props.right
+          ?
+            <View style={styles.rightButton}>
+              {this.renderRight()}
+            </View>
+          : <View />
+        }
       </View>
     )
   }

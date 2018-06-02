@@ -31,9 +31,9 @@ export default StyleSheet.create({
     fontSize: Fonts.size.regular
   },
   accountImage: {
-    width: 50,
-    height: 50,
-    borderRadius: 50
+    width: 60,
+    height: 60,
+    borderRadius: 60
   },
   accountStatus: {
     flexDirection: 'row',

@@ -5,7 +5,8 @@ export default StyleSheet.create({
   ...ApplicationStyles.screen,
   container: {
     padding: 0,
-    backgroundColor: '#FFF'
+    backgroundColor: '#FFF',
+    paddingBottom: 0
   },
   tab: {
     height: 100,

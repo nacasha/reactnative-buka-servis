@@ -53,10 +53,17 @@ class MainTab extends React.PureComponent {
   *
   * Note: You can remove section/separator functions and jam them in here
   *************************************************************/
+  onPress = () => {
+    this.props.navigation.navigate({
+      key: 'ServiceDetailScreen',
+      routeName: 'ServiceDetailScreen',
+    })
+  }
+
   renderItem = ({section, item}) => {
     return (
       <View style={styles.item}>
-        <ServiceCardFull navigation={this.props.navigation} />
+        <ServiceCardFull onPress={this.onPress} />
       </View>
     )
   }

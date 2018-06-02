@@ -1,61 +1,27 @@
 import React from 'react'
 import { View, Text, FlatList, TouchableNativeFeedback, Image } from 'react-native'
 import { connect } from 'react-redux'
-import MessageItem from '../Components/MessageItem'
+import MessageActions from '../Redux/MessageRedux'
 
 // Styles
 import styles from './Styles/MessageScreenStyle'
+import LoginRequired from '../Components/LoginRequired';
 
 class MessageScreen extends React.PureComponent {
-  state = {
-    dataObjects: [
-      {
-        image: 'izal',
-        username: 'Izal',
-        message: 'First Description',
-      },
-      {
-        image: 'karina',
-        username: 'Karina',
-        message: 'Tes Tes 123',
-      },
-      {
-        image: 'nacashsa',
-        username: 'Nacasha',
-        message: 'Terima kasih atas pesanan anda',
-      },
-      {
-        image: 'febri',
-        username: 'Febri',
-        message: 'Halo selamat siang',
-      }
-    ]
-  }
-
-  constructor(props) {
-    super(props)
-
-    this.renderRow = this.renderRow.bind(this)
-  }
-
   openMessage = (item) => () => {
-    this.props.navigation.navigate({
-      key: 'MessageDetailScreen',
-      routeName: 'MessageDetailScreen',
-      params: {
-        data: item
-      }
-    })
+    console.log(this.props.messages)
   }
 
-  renderRow ({item}) {
+  renderRow = ({item}) => {
     return (
-      <TouchableNativeFeedback onPress={this.openMessage(item)}>
+      <TouchableNativeFeedback
+        background={TouchableNativeFeedback.Ripple()}
+        onPress={this.openMessage(item)}>
         <View style={styles.item}>
-          <View style={styles.itemLeft}>
+          <View style={styles.itemLeft} pointerEvents="none">
             <Image source={{ uri: 'https://api.adorable.io/avatars/50/' + item.image }} style={styles.image} />
           </View>
-          <View style={styles.itemRight}>
+          <View style={styles.itemRight} pointerEvents="none">
             <Text style={styles.username}>{item.username}</Text>
             <Text style={styles.message}>{item.message}</Text>
           </View>
@@ -65,7 +31,9 @@ class MessageScreen extends React.PureComponent {
   }
 
   renderEmpty = () =>
-    <Text style={styles.label}> - Nothing to See Here - </Text>
+    <View style={styles.emptySection}>
+      <Text style={styles.emptySectionText}>No messages sent</Text>
+    </View>
 
   renderItemSeparator = () =>
     <View style={[styles.itemSeparator, { marginLeft: 80 }]} />
@@ -77,15 +45,18 @@ class MessageScreen extends React.PureComponent {
   render () {
     return (
       <View style={styles.container}>
-        <FlatList
-          contentContainerStyle={styles.listContent}
-          data={this.state.dataObjects}
-          renderItem={this.renderRow}
-          keyExtractor={this.keyExtractor}
-          initialNumToRender={this.oneScreensWorth}
-          ListEmptyComponent={this.renderEmpty}
-          ItemSeparatorComponent={this.renderItemSeparator}
-        />
+        {this.props.loggedIn
+          ?
+          <FlatList
+            data={this.props.messages}
+            renderItem={this.renderRow}
+            keyExtractor={this.keyExtractor}
+            initialNumToRender={this.oneScreensWorth}
+            ListEmptyComponent={this.renderEmpty}
+            ItemSeparatorComponent={this.renderItemSeparator}
+          />
+          : <LoginRequired navigation={this.props.navigation} />
+        }
       </View>
     )
   }
@@ -93,7 +64,8 @@ class MessageScreen extends React.PureComponent {
 
 const mapStateToProps = (state) => {
   return {
-    // ...redux state to props here
+    loggedIn: state.user.loggedIn,
+    messages: state.message.messages
   }
 }
 

@@ -4,6 +4,7 @@ import React, { Component } from 'react'
 import { Provider } from 'react-redux'
 import RootContainer from './RootContainer'
 import createStore from '../Redux'
+import { Root } from "native-base"
 
 // create our store
 const store = createStore()
@@ -21,7 +22,9 @@ class App extends Component {
   render () {
     return (
       <Provider store={store}>
-        <RootContainer />
+        <Root>
+          <RootContainer />
+        </Root>
       </Provider>
     )
   }

@@ -1,0 +1,115 @@
+[
+  {
+    "key": "Home",
+    "data": [
+      {
+        "icon": "home-variant",
+        "title": "Construction"
+      },
+      {
+        "icon": "water",
+        "title": "Water Pump"
+      },
+      {
+        "icon": "flash",
+        "title": "Electric"
+      }
+    ]
+  },
+  {
+    "key": "Home Electronic",
+    "data": [
+      {
+        "icon": "washing-machine",
+        "title": "Washing Machine"
+      },
+      {
+        "icon": "television",
+        "title": "Television"
+      },
+      {
+        "icon": "radio",
+        "title": "Radio"
+      },
+      {
+        "icon": "air-conditioner",
+        "title": "Air Conditioner"
+      },
+      {
+        "icon": "amplifier",
+        "title": "Amplifier"
+      },
+      {
+        "icon": "camcorder",
+        "title": "Camera"
+      }
+    ]
+  },
+  {
+    "key": "Computer Electronic",
+    "data": [
+      {
+        "icon": "laptop",
+        "title": "Laptop"
+      },
+      {
+        "icon": "monitor",
+        "title": "Monitor"
+      },
+      {
+        "icon": "desktop-tower",
+        "title": "CPU"
+      },
+      {
+        "icon": "printer",
+        "title": "Printer"
+      },
+      {
+        "icon": "projector",
+        "title": "Projector"
+      },
+      {
+        "icon": "more",
+        "title": "Others"
+      }
+    ]
+  },
+  {
+    "key": "Handphone",
+    "data": [
+      {
+        "icon": "android",
+        "title": "Android"
+      },
+      {
+        "icon": "apple-ios",
+        "title": "IPhone"
+      },
+      {
+        "icon": "blackberry",
+        "title": "Blackberry"
+      },
+      {
+        "icon": "windows",
+        "title": "Windows Phone"
+      }
+    ]
+  },
+  {
+    "key": "Vehicle",
+    "data": [
+      {
+        "icon": "car-side",
+        "title": "Car"
+      },
+      {
+        "icon": "motorbike",
+        "title": "Motor Bike"
+      },
+      {
+        "icon": "bike",
+        "title": "bike"
+      }
+    ]
+  }
+]

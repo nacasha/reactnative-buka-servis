@@ -5,12 +5,13 @@ import Config from '../Config/DebugConfig'
 import createSagaMiddleware from 'redux-saga'
 import ScreenTracking from './ScreenTrackingMiddleware'
 import { createReactNavigationReduxMiddleware } from 'react-navigation-redux-helpers'
+import logger from 'redux-logger'
 
 // creates the store
 export default (rootReducer, rootSaga) => {
   /* ------------- Redux Configuration ------------- */
 
-  const middleware = []
+  const middleware = [logger]
   const enhancers = []
 
   /* ------------- Navigation Middleware ------------ */

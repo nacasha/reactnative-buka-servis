@@ -1,12 +1,16 @@
 import React from 'react'
-import { View, SectionList, Text, Image, TouchableNativeFeedback } from 'react-native'
+import { View, SectionList, Text, Image, TouchableNativeFeedback, Alert } from 'react-native'
 import { connect } from 'react-redux'
+import LoginRequired from '../Components/LoginRequired';
+import firebase from 'react-native-firebase';
 
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 
 // Styles
 import styles from './Styles/AccountScreenStyle'
-import { Metrics, Colors } from '../Themes';
+import { Metrics, Colors } from '../Themes'
+import UserActions from '../Redux/UserRedux'
+import _ from 'lodash'
 
 class AccountScreen extends React.PureComponent {
   /* ***********************************************************
@@ -19,25 +23,79 @@ class AccountScreen extends React.PureComponent {
       {
         key: 'Account',
         data: [
-          { icon: 'map-marker', title: 'Change Location', description: 'Tenth Description' },
-          { icon: 'email', title: 'Change Email', description: 'First Description' },
-          { icon: 'account-edit', title: 'Edit Profile', description: 'Second Description' },
-          { icon: 'logout', title: 'Logout', description: 'Third Description' },
+          { icon: 'map-marker', title: 'Change Location', action: '' },
+          // { icon: 'email', title: 'Change Email', action: '' },
+          { icon: 'account-edit', title: 'Edit Profile', action: '' },
+          { icon: 'logout', title: 'Logout', action: () => this.onPressLogout() },
         ]
       }, {
         key: 'Service',
         data: [
-          { icon: 'library-books', title: 'List', description: 'Eleventh Description' },
-          { icon: 'library-plus', title: 'Add Service', description: 'Eleventh Description' },
+          { icon: 'library-books', title: 'List', action: () => this.onPressList() },
+          { icon: 'library-plus', title: 'Add Service', action: () => this.onPressAdd() },
         ]
       }, {
         key: 'Application',
         data: [
-          { icon: 'history', title: 'Version', description: 'Eleventh Description' },
-          { icon: 'application', title: 'About', description: 'Eleventh Description' },
+          { icon: 'application', title: 'About', action: () => this.onPressAbout() },
+          { icon: 'history', title: 'Version', action: () => this.onPressVersion() },
         ]
       },
     ]
+  }
+
+  constructor(props) {
+    super(props)
+
+    this.onPressList = _.debounce(this.onListService, 150)
+    this.onPressAdd = _.debounce(this.onAddService, 150)
+    this.onPressLogout = _.debounce(this.onLogout, 150)
+    this.onPressAbout = _.debounce(this.onAbout, 150)
+    this.onPressVersion = _.debounce(this.onVersion, 150)
+  }
+
+  onListService() {
+    this.props.navigation.navigate({
+      key: 'ListServiceScreen',
+      routeName: 'ListServiceScreen'
+    })
+  }
+
+  onAddService() {
+    this.props.navigation.navigate({
+      key: 'FormServiceScreen',
+      routeName: 'FormServiceScreen'
+    })
+  }
+
+  onAbout() {
+    this.props.navigation.navigate({
+      key: 'AboutScreen',
+      routeName: 'AboutScreen'
+    })
+  }
+
+  onLogout() {
+    Alert.alert(
+      'Signout',
+      'You will signout this account',
+      [
+        { text: 'Cancel', style: 'cancel' },
+        { text: 'OK', onPress: () => this.props.signout() },
+      ],
+      { cancelable: false }
+    )
+  }
+
+  onVersion() {
+    Alert.alert(
+      'Version 1.0',
+      'Updated 29 May 2018',
+      [
+        { text: 'Ok', style: 'cancel' },
+      ],
+      { cancelable: false }
+    )
   }
 
   /* ***********************************************************
@@ -56,12 +114,12 @@ class AccountScreen extends React.PureComponent {
   *************************************************************/
   renderItem ({section, item}) {
     return (
-      <TouchableNativeFeedback>
+      <TouchableNativeFeedback onPress={() => item.action()}>
         <View style={styles.item}>
-          <View style={styles.itemLeft}>
+          <View style={styles.itemLeft} pointerEvents="none">
             <Icon name={item.icon} size={22} />
           </View>
-          <View style={styles.itemRight}>
+          <View style={styles.itemRight} pointerEvents="none">
             <Text style={styles.username}>{item.title}</Text>
           </View>
         </View>
@@ -85,12 +143,12 @@ class AccountScreen extends React.PureComponent {
   * Removing a function here will make SectionList use default
   *************************************************************/
   renderHeader = () =>
-    <View style={[styles.item, { paddingHorizontal: Metrics.baseMargin }]}>
+    <View style={[styles.item, { paddingHorizontal: Metrics.doubleBaseMargin }]}>
       <View style={styles.accountItemLeft}>
-        <Image source={{ uri: 'https://api.adorable.io/avatars/50/izal' }} style={styles.accountImage} />
+        <Image source={{ uri: 'https://api.adorable.io/avatars/80/izal' }} style={styles.accountImage} />
       </View>
       <View style={styles.itemRight}>
-        <Text style={styles.accountUsername}>Izal Fathoni</Text>
+        <Text style={styles.accountUsername}>{this.props.userData.name}</Text>
         <View style={styles.accountStatus}>
           <Icon name="library-books" size={15} />
           <Text style={styles.accountStatusText}>2</Text>
@@ -133,17 +191,21 @@ class AccountScreen extends React.PureComponent {
   render () {
     return (
       <View style={styles.container}>
-        <SectionList
-          renderSectionHeader={this.renderSectionHeader}
-          sections={this.state.data}
-          contentContainerStyle={styles.listContent}
-          renderItem={this.renderItem}
-          keyExtractor={this.keyExtractor}
-          initialNumToRender={this.oneScreensWorth}
-          ListHeaderComponent={this.renderHeader}
-          renderSectionFooter={this.renderSectionFooter}
-          ItemSeparatorComponent={this.renderItemSeparator}
-        />
+        {this.props.loggedIn
+          ?
+          <SectionList
+            renderSectionHeader={this.renderSectionHeader}
+            sections={this.state.data}
+            contentContainerStyle={styles.listContent}
+            renderItem={this.renderItem}
+            keyExtractor={this.keyExtractor}
+            initialNumToRender={this.oneScreensWorth}
+            ListHeaderComponent={this.renderHeader}
+            renderSectionFooter={this.renderSectionFooter}
+            ItemSeparatorComponent={this.renderItemSeparator}
+          />
+          : <LoginRequired navigation={this.props.navigation} />
+        }
       </View>
     )
   }
@@ -151,12 +213,14 @@ class AccountScreen extends React.PureComponent {
 
 const mapStateToProps = (state) => {
   return {
-    // ...redux state to props here
+    loggedIn: state.user.loggedIn,
+    userData: state.user.data,
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    signout: () => dispatch(UserActions.signout())
   }
 }
 

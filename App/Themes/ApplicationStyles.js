@@ -9,7 +9,7 @@ const ApplicationStyles = {
   screen: {
     mainContainer: {
       flex: 1,
-      backgroundColor: Colors.transparent
+      backgroundColor: 'red'
     },
     backgroundImage: {
       position: 'absolute',
@@ -23,6 +23,10 @@ const ApplicationStyles = {
       backgroundColor: '#FFF',
       padding: Metrics.baseMargin,
     },
+    scrollContainer: {
+      flex: 1,
+      backgroundColor: '#FFF',
+      },
     sectionHeader: {
       paddingHorizontal: Metrics.baseMargin,
       paddingTop: Metrics.baseMargin,
@@ -38,6 +42,14 @@ const ApplicationStyles = {
     },
     sectionText: {
       marginBottom: Metrics.smallMargin,
+    },
+    emptySection: {
+      justifyContent: 'center',
+      alignItems: 'center',
+      margin: Metrics.baseMargin
+    },
+    emptySectionText: {
+      fontSize: Fonts.size.regular
     },
     subtitle: {
       color: Colors.snow,
@@ -65,14 +77,14 @@ const ApplicationStyles = {
       width: 60,
       alignItems: 'center',
       justifyContent: 'center',
-      marginRight: Metrics.smallMargin
+      marginRight: Metrics.smallMargin,
     },
     itemRight: {
       flex: 1,
       paddingVertical: Metrics.baseMargin
     },
     itemSeparator: {
-      borderBottomWidth: 1,
+      borderBottomWidth: 1.5,
       borderBottomColor: '#DDD',
     }
   },
