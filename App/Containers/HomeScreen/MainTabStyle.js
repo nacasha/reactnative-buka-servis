@@ -28,4 +28,7 @@ export default StyleSheet.create({
   itemSeparator: {
     padding: 5
   },
+  listContent: {
+    paddingTop: Metrics.smallMargin
+  }
 })

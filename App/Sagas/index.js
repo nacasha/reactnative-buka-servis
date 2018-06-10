@@ -8,12 +8,16 @@ import DebugConfig from '../Config/DebugConfig'
 import { StartupTypes } from '../Redux/StartupRedux'
 import { UserTypes } from '../Redux/UserRedux'
 import { ServiceTypes } from '../Redux/ServiceRedux'
+import { FeedTypes } from '../Redux/FeedRedux'
 
 /* ------------- Sagas ------------- */
 
 import { startup } from './StartupSagas'
 import { signIn, signOut, register } from './AuthSagas'
-import { add, fetch } from './ServiceSagas';
+import { addService, deleteService, fetchService, updateService } from './ServiceSagas'
+import { feedsRequest } from './FeedSagas'
+import { StoreTypes } from '../Redux/StoreRedux';
+import { fetchStoreDetail } from './StoreSagas';
 
 /* ------------- API ------------- */
 
@@ -25,14 +29,22 @@ const api = DebugConfig.useFixtures ? FixtureAPI : API.create()
 
 export default function * root () {
   yield all([
+    // Feeds Services
+    takeLatest(FeedTypes.FEED_REQUEST, feedsRequest),
+
     // Authentication
     takeLatest(UserTypes.SIGNIN, signIn),
     takeLatest(UserTypes.SIGNOUT, signOut),
     takeLatest(UserTypes.REGISTER, register),
 
     // Services
-    takeLatest(ServiceTypes.ADD, add),
-    takeLatest(ServiceTypes.FETCH, fetch),
+    takeLatest(ServiceTypes.ADD, addService),
+    takeLatest(ServiceTypes.UPDATE, updateService),
+    takeLatest(ServiceTypes.DELETE, deleteService),
+    takeLatest(ServiceTypes.FETCH, fetchService),
+
+    // Store Detail
+    takeLatest(StoreTypes.FETCH_STORE_DETAIL, fetchStoreDetail),
 
     // Application startup
     takeLatest(StartupTypes.STARTUP, startup),

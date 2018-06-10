@@ -32,7 +32,7 @@ export default StyleSheet.create({
     backgroundColor: Colors.error,
     flex: 1,
     paddingHorizontal: Metrics.baseMargin,
-    justifyContent: 'flex-end',
+    justifyContent: 'center',
     alignItems: 'center'
   },
   actionText: {

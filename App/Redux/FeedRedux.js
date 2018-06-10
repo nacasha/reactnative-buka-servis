@@ -4,49 +4,46 @@ import Immutable from 'seamless-immutable'
 /* ------------- Types and Action Creators ------------- */
 
 const { Types, Creators } = createActions({
-  fetchStoreDetail: ['storeId'],
-
-  storeSuccess: ['data', 'storeId'],
-  storeFailure: null
+  feedRequest: null,
+  feedSuccess: ['feeds'],
+  feedFailure: ['error']
 })
 
-export const StoreTypes = Types
+export const FeedTypes = Types
 export default Creators
 
 /* ------------- Initial State ------------- */
 
 export const INITIAL_STATE = Immutable({
-  stores: {},
-
-  fetching: false,
+  feeds: null,
+  fetching: null,
   error: null
 })
 
 /* ------------- Selectors ------------- */
 
-export const StoreSelectors = {
+export const FeedSelectors = {
   getData: state => state.data
 }
 
 /* ------------- Reducers ------------- */
 
+// request the data from an api
 export const request = (state) =>
   state.merge({ ...state, fetching: true, error: null })
 
-export const success = (state, { data, storeId }) => {
-  const stores = { ...state.stores }
-  stores[storeId] = data
+// successful api lookup
+export const success = (state, { feeds }) =>
+  state.merge({ feeds, fetching: false, error: null })
 
-  return state.merge({ stores, fetching: false, error: null }, { deep: true })
-}
-
+// Something went wrong somewhere.
 export const failure = (state, { error }) =>
   state.merge({ ...state, fetching: false, error })
 
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
-  [Types.FETCH_STORE_DETAIL]: request,
-  [Types.STORE_SUCCESS]: success,
-  [Types.STORE_FAILURE]: failure
+  [Types.FEED_REQUEST]: request,
+  [Types.FEED_SUCCESS]: success,
+  [Types.FEED_FAILURE]: failure
 })

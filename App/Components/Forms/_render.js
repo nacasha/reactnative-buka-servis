@@ -1,13 +1,13 @@
-import { Input, Item, Label, Picker, Text, Textarea } from 'native-base';
-import React from 'react';
-import { Image, TouchableOpacity, View } from 'react-native';
-import MapView from 'react-native-maps';
-import Modal from "react-native-modal";
-import RoundedButton from '../../Components/RoundedButton';
-import { Images } from '../../Themes';
-import styles from './FormStyles';
+import { Input, Item, Label, Picker, Text, Textarea } from 'native-base'
+import React from 'react'
+import { Image, TouchableOpacity, View } from 'react-native'
+import MapView from 'react-native-maps'
+import Modal from 'react-native-modal'
+import RoundedButton from '../../Components/RoundedButton'
+import { Images } from '../../Themes'
+import styles from './FormStyles'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
-import CategoryTab from '../../Containers/HomeScreen/CategoryTab';
+import CategoryTab from '../../Containers/HomeScreen/CategoryTab'
 
 export const renderTextarea = ({ input, label, type, options, meta: { touched, error, warning } }) => {
   var hasError = false
@@ -24,7 +24,7 @@ export const renderTextarea = ({ input, label, type, options, meta: { touched, e
   )
 }
 
-export const renderInput = ({ input, label, type, options, meta: { touched, error, warning } }) => {
+export const renderInput = ({ input, label, type, options, defaultValue, meta: { touched, error, warning } }) => {
   var hasError = false
   if (error !== undefined) {
     hasError = true

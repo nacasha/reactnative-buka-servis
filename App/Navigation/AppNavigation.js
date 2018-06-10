@@ -14,6 +14,7 @@ import ForgotPasswordScreen from '../Containers/Auth/ForgotPasswordScreen'
 import AboutScreen from '../Containers/AccountScreen/AboutScreen'
 import ListServiceScreen from '../Containers/AccountScreen/ListServiceScreen'
 import FormServiceScreen from '../Containers/AccountScreen/FormServiceScreen'
+import EditServiceScreen from '../Containers/AccountScreen/EditServiceScreen'
 
 // Components
 import HeaderBar from '../Components/HeaderBar'
@@ -42,6 +43,7 @@ const PrimaryNav = StackNavigator({
   AboutScreen: { screen: AboutScreen },
   ListServiceScreen: { screen: ListServiceScreen },
   FormServiceScreen: { screen: FormServiceScreen },
+  EditServiceScreen: { screen: EditServiceScreen },
 }, {
   // Default config for all screens
   initialRouteName: 'TabViewScreen',

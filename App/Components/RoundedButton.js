@@ -54,7 +54,7 @@ export default class RoundedButton extends Component {
       <TouchableNativeFeedback
         disabled={this.props.disabled}
         onPress={this.props.debounce ? this.onPress : this.props.onPress}>
-        <View style={[styles.button, { backgroundColor: this.props.background }]}>
+        <View style={[styles.button, this.props.style, { backgroundColor: this.props.background }]}>
           {this.props.busy
             ? <ActivityIndicator size={25} color="#FFF" />
             : <Text style={styles.buttonText}>{this.getText()}</Text>

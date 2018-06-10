@@ -59,7 +59,6 @@ export const failure = (state, { error }) =>
 export const reset = state =>
   state.merge({ ...state, fetching: false, error: null })
 
-
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {

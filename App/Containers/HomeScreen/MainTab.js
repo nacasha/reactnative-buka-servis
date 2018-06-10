@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, SectionList, Text } from 'react-native'
+import { View, SectionList, Text, FlatList } from 'react-native'
 import { connect } from 'react-redux'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import ServiceCardFull from '../../Components/ServiceCardFull'
@@ -53,17 +53,18 @@ class MainTab extends React.PureComponent {
   *
   * Note: You can remove section/separator functions and jam them in here
   *************************************************************/
-  onPress = () => {
+  onPress = (data) => () => {
     this.props.navigation.navigate({
       key: 'ServiceDetailScreen',
       routeName: 'ServiceDetailScreen',
+      params: { data }
     })
   }
 
   renderItem = ({section, item}) => {
     return (
       <View style={styles.item}>
-        <ServiceCardFull onPress={this.onPress} />
+        <ServiceCardFull data={item} onPress={this.onPress(item)} />
       </View>
     )
   }
@@ -87,13 +88,12 @@ class MainTab extends React.PureComponent {
   *************************************************************/
   // Show this when data is empty
   renderEmpty = () =>
-    <Text style={styles.label}> - Nothing to See Here - </Text>
+    <View style={styles.emptySection}>
+      <Text style={styles.emptySectionText}>Unable to fetch data from server</Text>
+    </View>
 
   renderSeparator = () =>
     <View style={styles.itemSeparator} />
-
-  renderSectionFooter = () =>
-    <View style={styles.sectionFooter} />
 
   renderSectionFooter = () =>
     <View style={styles.itemSeparator} />
@@ -101,7 +101,7 @@ class MainTab extends React.PureComponent {
   // The default function if no Key is provided is index
   // an identifiable key is important if you plan on
   // item reordering.  Otherwise index is fine
-  keyExtractor = (item, index) => index
+  keyExtractor = (item, index) => item.key
 
   // How many items should be kept im memory as we scroll?
   oneScreensWorth = 20
@@ -123,16 +123,15 @@ class MainTab extends React.PureComponent {
   render () {
     return (
       <View style={styles.container}>
-        <SectionList
-          renderSectionHeader={this.renderSectionHeader}
-          sections={this.state.data}
-          contentContainerStyle={styles.listContent}
+        <FlatList
+          data={this.props.feeds}
           renderItem={this.renderItem}
           keyExtractor={this.keyExtractor}
           initialNumToRender={this.oneScreensWorth}
           ListEmptyComponent={this.renderEmpty}
           ItemSeparatorComponent={this.renderSeparator}
-          renderSectionFooter={this.renderSectionFooter}
+          ListHeaderComponent={this.renderSeparator}
+          ListFooterComponent={this.renderSeparator}
         />
       </View>
     )
@@ -141,7 +140,7 @@ class MainTab extends React.PureComponent {
 
 const mapStateToProps = (state) => {
   return {
-    // ...redux state to props here
+    feeds: state.feed.feeds
   }
 }
 

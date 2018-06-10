@@ -6,7 +6,7 @@ import styles from './FormStyles'
 import _ from 'lodash'
 import RoundedButton from '../RoundedButton'
 import DropdownAlert from 'react-native-dropdownalert'
-import { renderInput, renderPicker, renderLocationPicker, renderTextarea, renderCategoryPicker } from './_render';
+import { renderInput, renderPicker, renderLocationPicker, renderTextarea, renderCategoryPicker } from './_render'
 
 const validate = values => {
   // store error state
@@ -47,67 +47,80 @@ const validate = values => {
   return error
 }
 
-const ServiceForm = props => {
-  const { handleSubmit, submitting, pristine, onSubmit, fetching, data } = props
+class ServiceForm extends React.Component {
+  componentWillMount() {
+    const { data } = this.props
 
-  return (
-    <Content>
-      <Field
-        label="Title"
-        name="title"
-        options={{
-          autoCorrect: false,
-          autoCapitalize: 'none',
-        }}
-        component={renderInput}
-      />
-      <Field
-        label="Description"
-        name="description"
-        options={{
-          autoCorrect: false,
-          multiline: true,
-          autoGrow: true
-        }}
-        component={renderTextarea}
-      />
-      <Field
-        label="Price"
-        name="price"
-        options={{
-          autoCorrect: false,
-          keyboardType: 'numeric'
-        }}
-        component={renderInput}
-      />
-      <Field
-        label="Price Range (Optional)"
-        name="priceRange"
-        options={{
-          autoCorrect: false,
-          keyboardType: 'numeric',
-          placeholder: 'Fill this to make price range',
-          placeholderTextColor: '#CCC'
-        }}
-        component={renderInput}
-      />
-      <Field
-        label="Category"
-        name="category"
-        component={renderCategoryPicker}
-      />
+    if (data !== {}) {
+      this.props.initialize({ ...data, category: { category: data.category }})
+    }
+  }
 
-      <RoundedButton
-        text="Submit"
-        disabled={fetching}
-        busy={fetching}
-        onPress={handleSubmit(onSubmit)}
-      />
-    </Content>
-  )
+  render() {
+    const { handleSubmit, submitting, pristine, onSubmit, fetching } = this.props
+
+    return (
+      <Content>
+        <Field
+          label="Titles"
+          name="title"
+          options={{
+            autoCorrect: false,
+            autoCapitalize: 'none',
+          }}
+          component={renderInput}
+        />
+        <Field
+          label="Description"
+          name="description"
+          options={{
+            autoCorrect: false,
+            multiline: true,
+            autoGrow: true
+          }}
+          component={renderTextarea}
+        />
+        <Field
+          label="Price"
+          name="price"
+          options={{
+            autoCorrect: false,
+            keyboardType: 'numeric'
+          }}
+          component={renderInput}
+        />
+        <Field
+          label="Price Range (Optional)"
+          name="priceRange"
+          options={{
+            autoCorrect: false,
+            keyboardType: 'numeric',
+            placeholder: 'Fill this to make price range',
+            placeholderTextColor: '#CCC'
+          }}
+          component={renderInput}
+        />
+        <Field
+          label="Category"
+          name="category"
+          component={renderCategoryPicker}
+        />
+
+        <RoundedButton
+          text="Submit"
+          disabled={fetching}
+          busy={fetching}
+          onPress={handleSubmit(onSubmit)}
+        />
+      </Content>
+    )
+  }
 }
 
 export default reduxForm({
   form: 'service',
-  validate
+  validate,
+  initialValues: {
+    title: 'asasdasdasd'
+  }
 })(ServiceForm)

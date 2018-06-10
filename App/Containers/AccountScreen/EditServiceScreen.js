@@ -10,10 +10,16 @@ import ServiceActions from '../../Redux/ServiceRedux'
 // Styles
 import styles from './Styles/FormServiceScreenStyle'
 
-class FormServiceScreen extends Component {
+class EditServiceScreen extends Component {
   static navigationOptions = ({ navigation }) => ({
-    header: <HeaderBar title="Add Service" back={() => navigation.pop()} />
+    header: <HeaderBar title="Edit Service" back={() => navigation.pop()} />
   })
+
+  constructor(props) {
+    super(props)
+
+    this.serviceId = props.navigation.state.params.data.key
+  }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.fetching === false && this.props.navigation.isFocused()) {
@@ -26,7 +32,7 @@ class FormServiceScreen extends Component {
         })
       } else {
         Toast.show({
-          text: 'Service successfully added',
+          text: 'Service successfully updated',
           type: 'success',
           buttonText: 'Close',
           duration: 2500
@@ -37,22 +43,18 @@ class FormServiceScreen extends Component {
   }
 
   onSubmit = (values, dispatch) => {
-    if (values.category.category == undefined) {
-      values = R.dissoc('category', values)
-    }
-
     // Required form input
     const formInput = ['title', 'description', 'price', 'category']
 
     // Get keys from submitted form (redux-form)
-    values.priceRange = values.priceRange || ''
     const formKeys = R.keys(values)
 
     // Check whether form is valid or not
     const isFormValid = R.equals(R.intersection(formInput, formKeys), formInput)
 
     if (isFormValid) {
-      this.props.add({ ...values, category: values.category.category })
+      values = R.dissoc('key', values)
+      this.props.update({ ...values, category: values.category.category }, this.serviceId)
     } else {
       Toast.show({
         text: 'Fill the form',
@@ -64,10 +66,12 @@ class FormServiceScreen extends Component {
   }
 
   render () {
+    const { data } = this.props.navigation.state.params
+
     return (
       <ScrollView style={styles.scrollContainer}>
         <View style={styles.container}>
-          <ServiceForm onSubmit={this.onSubmit} data={{}} fetching={this.props.fetching} />
+          <ServiceForm onSubmit={this.onSubmit} data={data} fetching={this.props.fetching} />
         </View>
       </ScrollView>
     )
@@ -83,8 +87,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    add: (data) => dispatch(ServiceActions.add(data))
+    update: (data, serviceId) => dispatch(ServiceActions.update(data, serviceId))
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(FormServiceScreen)
+export default connect(mapStateToProps, mapDispatchToProps)(EditServiceScreen)

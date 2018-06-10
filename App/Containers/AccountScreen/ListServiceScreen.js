@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, FlatList, TouchableNativeFeedback } from 'react-native'
+import { View, Text, FlatList, TouchableNativeFeedback, TouchableOpacity } from 'react-native'
 import { connect } from 'react-redux'
 import HeaderBar from '../../Components/HeaderBar'
 import { SwipeRow, Button } from 'native-base'
@@ -8,6 +8,7 @@ import { MoneyFormat, RangeMoneyFormat } from '../../Transforms'
 import ActionButton from 'react-native-action-button';
 import _ from 'lodash'
 import ServiceActions from '../../Redux/ServiceRedux'
+import firebase from 'react-native-firebase'
 
 // Styles
 import styles from './Styles/ListServiceScreenStyle'
@@ -40,13 +41,11 @@ class ListServiceScreen extends React.PureComponent {
     this.props.fetchServices()
   }
 
-  onPress = () => {
+  onPress = (data) => {
     this.props.navigation.navigate({
-      key: 'FormServiceScreen',
-      routeName: 'FormServiceScreen',
-      params: {
-        data: 'edit'
-      }
+      key: 'EditServiceScreen',
+      routeName: 'EditServiceScreen',
+      params: { data }
     })
   }
 
@@ -74,8 +73,8 @@ class ListServiceScreen extends React.PureComponent {
     return <MyCustomCell title={item.title} description={item.description} />
   *************************************************************/
   renderRow = ({ item }) => {
-    if (Array.isArray(item.price)) {
-      price = RangeMoneyFormat(item.price)
+    if (item.priceRange !== '') {
+      price = RangeMoneyFormat(item.price, item.priceRange)
     } else {
       price = MoneyFormat(item.price)
     }
@@ -84,10 +83,9 @@ class ListServiceScreen extends React.PureComponent {
       <SwipeRow
         style={{ borderBottomWidth: 0, marginVertical: -10 }}
         disableRightSwipe={true}
-        swipeToOpenPercent={30}
-        rightOpenValue={-Metrics.screenWidth}
+        rightOpenValue={-80}
         body={
-          <TouchableNativeFeedback onPress={this.onPressDelayed}>
+          <TouchableNativeFeedback onPress={() => this.onPressDelayed(item)}>
             <View style={{ width: '150%', padding: Metrics.baseMargin }}>
               <Text pointerEvents="none" style={styles.serviceTitle}>{item.title}</Text>
 
@@ -99,10 +97,11 @@ class ListServiceScreen extends React.PureComponent {
           </TouchableNativeFeedback>
         }
         right={
-          <View style={styles.action}>
-            <Text style={styles.actionText}>Delete</Text>
-            <Icon name="delete" color="#FFF" size={25} />
-          </View>
+          <TouchableNativeFeedback onPress={() => this.props.deleteService(item.key)}>
+            <View style={styles.action}>
+              <Icon name="delete" color="#FFF" size={25} />
+            </View>
+          </TouchableNativeFeedback>
         }
       />
     )
@@ -125,7 +124,7 @@ class ListServiceScreen extends React.PureComponent {
   // The default function if no Key is provided is index
   // an identifiable key is important if you plan on
   // item reordering.  Otherwise index is fine
-  keyExtractor = (item, index) => item.id
+  keyExtractor = (item, index) => item.key
 
   // How many items should be kept im memory as we scroll?
   oneScreensWorth = 20
@@ -170,7 +169,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    fetchServices: () => dispatch(ServiceActions.fetch())
+    fetchServices: () => dispatch(ServiceActions.fetch()),
+    deleteService: (id) => dispatch(ServiceActions.delete(id))
   }
 }
 

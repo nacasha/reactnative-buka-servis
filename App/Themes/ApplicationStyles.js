@@ -61,6 +61,25 @@ const ApplicationStyles = {
       ...Fonts.style.h2,
       fontSize: 14,
       color: Colors.text
+    },
+    footer: {
+      backgroundColor: '#FFF',
+      height: 70,
+      paddingHorizontal: 5,
+      paddingVertical: Metrics.smallMargin,
+      borderTopWidth: 1,
+      borderTopColor: '#DDD',
+      elevation: 2,
+      flexDirection: 'row'
+    },
+    footerItem: {
+      flex: 1,
+      marginHorizontal: Metrics.smallMargin
+    },
+    textButton: {
+      color: Colors.facebook,
+      fontWeight: 'bold',
+      padding: Metrics.smallMargin,
     }
   },
   listWithIcon: {

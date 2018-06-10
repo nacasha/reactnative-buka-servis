@@ -11,6 +11,9 @@ export const reducers = combineReducers({
   message: require('./MessageRedux').reducer,
   user: require('./UserRedux').reducer,
   service: require('./ServiceRedux').reducer,
+  rating: require('./RatingRedux').reducer,
+  feed: require('./FeedRedux').reducer,
+  store: require('./StoreRedux').reducer,
   form: formReducer
 })
 

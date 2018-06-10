@@ -4,13 +4,16 @@ import Immutable from 'seamless-immutable'
 /* ------------- Types and Action Creators ------------- */
 
 const { Types, Creators } = createActions({
-  add: ['data'],
-  edit: ['data', 'serviceId'],
-  delete: ['serviceId'],
   fetch: null,
+  add: ['data'],
+  update: ['data', 'serviceId'],
+  delete: ['serviceId'],
+
+  fetchSuccess: ['services'],
 
   serviceSuccess: ['payload'],
-  serviceFailure: ['error']
+  serviceFailure: ['error'],
+  serviceReset: null
 })
 
 export const ServiceTypes = Types
@@ -19,7 +22,6 @@ export default Creators
 /* ------------- Initial State ------------- */
 
 export const INITIAL_STATE = Immutable({
-  serviceId: null,
   services: [],
   fetching: null,
   error: null
@@ -34,21 +36,28 @@ export const ServiceSelectors = {
 /* ------------- Reducers ------------- */
 
 export const request = (state, { data }) =>
-  state.merge({ fetching: true, error: null })
+  state.merge({ ...state, fetching: true, error: null })
 
-export const success = (state, action) =>
-  state.merge({ fetching: false, error: null })
+export const success = (state) =>
+  state.merge({ ...state, fetching: false, error: null })
+
+export const successFetch = (state, { services }) =>
+  state.merge({ fetching: false, error: null, services })
 
 export const failure = (state, { error }) =>
-  state.merge({ fetching: false, error })
+  state.merge({ ...state, fetching: false, error })
+
+export const reset = state =>
+  state.merge({ ...state, fetching: false, error: null })
 
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
   [Types.ADD]: request,
-  [Types.EDIT]: request,
+  [Types.UPDATE]: request,
   [Types.DELETE]: request,
-  [Types.FETCH]: request,
+  [Types.FETCH_SUCCESS]: successFetch,
   [Types.SERVICE_SUCCESS]: success,
-  [Types.SERVICE_FAILURE]: failure
+  [Types.SERVICE_FAILURE]: failure,
+  [Types.SERVICE_RESET]: reset
 })

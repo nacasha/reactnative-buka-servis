@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
 import { View, Text, TouchableNativeFeedback } from 'react-native'
-import styles from './Styles/ServiceCardFullStyle'
+import styles from './Styles/ServiceCardSmallStyle'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import _ from 'lodash'
-import { MoneyFormat, RangeMoneyFormat } from '../Transforms';
+import { RangeMoneyFormat, MoneyFormat } from '../Transforms';
 
 
-export default class ServiceCardFull extends Component {
+export default class ServiceCardSmall extends Component {
   constructor(props) {
     super(props)
 
@@ -29,17 +29,6 @@ export default class ServiceCardFull extends Component {
           <View style={styles.price}>
             <Icon name="cash-multiple" style={styles.priceIcon} />
             <Text style={styles.priceText}>Rp. {price}</Text>
-          </View>
-
-          <View style={styles.footer}>
-            <View style={styles.store}>
-              <Icon name="store" style={styles.storeIcon} />
-              <Text>{user.name}</Text>
-            </View>
-            <View style={styles.rating}>
-              <Text>4.5</Text>
-              <Icon name="star" style={styles.ratingIcon} />
-            </View>
           </View>
         </View>
       </TouchableNativeFeedback>

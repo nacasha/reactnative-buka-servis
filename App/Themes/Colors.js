@@ -13,7 +13,8 @@ const colors = {
   snow: 'white',
   border: '#483F53',
   text: '#E0D7E5',
-  cardBackground: '#EEEEEE'
+  cardBackground: '#EEEEEE',
+  red: '#FB632F'
 }
 
 export default colors
