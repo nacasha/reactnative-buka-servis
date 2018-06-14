@@ -1,4 +1,4 @@
-import { takeEvery,  takeLatest, all } from 'redux-saga/effects'
+import { takeEvery,  takeLatest, all, fork } from 'redux-saga/effects'
 import API from '../Services/Api'
 import FixtureAPI from '../Services/FixtureApi'
 import DebugConfig from '../Config/DebugConfig'
@@ -8,16 +8,16 @@ import DebugConfig from '../Config/DebugConfig'
 import { StartupTypes } from '../Redux/StartupRedux'
 import { UserTypes } from '../Redux/UserRedux'
 import { ServiceTypes } from '../Redux/ServiceRedux'
-import { FeedTypes } from '../Redux/FeedRedux'
 
 /* ------------- Sagas ------------- */
 
 import { startup } from './StartupSagas'
 import { signIn, signOut, register } from './AuthSagas'
 import { addService, deleteService, fetchService, updateService } from './ServiceSagas'
-import { feedsRequest } from './FeedSagas'
-import { StoreTypes } from '../Redux/StoreRedux';
-import { fetchStoreDetail } from './StoreSagas';
+import favoriteSagas from './FavoriteSagas'
+import feedSagas from './FeedSagas'
+import ratingSagas from './RatingSagas'
+import storeSagas from './StoreSagas'
 
 /* ------------- API ------------- */
 
@@ -29,8 +29,10 @@ const api = DebugConfig.useFixtures ? FixtureAPI : API.create()
 
 export default function * root () {
   yield all([
-    // Feeds Services
-    takeLatest(FeedTypes.FEED_REQUEST, feedsRequest),
+    fork(feedSagas),
+    fork(ratingSagas),
+    fork(storeSagas),
+    fork(favoriteSagas),
 
     // Authentication
     takeLatest(UserTypes.SIGNIN, signIn),
@@ -42,9 +44,6 @@ export default function * root () {
     takeLatest(ServiceTypes.UPDATE, updateService),
     takeLatest(ServiceTypes.DELETE, deleteService),
     takeLatest(ServiceTypes.FETCH, fetchService),
-
-    // Store Detail
-    takeLatest(StoreTypes.FETCH_STORE_DETAIL, fetchStoreDetail),
 
     // Application startup
     takeLatest(StartupTypes.STARTUP, startup),

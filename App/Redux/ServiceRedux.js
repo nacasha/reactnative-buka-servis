@@ -13,8 +13,9 @@ const { Types, Creators } = createActions({
 
   serviceSuccess: ['payload'],
   serviceFailure: ['error'],
-  serviceReset: null
-})
+
+  reset: null
+}, { prefix: 'Service/' })
 
 export const ServiceTypes = Types
 export default Creators
@@ -48,7 +49,7 @@ export const failure = (state, { error }) =>
   state.merge({ ...state, fetching: false, error })
 
 export const reset = state =>
-  state.merge({ ...state, fetching: false, error: null })
+  state.merge({ services: [] })
 
 /* ------------- Hookup Reducers To Types ------------- */
 
@@ -59,5 +60,5 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.FETCH_SUCCESS]: successFetch,
   [Types.SERVICE_SUCCESS]: success,
   [Types.SERVICE_FAILURE]: failure,
-  [Types.SERVICE_RESET]: reset
+  [Types.RESET]: reset,
 })

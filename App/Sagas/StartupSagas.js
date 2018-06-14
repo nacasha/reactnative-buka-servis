@@ -1,12 +1,10 @@
-import { put, select } from 'redux-saga/effects'
-import { is } from 'ramda'
-import UserActions from '../Redux/UserRedux';
-import ServiceActions from '../Redux/ServiceRedux';
+import { put } from 'redux-saga/effects'
 import FeedActions from '../Redux/FeedRedux';
+import FavoriteActions from '../Redux/FavoriteRedux';
+import RatingActions from '../Redux/RatingRedux';
 
 // process STARTUP actions
 export function * startup (action) {
-  yield put(UserActions.userReset())
-  yield put(ServiceActions.serviceReset())
   yield put(FeedActions.feedRequest())
+  yield put(FavoriteActions.sync())
 }

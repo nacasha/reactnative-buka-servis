@@ -3,7 +3,7 @@ import { View, Text, TouchableNativeFeedback } from 'react-native'
 import styles from './Styles/ServiceCardFullStyle'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import _ from 'lodash'
-import { MoneyFormat, RangeMoneyFormat } from '../Transforms';
+import { MoneyFormat, RangeMoneyFormat, ConvertToPrice } from '../Transforms';
 
 
 export default class ServiceCardFull extends Component {
@@ -15,12 +15,8 @@ export default class ServiceCardFull extends Component {
 
   render () {
     const { data } = this.props
-    const { title, description, user } = data
-    if (data.priceRange !== '') {
-      price = RangeMoneyFormat(data.price, data.priceRange)
-    } else {
-      price = MoneyFormat(data.price)
-    }
+    const { title, user, rating } = data
+    const price = ConvertToPrice(data)
 
     return (
       <TouchableNativeFeedback onPress={this.onPress}>
@@ -37,7 +33,7 @@ export default class ServiceCardFull extends Component {
               <Text>{user.name}</Text>
             </View>
             <View style={styles.rating}>
-              <Text>4.5</Text>
+              <Text>{Number(rating || 0).toFixed(1)}</Text>
               <Icon name="star" style={styles.ratingIcon} />
             </View>
           </View>

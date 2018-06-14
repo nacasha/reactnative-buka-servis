@@ -7,7 +7,7 @@ const { Types, Creators } = createActions({
   feedRequest: null,
   feedSuccess: ['feeds'],
   feedFailure: ['error']
-})
+}, { prefix: 'Feed/' })
 
 export const FeedTypes = Types
 export default Creators

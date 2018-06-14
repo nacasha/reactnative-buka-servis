@@ -59,14 +59,5 @@ export default StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: '#DDD',
     flexDirection: 'row'
-  },
-  ratingModal: {
-    justifyContent: 'center',
-    alignItems:'center',
-    alignSelf: 'center',
-    backgroundColor: '#FFF',
-    height: 100,
-    width: 250,
-    borderRadius: Metrics.borderRadius,
   }
 })

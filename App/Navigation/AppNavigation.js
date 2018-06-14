@@ -47,9 +47,10 @@ const PrimaryNav = StackNavigator({
 }, {
   // Default config for all screens
   initialRouteName: 'TabViewScreen',
-  navigationOptions: {
+  navigationOptions: (nav) => ({
+    header: () => <HeaderBar nav={nav} />,
     headerStyle: styles.header
-  }
+  })
 })
 
 export default PrimaryNav

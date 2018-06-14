@@ -1,11 +1,8 @@
-import React from 'react'
-import { Field, reduxForm } from 'redux-form'
-import { Container, Header, Content, Input, Item, Text, Label, Picker } from 'native-base'
-import { View } from 'react-native'
-import styles from './FormStyles'
-import RoundedButton from '../RoundedButton'
-import DropdownAlert from 'react-native-dropdownalert'
-import { renderInput, renderPicker, renderLocationPicker } from './_render';
+import { Content } from 'native-base';
+import React from 'react';
+import { Field, reduxForm } from 'redux-form';
+import RoundedButton from '../RoundedButton';
+import { renderInput, renderLocationPicker, renderPicker } from './_render';
 
 const validate = values => {
   // store error state

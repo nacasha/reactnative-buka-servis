@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, SectionList, Text, FlatList } from 'react-native'
+import { ActivityIndicator, View, SectionList, Text, FlatList } from 'react-native'
 import { connect } from 'react-redux'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import ServiceCardFull from '../../Components/ServiceCardFull'
@@ -62,9 +62,14 @@ class MainTab extends React.PureComponent {
   }
 
   renderItem = ({section, item}) => {
+    const data = {
+      ...item,
+      user: this.props.stores[item.user].info
+    }
+
     return (
       <View style={styles.item}>
-        <ServiceCardFull data={item} onPress={this.onPress(item)} />
+        <ServiceCardFull data={data} onPress={this.onPress(item)} />
       </View>
     )
   }
@@ -89,7 +94,7 @@ class MainTab extends React.PureComponent {
   // Show this when data is empty
   renderEmpty = () =>
     <View style={styles.emptySection}>
-      <Text style={styles.emptySectionText}>Unable to fetch data from server</Text>
+      <ActivityIndicator size={30} />
     </View>
 
   renderSeparator = () =>
@@ -140,7 +145,8 @@ class MainTab extends React.PureComponent {
 
 const mapStateToProps = (state) => {
   return {
-    feeds: state.feed.feeds
+    feeds: state.feed.feeds,
+    stores: state.store.stores
   }
 }
 

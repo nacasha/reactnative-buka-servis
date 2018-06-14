@@ -16,6 +16,10 @@ export default class HeaderBar extends Component {
     title: 'Buka Servis'
   }
 
+  constructor(props) {
+    super(props)
+  }
+
   backButtonHandler = () => {
     this.props.dispatch({ type: 'Navigation/BACK' })
   }
@@ -23,7 +27,7 @@ export default class HeaderBar extends Component {
   renderRight() {
     return this.props.right.map(item => (
       <TouchableOpacity key={item.icon} onPress={item.action}>
-        <Icon name={item.icon} size={27} color="#FFF" style={styles.rightIcon} />
+        <Icon name={item.icon} size={27} color={item.color || '#FFF'} style={styles.rightIcon} />
       </TouchableOpacity>
     ))
   }

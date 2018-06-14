@@ -4,16 +4,20 @@ import configureStore from './CreateStore'
 import rootSaga from '../Sagas/'
 import ReduxPersist from '../Config/ReduxPersist'
 import { reducer as formReducer } from 'redux-form'
+import { resettableReducer } from 'reduxsauce';
 
 /* ------------- Assemble The Reducers ------------- */
+const resettable = resettableReducer('RESET')
+
 export const reducers = combineReducers({
   nav: require('./NavigationRedux').reducer,
   message: require('./MessageRedux').reducer,
   user: require('./UserRedux').reducer,
   service: require('./ServiceRedux').reducer,
-  rating: require('./RatingRedux').reducer,
+  rating: resettable(require('./RatingRedux').reducer),
   feed: require('./FeedRedux').reducer,
   store: require('./StoreRedux').reducer,
+  favorite: require('./FavoriteRedux').reducer,
   form: formReducer
 })
 

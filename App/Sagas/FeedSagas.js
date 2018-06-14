@@ -1,37 +1,66 @@
-import { put, call, all } from 'redux-saga/effects'
-import firebase from 'react-native-firebase'
-import FeedActions from '../Redux/FeedRedux'
+import { put, call, all, select, takeLatest } from 'redux-saga/effects'
+import FeedActions, { FeedTypes } from '../Redux/FeedRedux'
+import StoreActions, { StoreSelectors } from '../Redux/StoreRedux'
+import FirestoreFlat from '../Transforms/FirestoreFlat';
+import { rsf, firestore } from '../Services/ReduxSagaFirebase'
 
-export function* getUserData(userRef) {
-  let response = null
-  yield userRef.get().then(doc => {
-    response = { ...doc.data(), email: doc.id }
-  })
+function* getStoreData(userID) {
+  const user = yield call(
+    rsf.firestore.getCollection,
+    firestore.collection('users').doc(userID)
+  )
 
-  return response
+  return { ...user.data(), uid: user.id }
 }
 
-export function* feedsRequest(action) {
-  let state = {
-    ok: false,
-    response: null
-  }
+export function* getFeedRating(serviceId) {
+  const ratings = yield call(
+    rsf.firestore.getCollection,
+    firestore.collection('services').doc(serviceId).collection('ratings')
+  )
 
-  yield firebase.firestore()
-    .collection('services').get()
-    .then(response => state = { ok: true, response })
-    .catch(response => state = { ok: false, response })
+  const ratingData = FirestoreFlat(ratings)
+  const ratingCount = ratingData.length
+  let rating = 0
+  ratingData.map(r => rating += r.rating)
+  rating /= ratingCount
 
-  if (state.ok) {
-    const feeds = yield all(state.response.docs.map(function* (item) {
-      const userRef = yield call(getUserData, item.data().userRef)
+  return { rating, ratingCount }
+}
+
+function* feedsRequest(action) {
+  try {
+    const feedsDocument = yield call(
+      rsf.firestore.getCollection,
+      'services'
+    )
+
+    const feeds = yield all(feedsDocument.docs.map(function* (item) {
+      // fetch store data from firebase
+      const userId = item.data().user
+      const storeInfo = yield select(StoreSelectors.getStore)
+
+      if (storeInfo[userId] === undefined) {
+        const info = yield call(getStoreData, userId)
+        yield put(StoreActions.storeSuccess({ info }, userId))
+      }
+
+      // fetch rating data from firebase
       const key = item.id
+      const rating = yield call(getFeedRating, key)
 
-      return { key, ...item.data(), user: userRef, userRef }
+      return { ...item.data(), ...rating, key }
     }))
 
     yield put(FeedActions.feedSuccess(feeds))
-  } else {
-    yield put(FeedActions.feedFailure(state.response))
   }
+  catch (error) {
+    yield put(FeedActions.feedFailure(error))
+  }
+}
+
+export default function* feedSagas() {
+  yield all([
+    takeLatest(FeedTypes.FEED_REQUEST, feedsRequest),
+  ])
 }

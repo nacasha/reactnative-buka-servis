@@ -4,11 +4,11 @@ import Immutable from 'seamless-immutable'
 /* ------------- Types and Action Creators ------------- */
 
 const { Types, Creators } = createActions({
-  fetchStoreDetail: ['storeId'],
+  fetchStoreData: ['storeId'],
 
   storeSuccess: ['data', 'storeId'],
   storeFailure: null
-})
+}, { prefix: 'Store/' })
 
 export const StoreTypes = Types
 export default Creators
@@ -25,7 +25,7 @@ export const INITIAL_STATE = Immutable({
 /* ------------- Selectors ------------- */
 
 export const StoreSelectors = {
-  getData: state => state.data
+  getStore: state => state.store.stores
 }
 
 /* ------------- Reducers ------------- */
@@ -35,7 +35,7 @@ export const request = (state) =>
 
 export const success = (state, { data, storeId }) => {
   const stores = { ...state.stores }
-  stores[storeId] = data
+  stores[storeId] = { ...stores[storeId], ...data }
 
   return state.merge({ stores, fetching: false, error: null }, { deep: true })
 }
@@ -46,7 +46,7 @@ export const failure = (state, { error }) =>
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
-  [Types.FETCH_STORE_DETAIL]: request,
+  [Types.FETCH_STORE_DATA]: request,
   [Types.STORE_SUCCESS]: success,
   [Types.STORE_FAILURE]: failure
 })

@@ -13,13 +13,12 @@ const { Types, Creators } = createActions({
   // hookup
   userRequest: null,
   userFailure: ['error'],
-  userReset: null,
 
   // success request
   successSignin: ['payload'],
   successSignout: null,
   successRegister: null
-})
+}, { prefix: 'User/' })
 
 export const UserTypes = Types
 export default Creators
@@ -36,7 +35,10 @@ export const INITIAL_STATE = Immutable({
 /* ------------- Selectors ------------- */
 
 export const UserSelectors = {
-  getEmail: state => state.user.data.email
+  getUser: state => state.user.data,
+  getEmail: state => state.user.data.email,
+  getUserId: state => state.user.data.uid,
+  getLoginStatus: state => state.user.loggedIn,
 }
 
 /* ------------- Reducers ------------- */
@@ -56,9 +58,6 @@ export const success_signout = state =>
 export const failure = (state, { error }) =>
   state.merge({ fetching: false, error, data: null, loggedIn: false })
 
-export const reset = state =>
-  state.merge({ ...state, fetching: false, error: null })
-
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
@@ -66,7 +65,6 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.SIGNOUT]: request,
   [Types.REGISTER]: request,
   [Types.USER_FAILURE]: failure,
-  [Types.USER_RESET]: reset,
   [Types.SUCCESS_SIGNIN]: success_signin,
   [Types.SUCCESS_SIGNOUT]: success_signout,
   [Types.SUCCESS_REGISTER]: success_register

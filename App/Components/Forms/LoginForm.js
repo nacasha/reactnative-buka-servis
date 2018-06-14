@@ -1,8 +1,7 @@
-import React from 'react'
-import { Field, reduxForm } from 'redux-form'
-import { View } from 'react-native'
-import styles from './FormStyles'
-import RoundedButton from '../RoundedButton'
+import React from 'react';
+import { View } from 'react-native';
+import { Field, reduxForm } from 'redux-form';
+import RoundedButton from '../RoundedButton';
 import { renderInput } from './_render';
 
 

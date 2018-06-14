@@ -43,7 +43,7 @@ export default StyleSheet.create({
     fontSize: 15
   },
   textArea: {
-    borderBottomWidth: 1,
+    borderBottomWidth: 2,
     borderBottomColor: '#DDD'
   },
   categoryPicker: {

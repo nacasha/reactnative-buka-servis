@@ -7,14 +7,14 @@ const { Types, Creators } = createActions({
   openModal: null,
   closeModal: null,
 
-  fetch: null,
-  add: ['data', 'storeId'],
-  update: ['data', 'storeId'],
-  delete: ['storeId'],
+  submit: ['rating', 'serviceId'],
+  submitSuccess: ['data'],
+  submitFailure: ['error'],
 
-  ratingSuccess: ['payload'],
-  ratingFailure: ['error']
-})
+  syncRating: ['serviceId'],
+  syncSuccess: ['serviceRating', 'serviceId'],
+  syncFailure: ['error'],
+}, { prefix: 'Rating/' })
 
 export const RatingTypes = Types
 export default Creators
@@ -22,11 +22,13 @@ export default Creators
 /* ------------- Initial State ------------- */
 
 export const INITIAL_STATE = Immutable({
-  modalVisible: false,
-  rating: [],
+  // persist
+  ratings: [],
 
+  // temporarily
+  modalVisible: false,
   fetching: null,
-  error: null
+  error: null,
 })
 
 /* ------------- Selectors ------------- */
@@ -43,14 +45,32 @@ export const closeModal = state =>
   state.merge({ ...state, modalVisible: false })
 
 // request the data from an api
-export const request = (state, { data }) =>
-  state.merge({ fetching: true, data, payload: null })
+export const request = (state) =>
+  state.merge({ ...state, fetching: true, payload: null })
 
 // successful api lookup
 export const success = (state, action) => {
   const { payload } = action
   return state.merge({ fetching: false, error: null, payload })
 }
+
+export const syncSuccess = (state, { serviceRating, serviceId }) => {
+  const ratings = { ...state.ratings }
+  let ratingAverage = 0
+
+  Object.keys(serviceRating).map(id => ratingAverage += serviceRating[id])
+  ratingAverage /= Object.keys(serviceRating).length
+
+  ratings[serviceId] = {
+    ratingAverage,
+    ...serviceRating
+  }
+
+  return state.merge({ ratings })
+}
+
+export const successFetch = (state, { ratings }) =>
+  state.merge({ fetching: false, error: null, ratings })
 
 // Something went wrong somewhere.
 export const failure = state =>
@@ -61,6 +81,8 @@ export const failure = state =>
 export const reducer = createReducer(INITIAL_STATE, {
   [Types.OPEN_MODAL]: openModal,
   [Types.CLOSE_MODAL]: closeModal,
-  [Types.RATING_SUCCESS]: success,
-  [Types.RATING_FAILURE]: failure
+  [Types.SYNC_SUCCESS]: syncSuccess,
+  [Types.SUBMIT]: request,
+  [Types.SUBMIT_SUCCESS]: success,
+  [Types.SUBMIT_FAILURE]: failure,
 })

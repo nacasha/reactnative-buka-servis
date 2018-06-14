@@ -24,6 +24,22 @@ export default StyleSheet.create({
     fontSize: 19,
     marginRight: 3
   },
+  ratingSection: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  ratingInfo: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  ratingGap: {
+    marginHorizontal: 3
+  },
+  ratingInfoIcon: {
+    fontSize: 18,
+    marginRight: 3
+  },
   storeSection: {
     backgroundColor: '#F7F7F7',
     padding: Metrics.baseMargin,
@@ -59,5 +75,14 @@ export default StyleSheet.create({
   },
   desc: {
     lineHeight: 25
+  },
+  ratingModal: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'center',
+    backgroundColor: '#FFF',
+    height: 100,
+    width: 250,
+    borderRadius: Metrics.borderRadius,
   }
 })

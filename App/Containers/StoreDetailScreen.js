@@ -1,23 +1,21 @@
-import React from 'react'
-import { TouchableNativeFeedback, TouchableOpacity, Image, View, Text, FlatList } from 'react-native'
-import { connect } from 'react-redux'
-import HeaderBar from '../Components/HeaderBar'
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
-import RoundedButton from '../Components/RoundedButton'
-import Rating from 'react-native-rating'
-import Modal from 'react-native-modal'
-import RatingActions from '../Redux/RatingRedux'
-import StoreActions from '../Redux/StoreRedux'
-
+import React from 'react';
+import { ActivityIndicator, FlatList, Image, Text, TouchableNativeFeedback, ScrollView, View } from 'react-native';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { connect } from 'react-redux';
+import HeaderBar from '../Components/HeaderBar';
+import RoundedButton from '../Components/RoundedButton';
+import ServiceCardSmall from '../Components/ServiceCardSmall';
+import FavoriteActions from '../Redux/FavoriteRedux';
+import StoreActions from '../Redux/StoreRedux';
+import { Colors } from '../Themes';
+import R from 'ramda'
 // Styles
-import styles from './Styles/StoreDetailScreenStyle'
-import { Colors, Images } from '../Themes'
-import ServiceCardSmall from '../Components/ServiceCardSmall'
+import styles from './Styles/StoreDetailScreenStyle';
 
 class StoreDetailScreen extends React.PureComponent {
-  static navigationOptions = ({ navigation }) => ({
-    header: <HeaderBar title="Store Detail" back={() => navigation.pop()} />
-  })
+  static navigationOptions = {
+    header: null
+  }
   /* ***********************************************************
   * STEP 1
   * This is an array of objects with the properties you desire
@@ -37,29 +35,47 @@ class StoreDetailScreen extends React.PureComponent {
     super(props)
 
     const { data } = props.navigation.state.params
-    props.fetchStoreDetail(data.email)
+    this.storeId = data
+    this.storeInfo = this.props.stores[data].info
 
-    this.data = data
-    this.meta = props.stores[data.email]
+    this.props.fetchStoreData(data)
+
+    // Methods
+    this.onMessage = this.onMessage.bind(this)
+    this.onDirection = this.onDirection.bind(this)
+    this.onServicePress = this.onServicePress.bind(this)
+    this.submitFavorite = this.submitFavorite.bind(this)
   }
 
-  onMessage = () => {
+  submitFavorite() {
+    if (this.props.loggedIn) {
+      const state = !this.props.favorites[this.storeId]
+      this.props.submitFavorite(state, this.storeId)
+    } else {
+      alert('Please sign in to your account')
+    }
+  }
+
+  onServicePress = (data) => () => {
+    this.props.navigation.navigate({
+      key: `ServiceDetailScreen/${data.key}`,
+      routeName: 'ServiceDetailScreen',
+      params: { data, noInfo: true }
+    })
+  }
+
+  onMessage() {
     this.props.navigation.navigate({
       key: 'MessageDetailScreen',
       routeName: 'MessageDetailScreen'
     })
   }
 
-  onDirection = () => {
+  onDirection() {
     this.props.navigation.navigate({
       key: 'MessageDetailScreen',
       routeName: 'MessageDetailScreen'
     })
-  }
-
-  submitRating = () => {
-    alert('submitted')
-    this.props.closeRatingModal()
   }
 
   /* ***********************************************************
@@ -70,10 +86,10 @@ class StoreDetailScreen extends React.PureComponent {
   * e.g.
     return <MyCustomCell title={item.title} description={item.description} />
   *************************************************************/
-  renderRow ({item}) {
+  renderRow = ({item}) => {
     return (
       <View style={styles.item}>
-        <ServiceCardSmall data={item} onPress={() => {}} />
+        <ServiceCardSmall data={item} onPress={this.onServicePress(item)} />
       </View>
     )
   }
@@ -84,45 +100,46 @@ class StoreDetailScreen extends React.PureComponent {
   * to your liking!  Each with some friendly advice.
   *************************************************************/
   // Render a header?
-  renderHeader = () =>
-    <View style={{ marginBottom: 10 }}>
-      <View style={styles.storeSection}>
-        <Image source={{ uri: 'https://api.adorable.io/avatars/90/' + this.data.email }} style={styles.storeImage} />
-        <Text style={styles.storeTitle}>{this.data.name}</Text>
-        <Text style={styles.storeSubInfo}>
-          <Icon name="map-marker" size={15} />
-          {this.data.address}
-        </Text>
-        <View style={styles.storeStatus}>
-          <Icon name="star" color={Colors.yellow} />
-          <Text style={styles.gap}>4.5</Text>
-          <Icon name="heart" color={Colors.red} />
-          <Text style={styles.gap}>{this.meta.favorites.length}</Text>
+  renderHeader() {
+    return (
+      <View style={{ marginBottom: 10 }}>
+        <View style={styles.storeSection}>
+          <Image source={{ uri: 'https://api.adorable.io/avatars/90/' + this.storeId }} style={styles.storeImage} />
+          <Text style={styles.storeTitle}>{this.storeInfo.name}</Text>
+          <Text style={styles.storeSubInfo}>
+            <Icon name="map-marker" size={15} />
+            {this.storeInfo.address}
+          </Text>
+
+          <View style={styles.storeStatus}>
+            <Icon name="library-books" />
+            <Text style={styles.gap}>
+              {(this.props.stores[this.storeId].services || []).length}
+            </Text>
+            <Icon name="heart" color={Colors.red} />
+            <Text style={styles.gap}>
+              {(this.props.stores[this.storeId].favorites || []).length}
+            </Text>
+          </View>
         </View>
+
+        <TouchableNativeFeedback onPress={this.props.closeRatingModal}>
+          <View>
+            <View pointerEvents="none" style={styles.itemSection}>
+              <Text style={{ flex: 1 }}>Contacts</Text>
+              <Icon name="chevron-right" size={20} />
+            </View>
+          </View>
+        </TouchableNativeFeedback>
       </View>
-
-      <TouchableNativeFeedback onPress={this.props.openRatingModal}>
-        <View>
-          <View pointerEvents="none" style={styles.itemSection}>
-            <Text style={{ flex: 1 }}>Your Rating</Text>
-            <Icon name="chevron-right" size={20} />
-          </View>
-        </View>
-      </TouchableNativeFeedback>
-
-      <TouchableNativeFeedback onPress={this.props.closeRatingModal}>
-        <View>
-          <View pointerEvents="none" style={styles.itemSection}>
-            <Text style={{ flex: 1 }}>Contacts</Text>
-            <Icon name="chevron-right" size={20} />
-          </View>
-        </View>
-      </TouchableNativeFeedback>
-    </View>
+    )
+  }
 
   // Show this when data is empty
   renderEmpty = () =>
-    <Text style={styles.label}> - No Services Available - </Text>
+    <View style={{ padding: 30 }}>
+      <ActivityIndicator size={30} />
+    </View>
 
   renderSeparator = () =>
     <View style={styles.itemSeparator}/>
@@ -152,49 +169,55 @@ class StoreDetailScreen extends React.PureComponent {
   //   {length: ITEM_HEIGHT, offset: ITEM_HEIGHT * index, index}
   // )}
 
-  render () {
+  renderFooter() {
     return (
-      <View style={styles.container}>
-        <FlatList
-          data={this.meta.services}
-          renderItem={this.renderRow}
-          keyExtractor={this.keyExtractor}
-          initialNumToRender={this.oneScreensWorth}
-          ListHeaderComponent={this.renderHeader}
-          ListEmptyComponent={this.renderEmpty}
-          ItemSeparatorComponent={this.renderSeparator}
-          ListFooterComponent={this.renderSectionFooter}
-        />
-        <View style={styles.footer}>
-          <View style={styles.footerItem}>
-            <RoundedButton
-              text="Send Message"
-              onPress={this.onMessage}
-            /></View>
-          <View style={styles.footerItem}>
-            <RoundedButton
-              text="Direction"
-              onPress={this.onDirection}
-              background={Colors.green}
-            />
-          </View>
+      <View style={styles.footer}>
+        <View style={styles.footerItem}>
+          <RoundedButton
+            text="Send Message"
+            onPress={this.onMessage}
+          /></View>
+        <View style={styles.footerItem}>
+          <RoundedButton
+            text="Direction"
+            onPress={this.onDirection}
+            background={Colors.green}
+          />
         </View>
+      </View>
+    )
+  }
 
-        <Modal
-          isVisible={this.props.ratingModalVisible}
-          onBackButtonPress={this.props.closeRatingModal}
-          useNativeDriver={true}
-        >
-          <View style={styles.ratingModal}>
-            <Rating
-              selectedStar={Images.rating.starFilled}
-              unselectedStar={Images.rating.starUnfilled}
+  render() {
+    return (
+      <View style={{ flex: 1 }}>
+        <HeaderBar
+          title="Store Detail"
+          back={() => this.props.navigation.pop()}
+          right={[
+            {
+              color: this.props.favorites[this.storeId] ? 'red' : 'white',
+              icon: 'heart',
+              action: () => this.submitFavorite()
+            }
+          ]}
+        />
+
+        <View style={{ flex: 1 }}>
+          <ScrollView style={styles.container}>
+            {this.renderHeader()}
+            <FlatList
+              data={this.props.stores[this.storeId].services}
+              renderItem={this.renderRow}
+              keyExtractor={this.keyExtractor}
+              initialNumToRender={this.oneScreensWorth}
+              ListEmptyComponent={this.renderEmpty}
+              ItemSeparatorComponent={this.renderSeparator}
+              ListFooterComponent={this.renderSectionFooter}
             />
-            <TouchableOpacity onPress={this.submitRating}>
-              <Text style={styles.textButton}>DONE</Text>
-            </TouchableOpacity>
-          </View>
-        </Modal>
+          </ScrollView>
+        </View>
+        {this.renderFooter()}
       </View>
     )
   }
@@ -202,16 +225,16 @@ class StoreDetailScreen extends React.PureComponent {
 
 const mapStateToProps = (state) => {
   return {
-    ratingModalVisible: state.rating.modalVisible,
+    loggedIn: state.user.loggedIn,
     stores: state.store.stores,
+    favorites: state.favorite.favorites
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    fetchStoreDetail: (id) => dispatch(StoreActions.fetchStoreDetail(id)),
-    openRatingModal: () => dispatch(RatingActions.openModal()),
-    closeRatingModal: () => dispatch(RatingActions.closeModal())
+    fetchStoreData: (id) => dispatch(StoreActions.fetchStoreData(id)),
+    submitFavorite: (state, storeId) => dispatch(FavoriteActions.submit(state, storeId))
   }
 }
 

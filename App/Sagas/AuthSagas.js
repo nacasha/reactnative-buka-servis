@@ -1,60 +1,50 @@
-import { put } from 'redux-saga/effects'
+import { put, call } from 'redux-saga/effects'
 import firebase from 'react-native-firebase'
 import UserActions from '../Redux/UserRedux'
+import ServiceActions from '../Redux/ServiceRedux'
+import FavoriteActions from '../Redux/FavoriteRedux'
+import { rsf, firestore } from '../Services/ReduxSagaFirebase'
 
 export function* signIn(action) {
   const { email, password } = action
-  let state = {
-    ok: false,
-    response: null
-  }
+  const signIn = firebase.auth().signInAndRetrieveDataWithEmailAndPassword
 
-  yield firebase.auth()
-    .signInAndRetrieveDataWithEmailAndPassword(email, password)
-    .then(response => state = { ok: true, response })
-    .catch(response => state = { ok: false, response })
+  try {
+    const data = yield call(
+      [firebase.auth(), signIn],
+      email,
+      password
+    )
 
-  if (state.ok) {
-    // check if user email is verified
-    if (!state.response.user.emailVerified) {
-      yield put(UserActions.userFailure('Email not verified'))
-    } else {
-      // get user detail in firestore
-      yield firebase.firestore()
-        .collection('users').doc(email).get()
-        .then(doc => {
-          if (doc.exists) {
-            response = {
-              ...state.response.user._user,
-              ...doc.data()
-            }
+    if (data.user.emailVerified) {
+      const userData = yield call(
+        rsf.firestore.getCollection,
+        firestore.collection('users').doc(data.user.uid)
+      )
 
-            state = { ok: true, response }
-          } else {
-            state = { ok: false, response: 'User not found' }
-          }
+      yield put(
+        UserActions.successSignin({
+          ...data.user._user,
+          ...userData.data()
         })
-
-      yield put(UserActions.successSignin(state.response))
+      )
+    } else {
+      yield put(UserActions.userFailure('Email not verified'))
     }
-  } else {
-    yield put(UserActions.userFailure(state.response))
+  }
+  catch (error) {
+    yield put(UserActions.userFailure(error))
   }
 }
 
-export function* signOut(action) {
-  let state = {
-    ok: false,
-    response: null
+export function* signOut() {
+  try {
+    const data = yield call(rsf.auth.signOut);
+    yield put(UserActions.successSignout(data))
+    yield put(FavoriteActions.reset())
+    yield put(ServiceActions.reset())
   }
-
-  yield firebase.auth().signOut()
-    .then(() => state = { ok: true, response: null })
-    .catch(response => state = { ok: false, response })
-
-  if (state.ok) {
-    yield put(UserActions.successSignout(state.response))
-  } else {
+  catch (error) {
     yield put(UserActions.userFailure())
   }
 }
@@ -72,13 +62,18 @@ export function* register(action) {
     .catch(response => state = { ok: false, response })
 
   if (state.ok) {
+    const { uid } = state.response.user
+
     yield firebase.firestore()
-      .collection('users').doc(email).set({
+      .collection('users').doc(uid).set({
+        email,
         name: data.name,
         gender: data.gender,
         address: data.address,
         location: new firebase.firestore.GeoPoint(data.location.latitude, data.location.longitude)
       })
+
+    yield state.response.user.sendEmailVerification()
 
     yield put(UserActions.successRegister(state.response))
   } else {

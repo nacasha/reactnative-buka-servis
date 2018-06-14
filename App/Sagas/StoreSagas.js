@@ -1,45 +1,54 @@
-import { put, call, all } from 'redux-saga/effects'
-import firebase from 'react-native-firebase'
-import StoreActions from '../Redux/StoreRedux'
-import R from 'ramda'
+import { fork, put, call, all, takeLatest } from 'redux-saga/effects'
+import StoreActions, { StoreTypes } from '../Redux/StoreRedux'
 import FirestoreFlat from '../Transforms/FirestoreFlat';
+import { rsf, firestore } from '../Services/ReduxSagaFirebase';
+import { getFeedRating } from './FeedSagas';
 
 // Get available services from selected store
-export function* fetchServices(storeId) {
-  let response = null
+function* fetchStoreServices(storeId) {
+  const servicesData = yield call(
+    rsf.firestore.getCollection,
+    firestore.collection('services').where('user', '==', storeId)
+  )
 
-  yield firebase.firestore()
-    .collection('services').where('user', '==', storeId).get()
-    .then(doc => {
-      response = FirestoreFlat(doc)
-    })
+  const services = yield all(servicesData.docs.map(function* (item) {
+    // fetch rating data from firebase
+    const key = item.id
+    const rating = yield call(getFeedRating, key)
 
-  response = yield all(response.map(item => R.dissoc('userRef', item)))
+    return { ...item.data(), ...rating, key }
+  }))
 
-  return response
+  return services
 }
 
 // Get total favorites from selected store
-export function* fetchFavorites(storeId) {
-  const store = R.replace(/\./g, '_', storeId)
-  let response = null
+function* syncStoreFavorites(storeId) {
+  yield fork(
+    rsf.firestore.syncCollection,
+    firestore.collection('favorites').where(storeId, '==', true),
+    {
+      successActionCreator: snapshot => {
+        const favorites = FirestoreFlat(snapshot)
 
-  yield firebase.firestore()
-    .collection('favorites').where(store, '==', true).get()
-    .then(doc => {
-      response = FirestoreFlat(doc)
-    })
-
-  return response
+        return StoreActions.storeSuccess({ favorites }, storeId)
+      }
+    }
+  )
 }
 
-export function* fetchStoreDetail(action) {
+function* fetchStoreData(action) {
   const { storeId } = action
 
-  const favorites = yield call(fetchFavorites, storeId)
-  const services = yield call(fetchServices, storeId)
-
-  const data = { favorites, services }
+  const services = yield call(fetchStoreServices, storeId)
+  const data = { services }
 
   yield put(StoreActions.storeSuccess(data, storeId))
+  yield syncStoreFavorites(storeId)
+}
+
+export default function* storeSagas() {
+  yield all([
+    takeLatest(StoreTypes.FETCH_STORE_DATA, fetchStoreData),
+  ])
 }

@@ -4,9 +4,11 @@ import firebase from 'react-native-firebase'
 import ServiceActions from '../Redux/ServiceRedux'
 import { UserSelectors } from '../Redux/UserRedux'
 import FirestoreFlat from '../Transforms/FirestoreFlat';
+import R from 'ramda'
 
-function sync(user) {
-  const ref = firebase.firestore().collection('services').where('user', '==', user)
+function sync(userID) {
+  const ref = firebase.firestore()
+    .collection('services').where('user', '==', userID)
 
   return eventChannel(emit => {
     const unsubscribe = ref.onSnapshot(snapshot => emit(snapshot))
@@ -16,13 +18,15 @@ function sync(user) {
 }
 
 export function* fetchService(action) {
-  const user = yield select(UserSelectors.getEmail)
-  const channel = yield call(sync, user)
+  const userId = yield select(UserSelectors.getUserId)
+  const channel = yield call(sync, userId)
 
   try {
     while (true) {
       let data = yield take(channel)
-      const docs = FirestoreFlat(data)
+
+      let docs = FirestoreFlat(data)
+      docs = yield all(docs.map(item => R.dissoc('userRef', item)))
       yield put(ServiceActions.fetchSuccess(docs))
     }
   } finally {
@@ -31,7 +35,7 @@ export function* fetchService(action) {
 }
 
 export function* addService(action) {
-  const user = yield select(UserSelectors.getEmail)
+  const user = yield select(UserSelectors.getUserId)
   let state = {
     ok: false,
     response: null
@@ -57,8 +61,6 @@ export function* updateService(action) {
     ok: false,
     response: null
   }
-
-  console.log(serviceId)
 
   yield firebase.firestore()
     .collection('services').doc(serviceId).update({

@@ -13,14 +13,24 @@ const fromImmutable = R.when(isImmutable, convertToJs)
 // convert this JS object into an Immutable object
 const toImmutable = (raw) => Immutable(raw)
 
+const selectedPersist = [
+  'loggedIn',
+  'data',
+  'services',
+  'favorites',
+  'stores',
+  'feeds',
+  'ratings'
+]
+
 // the transform interface that redux-persist is expecting
 export default {
   out: (state) => {
-    // console.log({ retrieving: state })
-    return toImmutable(state)
+    const persistState = R.pick(selectedPersist, state)
+    return toImmutable(persistState)
   },
   in: (raw) => {
-    // console.log({ storing: raw })
-    return fromImmutable(raw)
+    const persistRaw = R.pick(selectedPersist, raw)
+    return fromImmutable(persistRaw)
   }
 }
