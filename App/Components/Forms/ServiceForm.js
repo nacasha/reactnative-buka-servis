@@ -116,8 +116,5 @@ class ServiceForm extends React.Component {
 
 export default reduxForm({
   form: 'service',
-  validate,
-  initialValues: {
-    title: 'asasdasdasd'
-  }
+  validate
 })(ServiceForm)

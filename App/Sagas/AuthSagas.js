@@ -3,6 +3,7 @@ import firebase from 'react-native-firebase'
 import UserActions from '../Redux/UserRedux'
 import ServiceActions from '../Redux/ServiceRedux'
 import FavoriteActions from '../Redux/FavoriteRedux'
+import RatingActions from '../Redux/RatingRedux'
 import { rsf, firestore } from '../Services/ReduxSagaFirebase'
 
 export function* signIn(action) {
@@ -43,6 +44,7 @@ export function* signOut() {
     yield put(UserActions.successSignout(data))
     yield put(FavoriteActions.reset())
     yield put(ServiceActions.reset())
+    yield put(RatingActions.reset())
   }
   catch (error) {
     yield put(UserActions.userFailure())

@@ -16,20 +16,6 @@ class StoreDetailScreen extends React.PureComponent {
   static navigationOptions = {
     header: null
   }
-  /* ***********************************************************
-  * STEP 1
-  * This is an array of objects with the properties you desire
-  * Usually this should come from Redux mapStateToProps
-  *************************************************************/
-  state = {
-    dataObjects: [
-      {title: 'Install Ulang Android', price: '150000'},
-      {title: 'Ganti LCD', price: '150000'},
-      {title: 'Repair Bootloop Android', price: '150000'},
-      {title: 'Reset Account Iphone', price: '150000'},
-      {title: 'Ganti Baterai IPhone', price: '150000'},
-    ]
-  }
 
   constructor(props) {
     super(props)
@@ -67,14 +53,21 @@ class StoreDetailScreen extends React.PureComponent {
   onMessage() {
     this.props.navigation.navigate({
       key: 'MessageDetailScreen',
-      routeName: 'MessageDetailScreen'
+      routeName: 'MessageDetailScreen',
+      params: {
+        storeId: this.storeId
+      }
     })
   }
 
   onDirection() {
     this.props.navigation.navigate({
-      key: 'MessageDetailScreen',
-      routeName: 'MessageDetailScreen'
+      key: 'StoreDirectionScreen',
+      routeName: 'StoreDirectionScreen',
+      params: {
+        storeId: this.storeId,
+        storeLocation: this.storeInfo.location
+      }
     })
   }
 
@@ -176,12 +169,14 @@ class StoreDetailScreen extends React.PureComponent {
           <RoundedButton
             text="Send Message"
             onPress={this.onMessage}
+            debounce
           /></View>
         <View style={styles.footerItem}>
           <RoundedButton
             text="Direction"
             onPress={this.onDirection}
             background={Colors.green}
+            debounce
           />
         </View>
       </View>

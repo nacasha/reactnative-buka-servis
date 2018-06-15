@@ -22,6 +22,7 @@ const images = {
   closeButton: require('../Images/Icons/close-button.png'),
   shield: require('../Images/account.png'),
   mapMarkerUser: require('../Images/Icons/map-marker-user.png'),
+  mapMarkerStore: require('../Images/Icons/map-marker-store.png'),
   gunadarma: require('../Images/gunadarma.png'),
   rating: {
     starFilled: require('react-native-rating/assets/star_filled.png'),

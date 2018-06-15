@@ -84,5 +84,11 @@ export default StyleSheet.create({
     height: 100,
     width: 250,
     borderRadius: Metrics.borderRadius,
+  },
+  reportModal: {
+    height: 400,
+    padding: Metrics.baseMargin,
+    backgroundColor: '#FFF',
+    borderRadius: Metrics.borderRadius,
   }
 })

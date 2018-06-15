@@ -20,7 +20,8 @@ const selectedPersist = [
   'favorites',
   'stores',
   'feeds',
-  'ratings'
+  'ratings',
+  'directions'
 ]
 
 // the transform interface that redux-persist is expecting

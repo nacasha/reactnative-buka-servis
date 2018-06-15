@@ -18,6 +18,9 @@ import favoriteSagas from './FavoriteSagas'
 import feedSagas from './FeedSagas'
 import ratingSagas from './RatingSagas'
 import storeSagas from './StoreSagas'
+import reportSagas from './ReportSagas';
+import geoLocationSagas from './GeoLocationSagas';
+import directionSagas from './DirectionSagas';
 
 /* ------------- API ------------- */
 
@@ -33,6 +36,9 @@ export default function * root () {
     fork(ratingSagas),
     fork(storeSagas),
     fork(favoriteSagas),
+    fork(reportSagas),
+    fork(geoLocationSagas),
+    fork(directionSagas),
 
     // Authentication
     takeLatest(UserTypes.SIGNIN, signIn),

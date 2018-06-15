@@ -2,7 +2,7 @@ import { Content } from 'native-base';
 import React from 'react';
 import { Field, reduxForm } from 'redux-form';
 import RoundedButton from '../RoundedButton';
-import { renderInput, renderLocationPicker, renderPicker } from './_render';
+import { renderInput, renderLocationPicker, renderPicker, renderTextarea } from './_render';
 
 const validate = values => {
   // store error state
@@ -89,8 +89,10 @@ const RegisterForm = props => {
         name="address"
         options={{
           autoCorrect: false,
+          multiline: true,
+          autoGrow: true
         }}
-        component={renderInput}
+        component={renderTextarea}
       />
       <Field
         name="location"

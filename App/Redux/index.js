@@ -18,6 +18,9 @@ export const reducers = combineReducers({
   feed: require('./FeedRedux').reducer,
   store: require('./StoreRedux').reducer,
   favorite: require('./FavoriteRedux').reducer,
+  report: require('./ReportRedux').reducer,
+  geolocation: require('./GeoLocationRedux').reducer,
+  direction: require('./DirectionRedux').reducer,
   form: formReducer
 })
 

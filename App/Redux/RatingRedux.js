@@ -14,6 +14,8 @@ const { Types, Creators } = createActions({
   syncRating: ['serviceId'],
   syncSuccess: ['serviceRating', 'serviceId'],
   syncFailure: ['error'],
+
+  reset: null
 }, { prefix: 'Rating/' })
 
 export const RatingTypes = Types
@@ -23,7 +25,7 @@ export default Creators
 
 export const INITIAL_STATE = Immutable({
   // persist
-  ratings: [],
+  ratings: {},
 
   // temporarily
   modalVisible: false,
@@ -39,10 +41,10 @@ export const RatingSelectors = {
 /* ------------- Reducers ------------- */
 
 export const openModal = state =>
-  state.merge({ ...state, modalVisible: true })
+  state.merge({ modalVisible: true })
 
 export const closeModal = state =>
-  state.merge({ ...state, modalVisible: false })
+  state.merge({ modalVisible: false })
 
 // request the data from an api
 export const request = (state) =>
@@ -76,6 +78,9 @@ export const successFetch = (state, { ratings }) =>
 export const failure = state =>
   state.merge({ fetching: false, error: true, payload: null })
 
+export const reset = state =>
+  state.merge({ ratings: {} })
+
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
@@ -85,4 +90,5 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.SUBMIT]: request,
   [Types.SUBMIT_SUCCESS]: success,
   [Types.SUBMIT_FAILURE]: failure,
+  [Types.RESET]: reset,
 })

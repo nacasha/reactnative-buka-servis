@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, ScrollView, Image, Text, TouchableOpacity, ActivityIndicator } from 'react-native'
+import { View, ScrollView, Image, Text, TouchableOpacity } from 'react-native'
 import { connect } from 'react-redux'
 import HeaderBar from '../Components/HeaderBar'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
@@ -7,12 +7,15 @@ import RoundedButton from '../Components/RoundedButton'
 import Rating from 'react-native-rating'
 import Modal from 'react-native-modal'
 import RatingActions from '../Redux/RatingRedux'
-import _ from 'lodash'
+import ReportActions from '../Redux/ReportRedux'
+import R from 'ramda'
 
 // Styles
 import styles from './Styles/ServiceDetailScreenStyle'
 import { Colors, Images } from '../Themes';
 import { ConvertToPrice } from '../Transforms';
+import ReportForm from '../Components/Forms/ReportForm';
+import { Toast } from 'native-base';
 
 class ServiceDetailScreen extends Component {
   static navigationOptions = ({ navigation }) => ({
@@ -40,9 +43,10 @@ class ServiceDetailScreen extends Component {
 
     // Methods
     this.onStoreDetail = this.onStoreDetail.bind(this)
-    this.onReport = this.onReport.bind(this)
     this.openRatingModal = this.openRatingModal.bind(this)
+    this.openReportModal = this.openReportModal.bind(this)
     this.submitRating = this.submitRating.bind(this)
+    this.submitReport = this.submitReport.bind(this)
   }
 
   componentWillReceiveProps(nextProps) {
@@ -63,13 +67,6 @@ class ServiceDetailScreen extends Component {
     })
   }
 
-  onReport() {
-    this.props.navigation.navigate({
-      key: 'StoreDetailScreen',
-      routeName: 'StoreDetailScreen'
-    })
-  }
-
   openRatingModal() {
     if (this.props.user) {
       this.props.openRatingModal()
@@ -78,9 +75,36 @@ class ServiceDetailScreen extends Component {
     }
   }
 
+  openReportModal() {
+    if (this.props.user) {
+      this.props.openReportModal()
+    } else {
+      alert('Please Sign in to your account')
+    }
+  }
+
   submitRating() {
     this.props.submitRating(this.userRating, this.data.key)
     this.props.closeRatingModal()
+  }
+
+  submitReport = (values, dispatch) => {
+    // Required form input
+    const formInput = ['type', 'description']
+
+    // Get keys from submitted form (redux-form)
+    values.type = values.type || 'Fake Information'
+    const formKeys = R.keys(values)
+
+    // Check whether form is valid or not
+    const isFormValid = R.equals(R.intersection(formInput, formKeys), formInput)
+
+    if (isFormValid) {
+      this.props.submitReport(values, this.data.key)
+      this.props.closeReportModal()
+    } else {
+      alert('Fill the form')
+    }
   }
 
   renderRatingInfo() {
@@ -100,7 +124,12 @@ class ServiceDetailScreen extends Component {
           <Text>{this.ratingCount}</Text>
         </View>
         <TouchableOpacity onPress={this.openRatingModal}>
-          <Text style={styles.textButton}>GIVE RATING</Text>
+          <Text style={styles.textButton}>
+            { this.userRating
+              ? `CHANGE RATING (${this.userRating})`
+              : 'GIVE RATING'
+            }
+          </Text>
         </TouchableOpacity>
       </View>
     )
@@ -140,8 +169,9 @@ class ServiceDetailScreen extends Component {
           <View style={styles.footerItem}>
             <RoundedButton
               text="Report"
-              onPress={this.onReport}
+              onPress={this.openReportModal}
               background={Colors.red}
+              debounce
             />
           </View>
         :
@@ -150,12 +180,14 @@ class ServiceDetailScreen extends Component {
               <RoundedButton
                 text="Owner Info"
                 onPress={this.onStoreDetail}
+                debounce
               /></View>
             <View style={styles.footerItem}>
               <RoundedButton
                 text="Report"
-                onPress={this.onReport}
+                onPress={this.openReportModal}
                 background={Colors.red}
+                debounce
               />
             </View>
           </View>
@@ -164,7 +196,7 @@ class ServiceDetailScreen extends Component {
     )
   }
 
-  renderModal() {
+  renderRatingModal() {
     return (
       <Modal
         isVisible={this.props.ratingModalVisible}
@@ -181,6 +213,20 @@ class ServiceDetailScreen extends Component {
           <TouchableOpacity onPress={this.submitRating}>
             <Text style={styles.textButton}>DONE</Text>
           </TouchableOpacity>
+        </View>
+      </Modal>
+    )
+  }
+
+  renderReportModal() {
+    return (
+      <Modal
+        isVisible={this.props.reportModalVisible}
+        onBackButtonPress={this.props.closeReportModal}
+        useNativeDriver={true}
+      >
+        <View style={styles.reportModal}>
+          <ReportForm onSubmit={this.submitReport} />
         </View>
       </Modal>
     )
@@ -206,7 +252,8 @@ class ServiceDetailScreen extends Component {
         </ScrollView>
 
         {this.renderFooter()}
-        {this.renderModal()}
+        {this.renderRatingModal()}
+        {this.renderReportModal()}
       </View>
     )
   }
@@ -218,15 +265,19 @@ const mapStateToProps = (state) => {
     stores: state.store.stores,
     ratings: state.rating.ratings,
     ratingModalVisible: state.rating.modalVisible,
+    reportModalVisible: state.report.modalVisible,
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    syncRating: (id) => dispatch(RatingActions.syncRating(id)),
     openRatingModal: () => dispatch(RatingActions.openModal()),
     closeRatingModal: () => dispatch(RatingActions.closeModal()),
-    syncRating: (id) => dispatch(RatingActions.syncRating(id)),
-    submitRating: (r, id) => dispatch(RatingActions.submit(r, id))
+    submitRating: (r, id) => dispatch(RatingActions.submit(r, id)),
+    openReportModal: () => dispatch(ReportActions.openModal()),
+    closeReportModal: () => dispatch(ReportActions.closeModal()),
+    submitReport: (report, id) => dispatch(ReportActions.submit(report, id))
   }
 }
 

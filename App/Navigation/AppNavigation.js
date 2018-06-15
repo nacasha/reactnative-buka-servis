@@ -1,5 +1,6 @@
 import React from 'react'
 import { StackNavigator } from 'react-navigation'
+import StoreDirectionScreen from '../Containers/StoreDirectionScreen'
 
 // Home Screen
 import StoreDetailScreen from '../Containers/StoreDetailScreen'
@@ -28,6 +29,7 @@ import styles from './Styles/NavigationStyles'
 
 // Manifest of possible screens
 const PrimaryNav = StackNavigator({
+  StoreDirectionScreen: { screen: StoreDirectionScreen },
   // Main Screen
   TabViewScreen: { screen: TabViewScreen },
   StoreDetailScreen: { screen: StoreDetailScreen },
