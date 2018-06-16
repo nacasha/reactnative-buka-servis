@@ -21,6 +21,7 @@ import storeSagas from './StoreSagas'
 import reportSagas from './ReportSagas';
 import geoLocationSagas from './GeoLocationSagas';
 import directionSagas from './DirectionSagas';
+import messageSagas from './MessageSagas';
 
 /* ------------- API ------------- */
 
@@ -39,6 +40,7 @@ export default function * root () {
     fork(reportSagas),
     fork(geoLocationSagas),
     fork(directionSagas),
+    fork(messageSagas),
 
     // Authentication
     takeLatest(UserTypes.SIGNIN, signIn),

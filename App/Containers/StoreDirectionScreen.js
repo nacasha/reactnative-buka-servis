@@ -9,6 +9,7 @@ import R from 'ramda'
 import styles from './Styles/StoreDirectionScreenStyle'
 import { Images } from '../Themes';
 import HeaderBar from '../Components/HeaderBar'
+import { Toast } from 'native-base';
 
 class StoreDirectionScreen extends Component {
   static navigationOptions = ({ navigation }) => ({
@@ -20,11 +21,13 @@ class StoreDirectionScreen extends Component {
     const { storeId, storeLocation } = props.navigation.state.params
 
     if (props.userLatitude === 0) {
-      alert("Unable to determine user's location")
-    }
-
-    if (this.props.directions[storeId] === undefined) {
-      this.props.navigation.pop()
+      Toast.show({
+        text: 'Unable to get user location',
+        text: text,
+        type: 'danger',
+        buttonText: 'Close',
+        duration: 2500
+      })
     }
 
     this.storeId = storeId
@@ -34,10 +37,20 @@ class StoreDirectionScreen extends Component {
     this.fitToCoordinates = this.fitToCoordinates.bind(this)
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.directions[this.storeId] != undefined) {
+      this.mapView.fitToCoordinates(
+        R.values(nextProps.directions[this.storeId])
+      )
+    }
+  }
+
   fitToCoordinates() {
-    this.mapView.fitToCoordinates(
-      R.values(this.props.directions[this.storeId])
-    )
+    if (this.props.directions[this.storeId] != undefined) {
+      this.mapView.fitToCoordinates(
+        R.values(this.props.directions[this.storeId])
+      )
+    }
   }
 
   render () {
@@ -48,7 +61,7 @@ class StoreDirectionScreen extends Component {
         <MapView
           ref={e => this.mapView = e}
           style={styles.map}
-          onMapReady={this.fitToCoordinates}
+          onMapReady={() => this.fitToCoordinates()}
           initialRegion={{
             latitude: this.storeLocation._latitude,
             longitude: this.storeLocation._longitude,
@@ -59,8 +72,8 @@ class StoreDirectionScreen extends Component {
         >
           <MapView.Marker
             coordinate={{
-              latitude: this.props.userLatitude || coordinates[0].latitude,
-              longitude: this.props.userLongitude || coordinates[0].longitude
+              latitude: this.props.userLatitude,
+              longitude: this.props.userLongitude
             }}
             image={Images.mapMarkerUser}
           />

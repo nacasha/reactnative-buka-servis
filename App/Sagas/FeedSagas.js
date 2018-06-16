@@ -4,7 +4,7 @@ import StoreActions, { StoreSelectors } from '../Redux/StoreRedux'
 import FirestoreFlat from '../Transforms/FirestoreFlat';
 import { rsf, firestore } from '../Services/ReduxSagaFirebase'
 
-function* getStoreData(userID) {
+export function* getUserInfo(userID) {
   const user = yield call(
     rsf.firestore.getCollection,
     firestore.collection('users').doc(userID)
@@ -41,7 +41,7 @@ function* feedsRequest(action) {
       const storeInfo = yield select(StoreSelectors.getStore)
 
       if (storeInfo[userId] === undefined) {
-        const info = yield call(getStoreData, userId)
+        const info = yield call(getUserInfo, userId)
         yield put(StoreActions.storeSuccess({ info }, userId))
       }
 

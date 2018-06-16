@@ -1,11 +1,7 @@
-import { select, put, fork, call, takeLatest, all } from 'redux-saga/effects'
-import DirectionActions, { DirectionTypes } from '../Redux/DirectionRedux'
-import { UserSelectors } from '../Redux/UserRedux'
-import { rsf, firestore } from '../Services/ReduxSagaFirebase';
+import Polyline from '@mapbox/polyline';
+import { all, put, select, takeLatest } from 'redux-saga/effects';
+import DirectionActions, { DirectionTypes } from '../Redux/DirectionRedux';
 import { GeoLocationSelectors } from '../Redux/GeoLocationRedux';
-import { StoreSelectors } from '../Redux/StoreRedux';
-import Polyline from '@mapbox/polyline'
-import R from 'ramda'
 
 function* fetchDirection({ storeLocation, storeId }) {
   const GOOGLE_MAPS_APIKEY = 'AIzaSyB87wxGyZZtnFPqkUFSUrXtByjx3BgZgB8'

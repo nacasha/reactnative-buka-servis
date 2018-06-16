@@ -4,6 +4,7 @@ import UserActions from '../Redux/UserRedux'
 import ServiceActions from '../Redux/ServiceRedux'
 import FavoriteActions from '../Redux/FavoriteRedux'
 import RatingActions from '../Redux/RatingRedux'
+import MessageActions from '../Redux/MessageRedux'
 import { rsf, firestore } from '../Services/ReduxSagaFirebase'
 
 export function* signIn(action) {
@@ -45,6 +46,7 @@ export function* signOut() {
     yield put(FavoriteActions.reset())
     yield put(ServiceActions.reset())
     yield put(RatingActions.reset())
+    yield put(MessageActions.reset())
   }
   catch (error) {
     yield put(UserActions.userFailure())

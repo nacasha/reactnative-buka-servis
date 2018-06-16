@@ -4,50 +4,36 @@ import { connect } from 'react-redux'
 import { GiftedChat } from 'react-native-gifted-chat'
 import HeaderBar from '../Components/HeaderBar'
 // Add Actions - replace 'Your' with whatever your reducer is called :)
-// import YourActions from '../Redux/YourRedux'
+import MessageActions from '../Redux/MessageRedux'
 
 // Styles
 import styles from './Styles/MessageDetailScreenStyle'
 
 class MessageDetailScreen extends Component {
   static navigationOptions = ({ navigation }) => ({
-    header: <HeaderBar title="Izal Fathoni" back={() => navigation.pop()} />
+    header: <HeaderBar title={navigation.state.params.storeName} back={() => navigation.pop()} />
   })
-
-  state = {
-    messages: []
-  }
 
   constructor(props) {
     super(props)
 
-    this.state.messages = [
-      {
-        _id: 1,
-        text: 'Hello developer',
-        createdAt: new Date(),
-        user: {
-          _id: 2,
-          name: 'React Native',
-          avatar: 'https://placeimg.com/140/140/any',
-        },
-      },
-    ]
+    const { storeId, storeName } = props.navigation.state.params
+    this.storeId = storeId
+    this.storeName = storeName
   }
 
   onSend(messages = []) {
-    this.setState(previousState => ({
-      messages: GiftedChat.append(previousState.messages, messages),
-    }))
+    this.props.sendMessage(messages, this.storeId)
   }
 
   render () {
     return (
       <View style={styles.container}>
         <GiftedChat
-          messages={this.state.messages}
+          renderAvatar={null}
+          messages={this.props.messages[this.storeId]}
           onSend={messages => this.onSend(messages)}
-          user={{ _id: 1 }}
+          user={{ _id: this.props.user.uid }}
         />
       </View>
     )
@@ -56,11 +42,14 @@ class MessageDetailScreen extends Component {
 
 const mapStateToProps = (state) => {
   return {
+    user: state.user.data,
+    messages: state.message.messages
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    sendMessage: (data, id) => dispatch(MessageActions.sendMessage(data, id))
   }
 }
 

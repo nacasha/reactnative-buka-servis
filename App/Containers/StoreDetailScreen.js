@@ -55,7 +55,8 @@ class StoreDetailScreen extends React.PureComponent {
       key: 'MessageDetailScreen',
       routeName: 'MessageDetailScreen',
       params: {
-        storeId: this.storeId
+        storeId: this.storeId,
+        storeName: this.storeInfo.name
       }
     })
   }
