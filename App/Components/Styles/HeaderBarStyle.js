@@ -5,7 +5,6 @@ export default StyleSheet.create({
   container: {
     backgroundColor: '#2293F4',
     flexDirection: 'row',
-    elevation: 3
   },
   title: {
     color: '#FFF',

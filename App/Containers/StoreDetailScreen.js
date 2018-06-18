@@ -7,7 +7,9 @@ import RoundedButton from '../Components/RoundedButton';
 import ServiceCardSmall from '../Components/ServiceCardSmall';
 import FavoriteActions from '../Redux/FavoriteRedux';
 import StoreActions from '../Redux/StoreRedux';
-import { Colors } from '../Themes';
+import ModalActions from '../Redux/ModalRedux';
+import Modal from 'react-native-modal'
+import { Colors, Images } from '../Themes';
 import R from 'ramda'
 // Styles
 import styles from './Styles/StoreDetailScreenStyle';
@@ -51,14 +53,18 @@ class StoreDetailScreen extends React.PureComponent {
   }
 
   onMessage() {
-    this.props.navigation.navigate({
-      key: 'MessageDetailScreen',
-      routeName: 'MessageDetailScreen',
-      params: {
-        storeId: this.storeId,
-        storeName: this.storeInfo.name
-      }
-    })
+    if (this.props.loggedIn) {
+      this.props.navigation.navigate({
+        key: 'MessageDetailScreen',
+        routeName: 'MessageDetailScreen',
+        params: {
+          storeId: this.storeId,
+          storeName: this.storeInfo.name
+        }
+      })
+    } else {
+      alert('Please sign in to your account')
+    }
   }
 
   onDirection() {
@@ -80,10 +86,19 @@ class StoreDetailScreen extends React.PureComponent {
   * e.g.
     return <MyCustomCell title={item.title} description={item.description} />
   *************************************************************/
-  renderRow = ({item}) => {
+  renderRow = ({ item }) => {
     return (
       <View style={styles.item}>
         <ServiceCardSmall data={item} onPress={this.onServicePress(item)} />
+      </View>
+    )
+  }
+
+  renderContactRow({ item }) {
+    return (
+      <View style={styles.contactItem}>
+        <Image source={Images.social.line} style={styles.contactItemIcon} />
+        <Text>{item.title}</Text>
       </View>
     )
   }
@@ -117,7 +132,7 @@ class StoreDetailScreen extends React.PureComponent {
           </View>
         </View>
 
-        <TouchableNativeFeedback onPress={this.props.closeRatingModal}>
+        <TouchableNativeFeedback onPress={() => this.props.openModal('contact')}>
           <View>
             <View pointerEvents="none" style={styles.itemSection}>
               <Text style={{ flex: 1 }}>Contacts</Text>
@@ -184,6 +199,38 @@ class StoreDetailScreen extends React.PureComponent {
     )
   }
 
+  renderContactModal() {
+    return (
+      <Modal
+        isVisible={this.props.modalState.contact}
+        useNativeDriver={true}
+        onBackButtonPress={() => this.props.closeModal('contact')}
+      >
+        <View style={styles.contactModal}>
+          <FlatList
+            data={this.props.stores[this.storeId].services}
+            renderItem={this.renderContactRow}
+            keyExtractor={this.keyExtractor}
+            initialNumToRender={this.oneScreensWorth}
+            ListHeaderComponent={this.renderSeparator}
+            ListEmptyComponent={this.renderEmpty}
+            ItemSeparatorComponent={this.renderSeparator}
+            ListFooterComponent={this.renderSectionFooter}
+          />
+          <View style={styles.footer}>
+            <View style={styles.footerItem}>
+              <RoundedButton
+                text="Close"
+                onPress={() => this.props.closeModal('contact')}
+                background={Colors.lightBlue}
+              />
+            </View>
+          </View>
+        </View>
+      </Modal>
+    )
+  }
+
   render() {
     return (
       <View style={{ flex: 1 }}>
@@ -214,6 +261,7 @@ class StoreDetailScreen extends React.PureComponent {
           </ScrollView>
         </View>
         {this.renderFooter()}
+        {this.renderContactModal()}
       </View>
     )
   }
@@ -221,6 +269,7 @@ class StoreDetailScreen extends React.PureComponent {
 
 const mapStateToProps = (state) => {
   return {
+    modalState: state.modal,
     loggedIn: state.user.loggedIn,
     stores: state.store.stores,
     favorites: state.favorite.favorites
@@ -229,6 +278,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    openModal: (modal) => dispatch(ModalActions.openModal(modal)),
+    closeModal: (modal) => dispatch(ModalActions.closeModal(modal)),
     fetchStoreData: (id) => dispatch(StoreActions.fetchStoreData(id)),
     submitFavorite: (state, storeId) => dispatch(FavoriteActions.submit(state, storeId))
   }

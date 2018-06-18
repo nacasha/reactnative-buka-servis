@@ -21,8 +21,6 @@ class MessageScreen extends React.PureComponent {
     const info = { ...this.props.userInfo[item] }
     let lastMessage = []
 
-    console.log(this.props.messages[item])
-
     if (this.props.messages[item] == undefined) {
       lastMessage = { text: 'Loading' }
     } else if (this.props.messages[item].length == 0) {

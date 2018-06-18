@@ -32,7 +32,7 @@ class LoginScreen extends Component {
         })
       } else {
         Toast.show({
-          text: 'Welcome, Izal Fathoni',
+          text: 'Welcome, ' + nextProps.data.name,
           type: 'success',
           buttonText: 'Close',
           duration: 2500

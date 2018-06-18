@@ -1,10 +1,10 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { View, Text, TouchableOpacity } from 'react-native'
 import styles from './Styles/HeaderBarStyle'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 
-export default class HeaderBar extends Component {
+export default class HeaderBar extends PureComponent {
   // Prop type warnings
   static propTypes = {
     title: PropTypes.string.isRequired,

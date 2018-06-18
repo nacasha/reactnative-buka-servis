@@ -21,6 +21,7 @@ export const reducers = combineReducers({
   report: require('./ReportRedux').reducer,
   geolocation: require('./GeoLocationRedux').reducer,
   direction: require('./DirectionRedux').reducer,
+  modal: require('./ModalRedux').reducer,
   form: formReducer
 })
 

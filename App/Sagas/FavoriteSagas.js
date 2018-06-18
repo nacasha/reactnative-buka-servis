@@ -2,6 +2,7 @@ import { select, put, fork, call, takeLatest, all } from 'redux-saga/effects'
 import FavoriteActions, { FavoriteTypes } from '../Redux/FavoriteRedux'
 import { UserSelectors } from '../Redux/UserRedux'
 import { rsf, firestore } from '../Services/ReduxSagaFirebase';
+import { Toast } from 'native-base';
 
 function* syncFavorite() {
   const user = yield select(UserSelectors.getUser)
@@ -38,6 +39,11 @@ function* submitFavorite({ favoriteState, storeId }) {
     )
 
     yield put(FavoriteActions.submitSuccess(data))
+    Toast.show({
+      text: 'Successfully ' + (favoriteState ? 'Added' : 'Removed'),
+      type: 'success',
+      duration: 1000
+    })
   }
   catch (error) {
     yield put(FavoriteActions.submitFailure(error))

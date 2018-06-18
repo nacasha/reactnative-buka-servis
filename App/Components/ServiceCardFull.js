@@ -2,24 +2,26 @@ import React, { Component } from 'react'
 import { View, Text, TouchableNativeFeedback } from 'react-native'
 import styles from './Styles/ServiceCardFullStyle'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
-import _ from 'lodash'
+import R from 'ramda'
 import { MoneyFormat, RangeMoneyFormat, ConvertToPrice } from '../Transforms';
 
 
 export default class ServiceCardFull extends Component {
-  constructor(props) {
-    super(props)
+  shouldComponentUpdate(nextProps) {
+    if (this.props.data.title == nextProps.data.title) {
+      return false
+    }
 
-    this.onPress = _.debounce(this.props.onPress, 150)
+    return true
   }
 
   render () {
-    const { data } = this.props
+    const { data, onPress } = this.props
     const { title, user, rating } = data
     const price = ConvertToPrice(data)
 
     return (
-      <TouchableNativeFeedback onPress={this.onPress}>
+      <TouchableNativeFeedback onPress={onPress}>
         <View style={styles.container}>
           <Text style={styles.title}>{title}</Text>
           <View style={styles.price}>

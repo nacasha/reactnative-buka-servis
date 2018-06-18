@@ -1,3 +1,4 @@
+import React from 'react'
 import { Text, YellowBox } from 'react-native'
 import DebugConfig from './DebugConfig'
 import AppConfig from './AppConfig'
@@ -18,4 +19,7 @@ if (__DEV__) {
     'Warning: isMounted(...) is deprecated',
     'Module RCTImageLoader'
   ])
+
+  // const { whyDidYouUpdate } = require('why-did-you-update');
+  // whyDidYouUpdate(React);
 }

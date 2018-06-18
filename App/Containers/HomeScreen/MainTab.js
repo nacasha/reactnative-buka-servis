@@ -10,49 +10,6 @@ import ServiceCardFull from '../../Components/ServiceCardFull'
 import styles from './MainTabStyle'
 
 class MainTab extends React.PureComponent {
-  /* ***********************************************************
-  * STEP 1
-  * This is an array of objects with the properties you desire
-  * Usually this should come from Redux mapStateToProps
-  *************************************************************/
-  state = {
-    data: [
-      {
-        key: 'Rekomendasi',
-        data: [
-          {title: 'First Title', description: 'First Description'},
-          {title: 'Second Title', description: 'Second Description'},
-          {title: 'Third Title', description: 'Third Description'},
-          {title: 'Fourth Title', description: 'Fourth Description'},
-          {title: 'Tenth Title', description: 'Tenth Description'}
-        ]
-      }, {
-        key: 'Terdekat',
-        data: [
-          {title: 'Eleventh Title', description: 'Eleventh Description'},
-          {title: '12th Title', description: '12th Description'},
-          {title: '13th Title', description: '13th Description'},
-          {title: '14th Title', description: '14th Description'},
-          {title: 'BLACKJACK!', description: 'BLACKJACK! Description'}
-        ]
-      }
-    ]
-  }
-
-  /* ***********************************************************
-  * STEP 3
-  * `renderItem` function - How each cell should be rendered
-  * It's our best practice to place a single component here:
-  *
-  * e.g.
-  *   return <MyCustomCell title={item.title} description={item.description} />
-  *
-  * For sections with different cells (heterogeneous lists), you can do branch
-  * logic here based on section.key OR at the data level, you can provide
-  * `renderItem` functions in each section.
-  *
-  * Note: You can remove section/separator functions and jam them in here
-  *************************************************************/
   onPress = (data) => () => {
     this.props.navigation.navigate({
       key: 'ServiceDetailScreen',
@@ -76,12 +33,12 @@ class MainTab extends React.PureComponent {
 
   // Conditional branching for section headers, also see step 3
   renderSectionHeader ({section}) {
-      return (
-        <View style={styles.sectionHeader}>
-          <Icon name="star" size={15} style={styles.sectionIcon} />
-          <Text style={styles.sectionLabel}>{section.key}</Text>
-        </View>
-      )
+    return (
+      <View style={styles.sectionHeader}>
+        <Icon name="star" size={15} style={styles.sectionIcon} />
+        <Text style={styles.sectionLabel}>{section.key}</Text>
+      </View>
+    )
   }
 
   /* ***********************************************************

@@ -151,10 +151,10 @@ class AccountScreen extends React.PureComponent {
         <Text style={styles.accountUsername}>{this.props.userData.name}</Text>
         <View style={styles.accountStatus}>
           <Icon name="library-books" size={15} />
-          <Text style={styles.accountStatusText}>2</Text>
+          <Text style={styles.accountStatusText}>
+            {this.props.services.length}
+          </Text>
           <Icon name="heart" size={15} color={Colors.error} />
-          <Text style={styles.accountStatusText}>18</Text>
-          <Icon name="star" size={15} color={Colors.yellow} />
           <Text style={styles.accountStatusText}>18</Text>
         </View>
       </View>
@@ -194,6 +194,7 @@ class AccountScreen extends React.PureComponent {
         {this.props.loggedIn
           ?
           <SectionList
+            extraData={this.props}
             renderSectionHeader={this.renderSectionHeader}
             sections={this.state.data}
             contentContainerStyle={styles.listContent}
@@ -215,6 +216,7 @@ const mapStateToProps = (state) => {
   return {
     loggedIn: state.user.loggedIn,
     userData: state.user.data,
+    services: state.service.services
   }
 }
 

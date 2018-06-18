@@ -1,6 +1,6 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
-import { TouchableNativeFeedback, Text, ActivityIndicator, View } from 'react-native'
+import { TouchableOpacity, Text, ActivityIndicator, View } from 'react-native'
 import styles from './Styles/RoundedButtonStyles'
 import ExamplesRegistry from '../Services/ExamplesRegistry'
 import { Colors } from '../Themes';
@@ -19,7 +19,7 @@ ExamplesRegistry.addComponentExample('Rounded Button', () =>
   />
 )
 
-export default class RoundedButton extends Component {
+export default class RoundedButton extends PureComponent {
   static propTypes = {
     onPress: PropTypes.func,
     busy: PropTypes.bool,
@@ -51,16 +51,15 @@ export default class RoundedButton extends Component {
 
   render () {
     return (
-      <TouchableNativeFeedback
+      <TouchableOpacity
+        style={[styles.button, this.props.style, { backgroundColor: this.props.background }]}
         disabled={this.props.disabled}
-        onPress={this.props.debounce ? this.onPress : this.props.onPress}>
-        <View style={[styles.button, this.props.style, { backgroundColor: this.props.background }]}>
-          {this.props.busy
-            ? <ActivityIndicator size={25} color="#FFF" />
-            : <Text style={styles.buttonText}>{this.getText()}</Text>
-          }
-        </View>
-      </TouchableNativeFeedback>
+        onPress={this.props.onPress}>
+        {this.props.busy
+          ? <ActivityIndicator size={25} color="#FFF" />
+          : <Text style={styles.buttonText}>{this.getText()}</Text>
+        }
+      </TouchableOpacity>
     )
   }
 }

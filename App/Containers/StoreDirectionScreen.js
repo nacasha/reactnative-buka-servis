@@ -23,7 +23,6 @@ class StoreDirectionScreen extends Component {
     if (props.userLatitude === 0) {
       Toast.show({
         text: 'Unable to get user location',
-        text: text,
         type: 'danger',
         buttonText: 'Close',
         duration: 2500
@@ -68,7 +67,7 @@ class StoreDirectionScreen extends Component {
             latitudeDelta: 0.001,
             longitudeDelta: 0.001,
           }}
-          cacheEnabled
+          cacheEnabled={true}
         >
           <MapView.Marker
             coordinate={{

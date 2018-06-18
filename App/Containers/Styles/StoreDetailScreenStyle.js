@@ -59,5 +59,22 @@ export default StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: '#DDD',
     flexDirection: 'row'
+  },
+  contactModal: {
+    flex: 1,
+    backgroundColor: '#FFF',
+    borderRadius: Metrics.borderRadius,
+  },
+  contactItem: {
+    flexDirection: 'row',
+    marginHorizontal: Metrics.smallMargin,
+    backgroundColor: '#EEE',
+    borderRadius: Metrics.borderRadius,
+    padding: Metrics.smallMargin,
+    alignItems: 'center'
+  },
+  contactItemIcon: {
+    borderRadius: Metrics.borderRadius,
+    marginRight: Metrics.smallMargin
   }
 })
