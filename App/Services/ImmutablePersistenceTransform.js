@@ -23,6 +23,7 @@ const selectedPersist = [
   'ratings',
   'directions',
   'messages',
+  'messageDetail',
   'userList',
   'userInfo'
 ]

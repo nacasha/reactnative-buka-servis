@@ -48,7 +48,7 @@ class ServiceForm extends React.Component {
   componentWillMount() {
     const { data } = this.props
 
-    if (data !== {}) {
+    if (Object.keys(data).length > 0) {
       this.props.initialize({ ...data, category: { category: data.category }})
     }
   }

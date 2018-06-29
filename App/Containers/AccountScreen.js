@@ -9,23 +9,20 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 // Styles
 import styles from './Styles/AccountScreenStyle'
 import { Metrics, Colors } from '../Themes'
-import UserActions from '../Redux/UserRedux'
+import AuthActions from '../Redux/AuthRedux'
+import ContactActions from '../Redux/ContactRedux'
 import _ from 'lodash'
 
 class AccountScreen extends React.PureComponent {
-  /* ***********************************************************
-  * STEP 1
-  * This is an array of objects with the properties you desire
-  * Usually this should come from Redux mapStateToProps
-  *************************************************************/
   state = {
     data: [
       {
         key: 'Account',
         data: [
-          { icon: 'map-marker', title: 'Change Location', action: '' },
-          // { icon: 'email', title: 'Change Email', action: '' },
-          { icon: 'account-edit', title: 'Edit Profile', action: '' },
+          { icon: 'account-edit', title: 'Edit Profile', action: () => this.onPressProfile() },
+          {
+            icon: 'key', title: 'Change Password', action: () => this.onPressPassword() },
+          { icon: 'phone', title: 'Manage Contact', action: () => this.onPressContact() },
           { icon: 'logout', title: 'Logout', action: () => this.onPressLogout() },
         ]
       }, {
@@ -47,11 +44,41 @@ class AccountScreen extends React.PureComponent {
   constructor(props) {
     super(props)
 
+    this.onPressContact = _.debounce(this.onContact, 150)
+    this.onPressProfile = _.debounce(this.onProfile, 150)
+    this.onPressPassword = _.debounce(this.onPassword, 150)
     this.onPressList = _.debounce(this.onListService, 150)
     this.onPressAdd = _.debounce(this.onAddService, 150)
     this.onPressLogout = _.debounce(this.onLogout, 150)
     this.onPressAbout = _.debounce(this.onAbout, 150)
     this.onPressVersion = _.debounce(this.onVersion, 150)
+  }
+
+  onContact() {
+    this.props.navigation.navigate({
+      key: 'ListContactScreen',
+      routeName: 'ListContactScreen'
+    })
+  }
+
+  onProfile() {
+    const { name, gender, address, location } = this.props.userData
+
+    this.props.navigation.navigate({
+      key: 'EditProfileScreen',
+      routeName: 'EditProfileScreen',
+      params: { userData: { name, gender, address, location } }
+    })
+  }
+
+  onPassword() {
+    const { email: userEmail } = this.props.userData
+
+    this.props.navigation.navigate({
+      key: 'ChangePasswordScreen',
+      routeName: 'ChangePasswordScreen',
+      params: { userEmail }
+    })
   }
 
   onListService() {
@@ -145,18 +172,10 @@ class AccountScreen extends React.PureComponent {
   renderHeader = () =>
     <View style={[styles.item, { paddingHorizontal: Metrics.doubleBaseMargin }]}>
       <View style={styles.accountItemLeft}>
-        <Image source={{ uri: 'https://api.adorable.io/avatars/80/izal' }} style={styles.accountImage} />
+        <Image source={{ uri: 'https://api.adorable.io/avatars/80/' + this.props.userData.uid }} style={styles.accountImage} />
       </View>
-      <View style={styles.itemRight}>
+      <View style={styles.itemRightAccount}>
         <Text style={styles.accountUsername}>{this.props.userData.name}</Text>
-        <View style={styles.accountStatus}>
-          <Icon name="library-books" size={15} />
-          <Text style={styles.accountStatusText}>
-            {this.props.services.length}
-          </Text>
-          <Icon name="heart" size={15} color={Colors.error} />
-          <Text style={styles.accountStatusText}>18</Text>
-        </View>
       </View>
     </View>
 
@@ -222,7 +241,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    signout: () => dispatch(UserActions.signout())
+    signout: () => dispatch(AuthActions.signout()),
+    stopSync: () => dispatch(ContactActions.stopSync())
   }
 }
 

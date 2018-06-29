@@ -4,7 +4,7 @@ import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { connect } from 'react-redux';
 import LoginForm from '../../Components/Forms/LoginForm';
 import HeaderBar from '../../Components/HeaderBar';
-import UserActions from '../../Redux/UserRedux';
+import AuthActions from '../../Redux/AuthRedux';
 import styles from './Styles/LoginScreenStyle';
 import R from 'ramda'
 
@@ -93,15 +93,15 @@ class LoginScreen extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    fetching: state.user.fetching,
     data: state.user.data,
-    error: state.user.error,
+    fetching: state.auth.fetching,
+    error: state.auth.error,
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    signin: (e, p) => dispatch(UserActions.signin(e, p))
+    signin: (e, p) => dispatch(AuthActions.signin(e, p))
   }
 }
 

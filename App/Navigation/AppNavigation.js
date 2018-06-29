@@ -1,6 +1,9 @@
 import React from 'react'
 import { StackNavigator } from 'react-navigation'
-import StoreDirectionScreen from '../Containers/StoreDirectionScreen'
+
+// Contact Screen
+import FormContactScreen from '../Containers/ContactScreen/FormContactScreen'
+import ListContactScreen from '../Containers/ContactScreen/ListContactScreen'
 
 // Home Screen
 import StoreDetailScreen from '../Containers/StoreDetailScreen'
@@ -16,6 +19,8 @@ import AboutScreen from '../Containers/AccountScreen/AboutScreen'
 import ListServiceScreen from '../Containers/AccountScreen/ListServiceScreen'
 import FormServiceScreen from '../Containers/AccountScreen/FormServiceScreen'
 import EditServiceScreen from '../Containers/AccountScreen/EditServiceScreen'
+import EditProfileScreen from '../Containers/AccountScreen/EditProfileScreen'
+import ChangePasswordScreen from '../Containers/AccountScreen/ChangePasswordScreen'
 
 // Components
 import HeaderBar from '../Components/HeaderBar'
@@ -23,12 +28,17 @@ import HeaderBar from '../Components/HeaderBar'
 // Screens
 import TabViewScreen from '../Containers/TabViewScreen'
 import MessageDetailScreen from '../Containers/MessageDetailScreen'
+import StoreDirectionScreen from '../Containers/StoreDirectionScreen'
 
 // Styles
 import styles from './Styles/NavigationStyles'
 
 // Manifest of possible screens
 const PrimaryNav = StackNavigator({
+  ChangePasswordScreen: { screen: ChangePasswordScreen },
+  EditProfileScreen: { screen: EditProfileScreen },
+  FormContactScreen: { screen: FormContactScreen },
+  ListContactScreen: { screen: ListContactScreen },
   StoreDirectionScreen: { screen: StoreDirectionScreen },
   // Main Screen
   TabViewScreen: { screen: TabViewScreen },

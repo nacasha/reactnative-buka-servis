@@ -4,17 +4,12 @@ import Immutable from 'seamless-immutable'
 /* ------------- Types and Action Creators ------------- */
 
 const { Types, Creators } = createActions({
-  fetch: null,
   add: ['data'],
   update: ['data', 'serviceId'],
   delete: ['serviceId'],
 
-  fetchSuccess: ['services'],
-
   serviceSuccess: ['payload'],
   serviceFailure: ['error'],
-
-  reset: null
 }, { prefix: 'Service/' })
 
 export const ServiceTypes = Types
@@ -23,7 +18,6 @@ export default Creators
 /* ------------- Initial State ------------- */
 
 export const INITIAL_STATE = Immutable({
-  services: [],
   fetching: null,
   error: null
 })
@@ -57,8 +51,6 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.ADD]: request,
   [Types.UPDATE]: request,
   [Types.DELETE]: request,
-  [Types.FETCH_SUCCESS]: successFetch,
   [Types.SERVICE_SUCCESS]: success,
   [Types.SERVICE_FAILURE]: failure,
-  [Types.RESET]: reset,
 })

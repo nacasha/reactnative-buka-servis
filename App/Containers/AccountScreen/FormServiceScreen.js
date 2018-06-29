@@ -6,6 +6,7 @@ import HeaderBar from '../../Components/HeaderBar'
 import ServiceForm from '../../Components/Forms/ServiceForm'
 import R from 'ramda'
 import ServiceActions from '../../Redux/ServiceRedux'
+import ShowToast from '../../Services/ShowToast'
 
 // Styles
 import styles from './Styles/FormServiceScreenStyle'
@@ -18,19 +19,9 @@ class FormServiceScreen extends Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.fetching === false && this.props.navigation.isFocused()) {
       if (nextProps.error != null) {
-        Toast.show({
-          text: 'Something went wrong',
-          type: 'danger',
-          buttonText: 'Close',
-          duration: 2500
-        })
+        ShowToast('danger', 'Something went wrong')
       } else {
-        Toast.show({
-          text: 'Service successfully added',
-          type: 'success',
-          buttonText: 'Close',
-          duration: 2500
-        })
+        ShowToast('success', ' Service successfully added')
         this.props.navigation.pop()
       }
     }
@@ -54,12 +45,7 @@ class FormServiceScreen extends Component {
     if (isFormValid) {
       this.props.add({ ...values, category: values.category.category })
     } else {
-      Toast.show({
-        text: 'Fill the form',
-        type: 'warning',
-        buttonText: 'Close',
-        duration: 2500
-      })
+      ShowToast('warning', 'Fill the form')
     }
   }
 

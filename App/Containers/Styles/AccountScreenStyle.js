@@ -1,6 +1,5 @@
 import { StyleSheet } from 'react-native'
 import { ApplicationStyles, Metrics, Colors, Fonts } from '../../Themes'
-import { App } from 'react-native-firebase';
 
 export default StyleSheet.create({
   ...ApplicationStyles.listWithIcon,
@@ -31,18 +30,13 @@ export default StyleSheet.create({
     fontSize: Fonts.size.regular
   },
   accountImage: {
-    width: 60,
-    height: 60,
+    marginVertical: Metrics.smallMargin,
+    width: 50,
+    height: 50,
     borderRadius: 60
   },
-  accountStatus: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: 5
-  },
-  accountStatusText: {
-    marginLeft: 1,
-    marginRight: 5
+  itemRightAccount: {
+    justifyContent: 'center'
   },
   accountItemLeft: {
     ...ApplicationStyles.listWithIcon.itemLeft,

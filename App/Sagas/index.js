@@ -8,20 +8,26 @@ import DebugConfig from '../Config/DebugConfig'
 import { StartupTypes } from '../Redux/StartupRedux'
 import { UserTypes } from '../Redux/UserRedux'
 import { ServiceTypes } from '../Redux/ServiceRedux'
+import { ContactTypes } from '../Redux/ContactRedux';
+import { AuthTypes } from '../Redux/AuthRedux';
+import { FeedTypes } from '../Redux/FeedRedux';
+import { GeoLocationTypes } from '../Redux/GeoLocationRedux';
 
 /* ------------- Sagas ------------- */
 
 import { startup } from './StartupSagas'
-import { signIn, signOut, register } from './AuthSagas'
+import { signIn, signOut, register, resetPassword } from './AuthSagas'
 import { addService, deleteService, fetchService, updateService } from './ServiceSagas'
 import favoriteSagas from './FavoriteSagas'
-import feedSagas from './FeedSagas'
+import feedSagas, { feedsRequest } from './FeedSagas'
 import ratingSagas from './RatingSagas'
 import storeSagas from './StoreSagas'
 import reportSagas from './ReportSagas';
-import geoLocationSagas from './GeoLocationSagas';
+import geoLocationSagas, { syncGeolocation } from './GeoLocationSagas';
 import directionSagas from './DirectionSagas';
 import messageSagas from './MessageSagas';
+import { insertContact, updateContact, deleteContact } from './ContactSagas';
+import { syncUserData, fetchMessagesDetail, updateProfile, updatePassword } from './UserSagas';
 
 /* ------------- API ------------- */
 
@@ -33,25 +39,41 @@ const api = DebugConfig.useFixtures ? FixtureAPI : API.create()
 
 export default function * root () {
   yield all([
-    fork(feedSagas),
     fork(ratingSagas),
-    fork(storeSagas),
     fork(favoriteSagas),
     fork(reportSagas),
-    fork(geoLocationSagas),
     fork(directionSagas),
     fork(messageSagas),
+    // fork(contactSagas),
+    fork(storeSagas),
+
+    takeLatest(GeoLocationTypes.SYNC, syncGeolocation),
+
+    // Feeds
+    takeLatest(FeedTypes.FEED_REQUEST, feedsRequest),
 
     // Authentication
-    takeLatest(UserTypes.SIGNIN, signIn),
-    takeLatest(UserTypes.SIGNOUT, signOut),
-    takeLatest(UserTypes.REGISTER, register),
+    takeLatest(AuthTypes.SIGNIN, signIn),
+    takeLatest(AuthTypes.SIGNOUT, signOut),
+    takeLatest(AuthTypes.REGISTER, register),
+    takeLatest(AuthTypes.RESET_PASSWORD, resetPassword),
+
+    // User Actions
+    takeLatest(UserTypes.SYNC_USER_DATA, syncUserData),
+    takeLatest(UserTypes.SYNC_USER_MESSAGE_SUCCESS, fetchMessagesDetail),
+
+    takeLatest(UserTypes.UPDATE_PROFILE, updateProfile),
+    takeLatest(UserTypes.UPDATE_PASSWORD, updatePassword),
 
     // Services
     takeLatest(ServiceTypes.ADD, addService),
     takeLatest(ServiceTypes.UPDATE, updateService),
     takeLatest(ServiceTypes.DELETE, deleteService),
-    takeLatest(ServiceTypes.FETCH, fetchService),
+
+    // Contacts
+    takeLatest(ContactTypes.INSERT, insertContact),
+    takeLatest(ContactTypes.UPDATE, updateContact),
+    takeLatest(ContactTypes.DELETE, deleteContact),
 
     // Application startup
     takeLatest(StartupTypes.STARTUP, startup),

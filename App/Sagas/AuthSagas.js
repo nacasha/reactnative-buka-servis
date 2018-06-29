@@ -1,55 +1,32 @@
-import { put, call } from 'redux-saga/effects'
 import firebase from 'react-native-firebase'
-import UserActions from '../Redux/UserRedux'
-import ServiceActions from '../Redux/ServiceRedux'
-import FavoriteActions from '../Redux/FavoriteRedux'
-import RatingActions from '../Redux/RatingRedux'
-import MessageActions from '../Redux/MessageRedux'
-import { rsf, firestore } from '../Services/ReduxSagaFirebase'
+import { call, put } from 'redux-saga/effects'
+import AuthActions from '../Redux/AuthRedux'
+import { firestore, rsf } from '../Services/ReduxSagaFirebase'
 
 export function* signIn(action) {
   const { email, password } = action
   const signIn = firebase.auth().signInAndRetrieveDataWithEmailAndPassword
 
   try {
-    const data = yield call(
-      [firebase.auth(), signIn],
-      email,
-      password
-    )
+    const data = yield call([firebase.auth(), signIn], email, password)
 
-    if (data.user.emailVerified) {
-      const userData = yield call(
-        rsf.firestore.getCollection,
-        firestore.collection('users').doc(data.user.uid)
-      )
-
-      yield put(
-        UserActions.successSignin({
-          ...data.user._user,
-          ...userData.data()
-        })
-      )
-    } else {
-      yield put(UserActions.userFailure('Email not verified'))
+    if (!data.user.emailVerified) {
+      yield call(rsf.auth.signOut)
+      yield put(AuthActions.authFailure('Email not verified'))
     }
   }
   catch (error) {
-    yield put(UserActions.userFailure(error))
+    yield put(AuthActions.authFailure(error))
   }
 }
 
 export function* signOut() {
   try {
-    const data = yield call(rsf.auth.signOut);
-    yield put(UserActions.successSignout(data))
-    yield put(FavoriteActions.reset())
-    yield put(ServiceActions.reset())
-    yield put(RatingActions.reset())
-    yield put(MessageActions.reset())
+    yield call(rsf.auth.signOut)
+    yield put(AuthActions.successSignout())
   }
   catch (error) {
-    yield put(UserActions.userFailure())
+    yield put(AuthActions.authFailure())
   }
 }
 
@@ -74,14 +51,19 @@ export function* register(action) {
         name: data.name,
         gender: data.gender,
         address: data.address,
-        location: new firebase.firestore.GeoPoint(data.location.latitude, data.location.longitude)
+        location: data.location
       })
 
     yield state.response.user.sendEmailVerification()
 
-    yield put(UserActions.successRegister(state.response))
+    yield put(AuthActions.successRegister(state.response))
   } else {
-    yield put(UserActions.userFailure(state.response))
+    yield put(AuthActions.authFailure(state.response))
   }
 }
 
+export function* resetPassword(action) {
+  const { email } = action
+
+  yield firebase.auth().sendPasswordResetEmail(email)
+}

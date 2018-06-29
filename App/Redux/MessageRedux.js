@@ -10,7 +10,7 @@ const { Types, Creators } = createActions({
 
   storeUserInfo: ['info', 'user'],
 
-  sendMessage: ['data', 'storeId'],
+  sendMessage: ['data', 'messageId', 'storeId', 'storeName'],
 
   reset: null
 }, { prefix: 'Message/' })

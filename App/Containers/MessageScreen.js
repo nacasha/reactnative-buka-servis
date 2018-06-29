@@ -9,37 +9,26 @@ import styles from './Styles/MessageScreenStyle'
 import LoginRequired from '../Components/LoginRequired';
 
 class MessageScreen extends React.PureComponent {
-  openMessage = (storeId, storeName) => () => {
+  openMessage = (messageId, storeName, storeId) => () => {
     this.props.navigation.navigate({
       key: 'MessageDetailScreen',
       routeName: 'MessageDetailScreen',
-      params: { storeId, storeName }
+      params: { messageId, storeName, storeId }
     })
   }
 
   renderRow = ({item}) => {
-    const info = { ...this.props.userInfo[item] }
-    let lastMessage = []
-
-    if (this.props.messages[item] == undefined) {
-      lastMessage = { text: 'Loading' }
-    } else if (this.props.messages[item].length == 0) {
-      lastMessage = { text: 'Loading' }
-    } else {
-      lastMessage = this.props.messages[item][0]
-    }
-
     return (
       <TouchableNativeFeedback
         background={TouchableNativeFeedback.Ripple()}
-        onPress={this.openMessage(item, info.name)}>
+        onPress={this.openMessage(item.messageId, item.name, item.uid)}>
         <View style={styles.item}>
           <View style={styles.itemLeft} pointerEvents="none">
-            <Image source={{ uri: 'https://api.adorable.io/avatars/50/' + info.name }} style={styles.image} />
+            <Image source={{ uri: 'https://api.adorable.io/avatars/50/' + item.uid }} style={styles.image} />
           </View>
           <View style={styles.itemRight} pointerEvents="none">
-            <Text style={styles.username}>{info.name || 'Loading ...'}</Text>
-            <Text style={styles.message}>{lastMessage.text}</Text>
+            <Text style={styles.username}>{item.name}</Text>
+            <Text style={styles.message}>{item.last}</Text>
           </View>
         </View>
       </TouchableNativeFeedback>
@@ -54,7 +43,7 @@ class MessageScreen extends React.PureComponent {
   renderItemSeparator = () =>
     <View style={[styles.itemSeparator, { marginLeft: 80 }]} />
 
-  keyExtractor = (item, index) => item
+  keyExtractor = (item, index) => item.uid
 
   oneScreensWorth = 20
 
@@ -65,7 +54,7 @@ class MessageScreen extends React.PureComponent {
           ?
             <FlatList
               extraData={this.props}
-              data={this.props.userList ? this.props.userList : []}
+              data={this.props.messages}
               renderItem={this.renderRow}
               keyExtractor={this.keyExtractor}
               initialNumToRender={this.oneScreensWorth}
@@ -82,9 +71,10 @@ class MessageScreen extends React.PureComponent {
 const mapStateToProps = (state) => {
   return {
     loggedIn: state.user.loggedIn,
-    messages: state.message.messages,
-    userInfo: state.message.userInfo,
-    userList: state.message.userList,
+    messages: state.user.messages,
+    // messages: state.message.messages,
+    // userInfo: state.message.userInfo,
+    // userList: state.message.userList,
   }
 }
 

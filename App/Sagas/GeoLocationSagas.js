@@ -18,7 +18,7 @@ function watch() {
   })
 }
 
-function* syncGeolocation() {
+export function* syncGeolocation() {
   const data = yield call(watch)
   try {
     while (true) {

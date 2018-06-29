@@ -28,7 +28,7 @@ export function* getFeedRating(serviceId) {
   return { rating, ratingCount }
 }
 
-function* feedsRequest(action) {
+export function* feedsRequest(action) {
   try {
     const feedsDocument = yield call(
       rsf.firestore.getCollection,

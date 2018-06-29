@@ -17,13 +17,14 @@ class MessageDetailScreen extends Component {
   constructor(props) {
     super(props)
 
-    const { storeId, storeName } = props.navigation.state.params
-    this.storeId = storeId
+    const { messageId, storeName, storeId } = props.navigation.state.params
+    this.messageId = messageId
     this.storeName = storeName
+    this.storeId = storeId
   }
 
   onSend(messages = []) {
-    this.props.sendMessage(messages, this.storeId)
+    this.props.sendMessage(messages, this.messageId, this.storeId, this.storeName)
   }
 
   render () {
@@ -31,7 +32,7 @@ class MessageDetailScreen extends Component {
       <View style={styles.container}>
         <GiftedChat
           renderAvatar={null}
-          messages={this.props.messages[this.storeId]}
+          messages={this.props.messages}
           onSend={messages => this.onSend(messages)}
           user={{ _id: this.props.user.uid }}
         />
@@ -40,16 +41,18 @@ class MessageDetailScreen extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, props) => {
+  const { storeId } = props.navigation.state.params
+
   return {
     user: state.user.data,
-    messages: state.message.messages
+    messages: state.user.messageDetail[storeId]
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    sendMessage: (data, id) => dispatch(MessageActions.sendMessage(data, id))
+    sendMessage: (data, id, uid, name) => dispatch(MessageActions.sendMessage(data, id, uid, name))
   }
 }
 

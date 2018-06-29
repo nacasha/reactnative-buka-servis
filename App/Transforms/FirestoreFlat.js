@@ -1,7 +1,12 @@
-export default (data) => {
+export default (data, withKey = true) => {
   return data.docs.map(item => {
-    const key = item.id
 
-    return { key, ...item.data()}
+    if (withKey) {
+      const key = item.id
+
+      return { key, ...item.data() }
+    }
+
+    return item.data()
   })
 }

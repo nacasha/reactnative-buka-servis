@@ -272,7 +272,7 @@ const mapStateToProps = (state) => {
     modalState: state.modal,
     loggedIn: state.user.loggedIn,
     stores: state.store.stores,
-    favorites: state.favorite.favorites
+    favorites: state.user.favorites
   }
 }
 

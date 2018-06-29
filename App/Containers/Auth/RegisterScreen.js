@@ -10,7 +10,7 @@ import R from 'ramda'
 
 // Styles
 import styles from './Styles/RegisterScreenStyle'
-import UserActions from '../../Redux/UserRedux';
+import AuthActions from '../../Redux/AuthRedux';
 
 class RegisterScreen extends Component {
   static navigationOptions = ({ navigation }) => ({
@@ -79,14 +79,14 @@ class RegisterScreen extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    fetching: state.user.fetching,
-    error: state.user.error
+    fetching: state.auth.fetching,
+    error: state.auth.error
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    register: (e, p, d) => dispatch(UserActions.register(e, p, d))
+    register: (e, p, d) => dispatch(AuthActions.register(e, p, d))
   }
 }
 

@@ -1,28 +1,25 @@
 import React from 'react'
-import { View, Text, FlatList, TouchableNativeFeedback, TouchableOpacity } from 'react-native'
+import { View, Text, FlatList, TouchableNativeFeedback, Image } from 'react-native'
 import { connect } from 'react-redux'
 import HeaderBar from '../../Components/HeaderBar'
 import { SwipeRow } from 'native-base'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
-import { MoneyFormat, RangeMoneyFormat } from '../../Transforms'
+import styles from './Styles/ListContactScreenStyle'
+import { Images } from '../../Themes';
+import ContactActions from '../../Redux/ContactRedux'
 import _ from 'lodash'
-import ServiceActions from '../../Redux/ServiceRedux'
 
-// Styles
-import styles from './Styles/ListServiceScreenStyle'
-import { Metrics, Colors } from '../../Themes';
-
-class ListServiceScreen extends React.PureComponent {
+class ListContactScreen extends React.PureComponent {
   static navigationOptions = ({ navigation }) => ({
     header: <HeaderBar
-      title="List Service"
+      title="Manage Contact"
       back={() => navigation.pop()}
       right={[
         {
           icon: 'plus',
           action: () => navigation.navigate({
-            key: 'FormServiceScreen',
-            routeName: 'FormServiceScreen'
+            key: 'FormContactScreen',
+            routeName: 'FormContactScreen'
           })
         }
       ]}
@@ -35,21 +32,15 @@ class ListServiceScreen extends React.PureComponent {
     this.onPressDelayed = _.debounce(this.onPress, 150)
   }
 
-  onPress = (data) => {
+  onPress = (contactData) => {
     this.props.navigation.navigate({
-      key: 'EditServiceScreen',
-      routeName: 'EditServiceScreen',
-      params: { data }
+      key: 'FormContactScreen',
+      routeName: 'FormContactScreen',
+      params: { contactData }
     })
   }
 
   renderRow = ({ item }) => {
-    if (item.priceRange !== '') {
-      price = RangeMoneyFormat(item.price, item.priceRange)
-    } else {
-      price = MoneyFormat(item.price)
-    }
-
     return (
       <SwipeRow
         style={{ borderBottomWidth: 0, marginVertical: -10 }}
@@ -57,18 +48,16 @@ class ListServiceScreen extends React.PureComponent {
         rightOpenValue={-80}
         body={
           <TouchableNativeFeedback onPress={() => this.onPressDelayed(item)}>
-            <View style={{ width: '150%', padding: Metrics.baseMargin }}>
-              <Text pointerEvents="none" style={styles.serviceTitle}>{item.title}</Text>
-
-              <View pointerEvents="none" style={styles.price}>
-                <Icon name="cash-multiple" style={styles.priceIcon} />
-                <Text style={styles.priceText}>Rp. {price}</Text>
+            <View style={{ width: '150%' }}>
+              <View pointerEvents="none" style={styles.contactItem}>
+                <Image source={Images.social[item.type]} style={styles.contactItemIcon} />
+                <Text>{item.value}</Text>
               </View>
             </View>
           </TouchableNativeFeedback>
         }
         right={
-          <TouchableNativeFeedback onPress={() => this.props.deleteService(item.key)}>
+          <TouchableNativeFeedback onPress={() => this.props.delete(item.key)}>
             <View style={styles.action}>
               <Icon name="delete" color="#FFF" size={25} />
             </View>
@@ -80,7 +69,7 @@ class ListServiceScreen extends React.PureComponent {
 
   renderEmpty = () =>
     <View style={styles.emptySection}>
-      <Text style={styles.emptySectionText}>No services available</Text>
+      <Text style={styles.emptySectionText}>No contacts available</Text>
     </View>
 
   renderItemSeparator = () =>
@@ -94,7 +83,7 @@ class ListServiceScreen extends React.PureComponent {
     return (
       <View style={styles.container}>
         <FlatList
-          data={this.props.services}
+          data={this.props.contacts}
           renderItem={this.renderRow}
           keyExtractor={this.keyExtractor}
           initialNumToRender={this.oneScreensWorth}
@@ -109,14 +98,14 @@ class ListServiceScreen extends React.PureComponent {
 
 const mapStateToProps = (state) => {
   return {
-    services: state.user.services
+    contacts: state.user.contacts
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    deleteService: (id) => dispatch(ServiceActions.delete(id))
+    delete: (contactId) => dispatch(ContactActions.delete({ contactId }))
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ListServiceScreen)
+export default connect(mapStateToProps, mapDispatchToProps)(ListContactScreen)

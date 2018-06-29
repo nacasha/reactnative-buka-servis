@@ -5,19 +5,18 @@ import { find, propEq, clone } from 'ramda'
 /* ------------- Types and Action Creators ------------- */
 
 const { Types, Creators } = createActions({
-  // main action
-  signin: ['email', 'password'],
-  signout: ['payload'],
-  register: ['email', 'password', 'data'],
+  syncUserData: null,
+  syncUserDataSuccess: ['store', 'value'],
+  syncUserMessageSuccess: ['store', 'value'],
+  syncUserMessageDetails: ['messageId', 'messages'],
 
-  // hookup
-  userRequest: null,
-  userFailure: ['error'],
+  updateProfile: ['payload'],
+  updatePassword: ['payload'],
+  updateSuccess: ['newValues'],
+  updateFailure: ['error'],
 
-  // success request
-  successSignin: ['payload'],
-  successSignout: null,
-  successRegister: null
+  storeUserData: ['payload'],
+  resetUserData: null,
 }, { prefix: 'User/' })
 
 export const UserTypes = Types
@@ -27,6 +26,7 @@ export default Creators
 
 export const INITIAL_STATE = Immutable({
   loggedIn: false,
+  messageDetail: {},
   data: null,
   fetching: false,
   error: null
@@ -39,33 +39,36 @@ export const UserSelectors = {
   getEmail: state => state.user.data.email,
   getUserId: state => state.user.data.uid,
   getLoginStatus: state => state.user.loggedIn,
+  getMessages: state => state.user.messages,
+  getMessageDetail: state => state.user.messageDetail,
 }
 
 /* ------------- Reducers ------------- */
 
-export const request = (state) =>
-  state.merge({ ...state, fetching: true, error: null })
+export const syncSuccess = (state, { store, value }) =>
+  state.set(store, value)
 
-export const success_signin = (state, { payload }) =>
-  state.merge({ fetching: false, error: null, data: payload, loggedIn: true })
+export const syncMessageDetails = (state, { messageId, messages }) => {
+  return state.setIn(['messageDetail', messageId], messages)
+}
 
-export const success_register = state =>
-  state.merge({ fetching: false, error: null, data: false, loggedIn: false })
+export const updateSuccess = (state, { newValues }) => {
+  const data = { ...state.data, ...newValues }
+  return state.merge({ data })
+}
 
-export const success_signout = state =>
-  state.merge({ fetching: false, error: null, data: false, loggedIn: false })
+export const storeUserData = (state, { payload }) =>
+  state.merge({ loggedIn: true, data: payload })
 
-export const failure = (state, { error }) =>
-  state.merge({ fetching: false, error, data: null, loggedIn: false })
+export const resetUserData = () => INITIAL_STATE
 
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
-  [Types.SIGNIN]: request,
-  [Types.SIGNOUT]: request,
-  [Types.REGISTER]: request,
-  [Types.USER_FAILURE]: failure,
-  [Types.SUCCESS_SIGNIN]: success_signin,
-  [Types.SUCCESS_SIGNOUT]: success_signout,
-  [Types.SUCCESS_REGISTER]: success_register
+  [Types.SYNC_USER_DATA_SUCCESS]: syncSuccess,
+  [Types.SYNC_USER_MESSAGE_SUCCESS]: syncSuccess,
+  [Types.SYNC_USER_MESSAGE_DETAILS]: syncMessageDetails,
+  [Types.UPDATE_SUCCESS]: updateSuccess,
+  [Types.STORE_USER_DATA]: storeUserData,
+  [Types.RESET_USER_DATA]: resetUserData
 })
