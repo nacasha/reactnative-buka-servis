@@ -1,38 +1,26 @@
-import { put, call, take, takeLatest, all } from 'redux-saga/effects'
-import { eventChannel, END } from 'redux-saga'
-import GeoLocationActions, { GeoLocationTypes } from '../Redux/GeoLocationRedux'
+import { channel } from 'redux-saga';
+import { put, take } from 'redux-saga/effects';
+import GeoLocationActions from '../Redux/GeoLocationRedux';
 
-function watch() {
-  return eventChannel(emitter => {
-    navigator.geolocation.watchPosition(
-      ({ coords }) => emitter(coords),
-      (error) => emitter(error),
-      {
-        enableHighAccuracy: true,
-        timeout: 20000,
-        maximumAge: 1000
-      }
-    )
+export const locationChannel = channel()
 
-    return () => navigator.geolocation.clearWatch()
-  })
-}
-
-export function* syncGeolocation() {
-  const data = yield call(watch)
-  try {
-    while (true) {
-      const coords = yield take(data)
-
-      yield put(GeoLocationActions.syncSuccess(coords))
-    }
-  } finally {
-    console.log('sync stopped')
+export function* watchLocationChannel() {
+  while (true) {
+    const action = yield take(locationChannel)
+    yield put(action)
   }
 }
 
-export default function* geoLocationSagas() {
-  yield all([
-    takeLatest(GeoLocationTypes.SYNC, syncGeolocation),
-  ])
+export function* getCurrentPosition() {
+  yield put(GeoLocationActions.request())
+
+  navigator.geolocation.getCurrentPosition(
+    ({ coords }) => locationChannel.put(GeoLocationActions.success(coords)),
+    (error) => locationChannel.put(GeoLocationActions.failure(error)),
+    {
+      enableHighAccuracy: true,
+      timeout: 20000,
+      maximumAge: 1000
+    }
+  )
 }

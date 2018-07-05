@@ -11,9 +11,9 @@ import styles from './Styles/EditProfileScreenStyle'
 import ProfileForm from '../../Components/Forms/ProfileForm';
 
 class EditProfileScreen extends Component {
-  static navigationOptions = ({ navigation }) => ({
-    header: <HeaderBar title="Edit Profile" back={() => navigation.pop()} />
-  })
+  static navigationOptions = {
+    title: 'Edit Profile'
+  }
 
   constructor(props) {
     super(props)

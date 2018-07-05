@@ -46,10 +46,12 @@ const validate = values => {
 
 class ServiceForm extends React.Component {
   componentWillMount() {
-    const { data } = this.props
+    const { data, initialize } = this.props
+
+    initialize({ category: {} })
 
     if (Object.keys(data).length > 0) {
-      this.props.initialize({ ...data, category: { category: data.category }})
+      initialize({ ...data, category: { category: data.category }})
     }
   }
 

@@ -4,9 +4,13 @@ import Immutable from 'seamless-immutable'
 /* ------------- Types and Action Creators ------------- */
 
 const { Types, Creators } = createActions({
-  sync: null,
-  syncSuccess: ['coords'],
-  syncFailure: ['error'],
+  watchChannel: null,
+
+  getCurrentPosition: null,
+
+  request: null,
+  success: ['coords'],
+  failure: ['error']
 }, { prefix: 'GeoLocation/' })
 
 export const GeoLocationTypes = Types
@@ -15,32 +19,35 @@ export default Creators
 /* ------------- Initial State ------------- */
 
 export const INITIAL_STATE = Immutable({
-  latitude: 0,
-  longitude: 0,
-  error: null
+  coords: {
+    latitude: 0,
+    longitude: 0
+  },
+  error: null,
+  busy: false
 })
 
 /* ------------- Selectors ------------- */
 
 export const GeoLocationSelectors = {
-  getCoords: state => ({
-    latitude: state.geolocation.latitude,
-    longitude: state.geolocation.longitude,
-  })
+  getCoords: state => state.geolocation.coords
 }
 
 /* ------------- Reducers ------------- */
 
-export const success = (state, { coords }) => {
-  return state.merge({ error: null, ...coords })
-}
+export const request = state =>
+  state.merge({ busy: true, error: null })
+
+export const success = (state, { coords }) =>
+  state.merge({ busy: false, error: null, coords })
 
 export const failure = (state, { error }) =>
-  state.merge({ error })
+  state.merge({ busy: false, error: error.message })
 
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
-  [Types.SYNC_SUCCESS]: success,
-  [Types.SYNC_FAILURE]: failure
+  [Types.REQUEST]: request,
+  [Types.SUCCESS]: success,
+  [Types.FAILURE]: failure
 })

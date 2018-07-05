@@ -1,5 +1,6 @@
 const colors = {
   statusbar: '#1B7BCA',
+  headerbar: '#2293F4',
   lightBlue: '#81BDEE',
   darkBlue: '#1B7BCA',
   yellow: '#FBCE0E',

@@ -3,21 +3,16 @@ import { ScrollView, Text, KeyboardAvoidingView } from 'react-native'
 import { connect } from 'react-redux'
 // Add Actions - replace 'Your' with whatever your reducer is called :)
 // import YourActions from '../Redux/YourRedux'
-import HeaderBar from '../../Components/HeaderBar'
 
 // Styles
-import styles from './Styles/ForgotPasswordScreenStyle'
+import styles from './Styles/SearchFulltextScreenStyle'
 
-class ForgotPasswordScreen extends Component {
-  static navigationOptions = {
-    title: 'Forgot Password'
-  }
-
+class SearchFulltextScreen extends Component {
   render () {
     return (
       <ScrollView style={styles.container}>
         <KeyboardAvoidingView behavior='position'>
-          <Text>ForgotPasswordScreen</Text>
+          <Text>SearchFulltextScreen</Text>
         </KeyboardAvoidingView>
       </ScrollView>
     )
@@ -34,4 +29,4 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ForgotPasswordScreen)
+export default connect(mapStateToProps, mapDispatchToProps)(SearchFulltextScreen)

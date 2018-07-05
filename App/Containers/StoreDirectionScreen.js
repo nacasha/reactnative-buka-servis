@@ -1,32 +1,28 @@
-import React, { Component } from 'react'
-import { View, Text, KeyboardAvoidingView } from 'react-native'
-import { connect } from 'react-redux'
-import MapView from 'react-native-maps'
-import DirectionActions from '../Redux/DirectionRedux'
-import R from 'ramda'
-
-// Styles
-import styles from './Styles/StoreDirectionScreenStyle'
+import R from 'ramda';
+import React, { Component } from 'react';
+import { View } from 'react-native';
+import MapView from 'react-native-maps';
+import { connect } from 'react-redux';
+import DirectionActions from '../Redux/DirectionRedux';
+import GeoLocationAtions from '../Redux/GeoLocationRedux';
+import ShowToast from '../Services/ShowToast';
 import { Images } from '../Themes';
-import HeaderBar from '../Components/HeaderBar'
-import { Toast } from 'native-base';
+// Styles
+import styles from './Styles/StoreDirectionScreenStyle';
+
 
 class StoreDirectionScreen extends Component {
-  static navigationOptions = ({ navigation }) => ({
-    header: <HeaderBar title="Store Direction" back={() => navigation.pop()} />
-  })
+  static navigationOptions = {
+    title: 'Store Direction'
+  }
 
   constructor(props) {
     super(props)
     const { storeId, storeLocation } = props.navigation.state.params
 
     if (props.userLatitude === 0) {
-      Toast.show({
-        text: 'Unable to get user location',
-        type: 'danger',
-        buttonText: 'Close',
-        duration: 2500
-      })
+      ShowToast('danger', 'Unable to get user location', 5000)
+      this.props.getCurrentPosition()
     }
 
     this.storeId = storeId
@@ -62,8 +58,8 @@ class StoreDirectionScreen extends Component {
           style={styles.map}
           onMapReady={() => this.fitToCoordinates()}
           initialRegion={{
-            latitude: this.storeLocation._latitude,
-            longitude: this.storeLocation._longitude,
+            latitude: this.storeLocation.latitude,
+            longitude: this.storeLocation.longitude,
             latitudeDelta: 0.001,
             longitudeDelta: 0.001,
           }}
@@ -78,8 +74,8 @@ class StoreDirectionScreen extends Component {
           />
           <MapView.Marker
             coordinate={{
-              latitude: this.storeLocation._latitude,
-              longitude: this.storeLocation._longitude
+              latitude: this.storeLocation.latitude,
+              longitude: this.storeLocation.longitude
             }}
             image={Images.mapMarkerStore}
           />
@@ -98,13 +94,14 @@ const mapStateToProps = (state) => {
   return {
     stores: state.store.stores,
     directions: state.direction.directions,
-    userLatitude: state.geolocation.latitude,
-    userLongitude: state.geolocation.longitude
+    userLatitude: state.geolocation.coords.latitude,
+    userLongitude: state.geolocation.coords.longitude
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    getCurrentPosition: () => dispatch(GeoLocationAtions.getCurrentPosition()),
     fetchDirection: (loc, id) => dispatch(DirectionActions.fetch(loc, id))
   }
 }

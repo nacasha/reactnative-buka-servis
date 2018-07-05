@@ -80,6 +80,9 @@ const ApplicationStyles = {
       color: Colors.facebook,
       fontWeight: 'bold',
       padding: Metrics.smallMargin,
+    },
+    headerIcon: {
+      paddingHorizontal: Metrics.baseMargin
     }
   },
   listWithIcon: {

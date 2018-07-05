@@ -13,20 +13,21 @@ import styles from './Styles/ListServiceScreenStyle'
 import { Metrics, Colors } from '../../Themes';
 
 class ListServiceScreen extends React.PureComponent {
-  static navigationOptions = ({ navigation }) => ({
-    header: <HeaderBar
-      title="List Service"
-      back={() => navigation.pop()}
-      right={[
-        {
-          icon: 'plus',
-          action: () => navigation.navigate({
-            key: 'FormServiceScreen',
-            routeName: 'FormServiceScreen'
-          })
-        }
-      ]}
-    />
+  static navigationOptions = ({ navigation: { navigate }}) => ({
+    title: 'List Service',
+    headerRight: (
+      <TouchableOpacity onPress={() => navigate({
+        key: 'FormServiceScreen',
+        routeName: 'FormServiceScreen'
+      })}>
+        <Icon
+          name='plus'
+          size={27}
+          color={'#FFF'}
+          style={styles.headerIcon}
+        />
+      </TouchableOpacity>
+    )
   })
 
   constructor(props) {

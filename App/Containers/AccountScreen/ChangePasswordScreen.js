@@ -10,9 +10,9 @@ import styles from './Styles/ChangePasswordScreenStyle'
 import ShowToast from '../../Services/ShowToast';
 
 class ChangePasswordScreen extends Component {
-  static navigationOptions = ({ navigation }) => ({
-    header: <HeaderBar title="Change Password" back={() => navigation.pop()} />
-  })
+  static navigationOptions = {
+    title: 'Change Password'
+  }
 
   constructor(props) {
     super(props)

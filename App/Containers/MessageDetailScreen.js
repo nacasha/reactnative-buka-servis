@@ -11,7 +11,7 @@ import styles from './Styles/MessageDetailScreenStyle'
 
 class MessageDetailScreen extends Component {
   static navigationOptions = ({ navigation }) => ({
-    header: <HeaderBar title={navigation.state.params.storeName} back={() => navigation.pop()} />
+    title: navigation.state.params.storeName
   })
 
   constructor(props) {

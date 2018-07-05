@@ -10,9 +10,9 @@ import styles from './Styles/AboutScreenStyle'
 import { Images } from '../../Themes';
 
 class AboutScreen extends Component {
-  static navigationOptions = ({ navigation }) => ({
-    header: <HeaderBar title="About" back={() => navigation.pop()} />
-  })
+  static navigationOptions = {
+    title: 'About'
+  }
 
   render () {
     return (

@@ -9,6 +9,10 @@ import ListContactScreen from '../Containers/ContactScreen/ListContactScreen'
 import StoreDetailScreen from '../Containers/StoreDetailScreen'
 import ServiceDetailScreen from '../Containers/ServiceDetailScreen'
 
+// Search
+import SearchFulltextScreen from '../Containers/Search/SearchFulltextScreen'
+import SearchNearbyScreen from '../Containers/Search/SearchNearbyScreen'
+
 // Auth
 import LoginScreen from '../Containers/Auth/LoginScreen'
 import RegisterScreen from '../Containers/Auth/RegisterScreen'
@@ -35,11 +39,13 @@ import styles from './Styles/NavigationStyles'
 
 // Manifest of possible screens
 const PrimaryNav = StackNavigator({
-  ChangePasswordScreen: { screen: ChangePasswordScreen },
-  EditProfileScreen: { screen: EditProfileScreen },
+  SearchFulltextScreen: { screen: SearchFulltextScreen },
+  SearchNearbyScreen: { screen: SearchNearbyScreen },
+
+  StoreDirectionScreen: { screen: StoreDirectionScreen },
+
   FormContactScreen: { screen: FormContactScreen },
   ListContactScreen: { screen: ListContactScreen },
-  StoreDirectionScreen: { screen: StoreDirectionScreen },
   // Main Screen
   TabViewScreen: { screen: TabViewScreen },
   StoreDetailScreen: { screen: StoreDetailScreen },
@@ -56,13 +62,14 @@ const PrimaryNav = StackNavigator({
   ListServiceScreen: { screen: ListServiceScreen },
   FormServiceScreen: { screen: FormServiceScreen },
   EditServiceScreen: { screen: EditServiceScreen },
+  ChangePasswordScreen: { screen: ChangePasswordScreen },
+  EditProfileScreen: { screen: EditProfileScreen },
 }, {
   // Default config for all screens
   initialRouteName: 'TabViewScreen',
-  navigationOptions: (nav) => ({
-    header: () => <HeaderBar nav={nav} />,
-    headerStyle: styles.header
-  })
+  navigationOptions: {
+    ...styles
+  }
 })
 
 export default PrimaryNav

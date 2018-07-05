@@ -1,11 +1,8 @@
-import { select, put, call, take, all, takeLatest } from 'redux-saga/effects'
-import firebase from 'react-native-firebase'
-import ContactActions, { ContactTypes } from '../Redux/ContactRedux'
-import { UserSelectors, UserTypes } from '../Redux/UserRedux'
-import FirestoreFlat from '../Transforms/FirestoreFlat';
-import R from 'ramda'
-import { rsf, firestore } from '../Services/ReduxSagaFirebase';
-import { startSubmit, stopSubmit } from 'redux-form'
+import { startSubmit, stopSubmit } from 'redux-form';
+import { call, put, select } from 'redux-saga/effects';
+import ContactActions from '../Redux/ContactRedux';
+import { UserSelectors } from '../Redux/UserRedux';
+import { firestore, rsf } from '../Services/ReduxSagaFirebase';
 
 export function* insertContact({ payload }) {
   const { data, onSuccess } = payload

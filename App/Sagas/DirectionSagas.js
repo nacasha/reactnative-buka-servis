@@ -8,11 +8,10 @@ function* fetchDirection({ storeLocation, storeId }) {
   const userCoords = yield select(GeoLocationSelectors.getCoords)
 
   const origin = userCoords.latitude + ',' + userCoords.longitude
-  const destination = storeLocation._latitude + ',' + storeLocation._longitude
+  const destination = storeLocation.latitude + ',' + storeLocation.longitude
   const path = []
 
   try {
-    console.log('start direction')
     let resp = yield fetch(`https://maps.googleapis.com/maps/api/directions/json?origin=${origin}&destination=${destination}&key=${GOOGLE_MAPS_APIKEY}`)
     let respJson = yield resp.json();
     let points = Polyline.decode(respJson.routes[0].overview_polyline.points);

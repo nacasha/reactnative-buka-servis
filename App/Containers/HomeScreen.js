@@ -14,7 +14,6 @@ import styles from './Styles/HomeScreenStyle'
 import { Colors } from '../Themes';
 
 class HomeScreen extends Component {
-
   renderTabBar = () => (
     <DefaultTabBar
       textStyle={{ fontWeight: 'normal' }}

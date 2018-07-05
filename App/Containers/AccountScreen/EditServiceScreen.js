@@ -11,9 +11,9 @@ import ServiceActions from '../../Redux/ServiceRedux'
 import styles from './Styles/FormServiceScreenStyle'
 
 class EditServiceScreen extends Component {
-  static navigationOptions = ({ navigation }) => ({
-    header: <HeaderBar title="Edit Service" back={() => navigation.pop()} />
-  })
+  static navigationOptions = {
+    title: 'Edit Service'
+  }
 
   constructor(props) {
     super(props)

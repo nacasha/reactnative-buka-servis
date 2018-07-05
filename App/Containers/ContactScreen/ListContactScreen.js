@@ -10,20 +10,21 @@ import ContactActions from '../../Redux/ContactRedux'
 import _ from 'lodash'
 
 class ListContactScreen extends React.PureComponent {
-  static navigationOptions = ({ navigation }) => ({
-    header: <HeaderBar
-      title="Manage Contact"
-      back={() => navigation.pop()}
-      right={[
-        {
-          icon: 'plus',
-          action: () => navigation.navigate({
-            key: 'FormContactScreen',
-            routeName: 'FormContactScreen'
-          })
-        }
-      ]}
-    />
+  static navigationOptions = ({ navigation: { navigate } }) => ({
+    title: 'Manage Contact',
+    headerRight: (
+      <TouchableOpacity onPress={() => navigate({
+        key: 'FormContactScreen',
+        routeName: 'FormContactScreen'
+      })}>
+        <Icon
+          name='plus'
+          size={27}
+          color={'#FFF'}
+          style={styles.headerIcon}
+        />
+      </TouchableOpacity>
+    )
   })
 
   constructor(props) {

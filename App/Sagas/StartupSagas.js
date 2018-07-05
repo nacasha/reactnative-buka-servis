@@ -9,7 +9,6 @@ import MessageActions from '../Redux/MessageRedux';
 export function * startup (action) {
   yield put(UserActions.syncUserData())
   yield put(FeedActions.feedRequest())
-  yield put(GeoLocationActions.sync())
-  // yield put(FavoriteActions.sync())
-  // yield put(MessageActions.sync())
+  yield put(GeoLocationActions.watchChannel())
+  yield put(GeoLocationActions.getCurrentPosition())
 }

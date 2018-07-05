@@ -1,13 +1,11 @@
 import React from 'react'
 import { View, Text, FlatList, TouchableNativeFeedback, ActivityIndicator, Image } from 'react-native'
 import { connect } from 'react-redux'
-import MessageActions from '../Redux/MessageRedux'
-import R from 'ramda'
-
+import Moment from 'moment'
 // Styles
 import styles from './Styles/MessageScreenStyle'
 import LoginRequired from '../Components/LoginRequired';
-
+import SortMessages from '../Transforms/SortMessages'
 class MessageScreen extends React.PureComponent {
   openMessage = (messageId, storeName, storeId) => () => {
     this.props.navigation.navigate({
@@ -18,17 +16,31 @@ class MessageScreen extends React.PureComponent {
   }
 
   renderRow = ({item}) => {
+    const { uid, messageId, name, lastMessage, lastTimestamp } = item
+
+    let time = Moment(lastTimestamp).calendar(Moment(), {
+      sameDay: 'HH:mm',
+      lastDay: '[Yesterday]',
+      lastWeek: 'dddd',
+      sameElse: 'DD/MM/YYYY'
+    })
+
     return (
       <TouchableNativeFeedback
         background={TouchableNativeFeedback.Ripple()}
-        onPress={this.openMessage(item.messageId, item.name, item.uid)}>
+        onPress={this.openMessage(messageId, name, uid)}>
         <View style={styles.item}>
           <View style={styles.itemLeft} pointerEvents="none">
-            <Image source={{ uri: 'https://api.adorable.io/avatars/50/' + item.uid }} style={styles.image} />
+            <Image source={{ uri: 'https://api.adorable.io/avatars/50/' + uid }} style={styles.image} />
           </View>
           <View style={styles.itemRight} pointerEvents="none">
-            <Text style={styles.username}>{item.name}</Text>
-            <Text style={styles.message}>{item.last}</Text>
+            <View style={styles.itemInfo}>
+              <Text style={styles.username}>{name}</Text>
+              <Text style={styles.message}>{lastMessage}</Text>
+            </View>
+            <View style={styles.itemTime}>
+              <Text style={styles.textTime}>{time}</Text>
+            </View>
           </View>
         </View>
       </TouchableNativeFeedback>
@@ -54,7 +66,7 @@ class MessageScreen extends React.PureComponent {
           ?
             <FlatList
               extraData={this.props}
-              data={this.props.messages}
+              data={SortMessages(this.props.messages)}
               renderItem={this.renderRow}
               keyExtractor={this.keyExtractor}
               initialNumToRender={this.oneScreensWorth}
@@ -72,9 +84,6 @@ const mapStateToProps = (state) => {
   return {
     loggedIn: state.user.loggedIn,
     messages: state.user.messages,
-    // messages: state.message.messages,
-    // userInfo: state.message.userInfo,
-    // userList: state.message.userList,
   }
 }
 

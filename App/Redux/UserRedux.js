@@ -26,10 +26,14 @@ export default Creators
 
 export const INITIAL_STATE = Immutable({
   loggedIn: false,
-  messageDetail: {},
   data: null,
   fetching: false,
-  error: null
+  error: null,
+  messageDetail: {},
+  contacts: [],
+  messages: [],
+  favorites: {},
+  ratings: {},
 })
 
 /* ------------- Selectors ------------- */

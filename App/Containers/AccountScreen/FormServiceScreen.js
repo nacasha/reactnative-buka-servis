@@ -12,9 +12,9 @@ import ShowToast from '../../Services/ShowToast'
 import styles from './Styles/FormServiceScreenStyle'
 
 class FormServiceScreen extends Component {
-  static navigationOptions = ({ navigation }) => ({
-    header: <HeaderBar title="Add Service" back={() => navigation.pop()} />
-  })
+  static navigationOptions = {
+    title: 'Add Service'
+  }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.fetching === false && this.props.navigation.isFocused()) {

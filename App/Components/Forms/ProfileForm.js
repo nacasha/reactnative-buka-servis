@@ -3,6 +3,7 @@ import React from 'react';
 import { Field, reduxForm } from 'redux-form';
 import RoundedButton from '../RoundedButton';
 import { renderInput, renderPicker, renderTextarea, renderLocationPicker } from './_render';
+import LocationPicker from './Components/LocationPicker';
 
 class ProfileForm extends React.Component {
   componentWillMount() {
@@ -49,7 +50,7 @@ class ProfileForm extends React.Component {
         />
         <Field
           name="location"
-          component={renderLocationPicker}
+          component={LocationPicker}
         />
 
         <RoundedButton

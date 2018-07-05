@@ -23,11 +23,13 @@ import feedSagas, { feedsRequest } from './FeedSagas'
 import ratingSagas from './RatingSagas'
 import storeSagas from './StoreSagas'
 import reportSagas from './ReportSagas';
-import geoLocationSagas, { syncGeolocation } from './GeoLocationSagas';
+import { syncGeolocation, getCurrentPosition, watchLocationChannel } from './GeoLocationSagas';
 import directionSagas from './DirectionSagas';
 import messageSagas from './MessageSagas';
 import { insertContact, updateContact, deleteContact } from './ContactSagas';
 import { syncUserData, fetchMessagesDetail, updateProfile, updatePassword } from './UserSagas';
+import { SearchTypes } from '../Redux/SearchRedux';
+import { searchNearby, fetchStoreInfo } from './SearchSagas';
 
 /* ------------- API ------------- */
 
@@ -44,13 +46,17 @@ export default function * root () {
     fork(reportSagas),
     fork(directionSagas),
     fork(messageSagas),
-    // fork(contactSagas),
     fork(storeSagas),
 
-    takeLatest(GeoLocationTypes.SYNC, syncGeolocation),
+    takeLatest(GeoLocationTypes.WATCH_CHANNEL, watchLocationChannel),
+    takeLatest(GeoLocationTypes.GET_CURRENT_POSITION, getCurrentPosition),
 
     // Feeds
     takeLatest(FeedTypes.FEED_REQUEST, feedsRequest),
+
+    // Search
+    takeLatest(SearchTypes.NEARBY, searchNearby),
+    takeEvery(SearchTypes.NEARBY_SUCCESS, fetchStoreInfo),
 
     // Authentication
     takeLatest(AuthTypes.SIGNIN, signIn),

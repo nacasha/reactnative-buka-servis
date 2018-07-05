@@ -66,11 +66,6 @@ export const renderPicker = ({ input, label, type, items, meta: { touched, error
 }
 
 export const renderLocationPicker = ({ input, label, type, meta: { touched, error, warning } }) => {
-  var hasError = false
-  if (error !== undefined) {
-    hasError = true
-  }
-
   input.value = {
     open: input.value.open || false,
     latitude: input.value.latitude || 0,

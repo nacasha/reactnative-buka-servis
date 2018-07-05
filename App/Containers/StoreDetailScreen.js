@@ -1,28 +1,43 @@
 import React from 'react';
-import { ActivityIndicator, FlatList, Image, Text, TouchableNativeFeedback, ScrollView, View } from 'react-native';
+import { ActivityIndicator, FlatList, Image, ScrollView, Text, TouchableNativeFeedback, TouchableOpacity, View } from 'react-native';
+import Modal from 'react-native-modal';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { connect } from 'react-redux';
-import HeaderBar from '../Components/HeaderBar';
 import RoundedButton from '../Components/RoundedButton';
 import ServiceCardSmall from '../Components/ServiceCardSmall';
 import FavoriteActions from '../Redux/FavoriteRedux';
-import StoreActions from '../Redux/StoreRedux';
 import ModalActions from '../Redux/ModalRedux';
-import Modal from 'react-native-modal'
+import StoreActions from '../Redux/StoreRedux';
 import { Colors, Images } from '../Themes';
-import R from 'ramda'
 // Styles
 import styles from './Styles/StoreDetailScreenStyle';
 
-class StoreDetailScreen extends React.PureComponent {
-  static navigationOptions = {
-    header: null
+class StoreDetailScreen extends React.Component {
+  static navigationOptions = ({ navigation }) => {
+    const favorite = navigation.getParam('favorite')
+    const submitFavorite = navigation.getParam('submitFavorite')
+
+    return {
+      title: 'Store Detail',
+      headerRight: (
+        <TouchableOpacity onPress={submitFavorite}>
+          <Icon
+            name='heart'
+            size={27}
+            color={favorite ? 'red' : '#FFF'}
+            style={styles.headerIcon}
+          />
+        </TouchableOpacity>
+      )
+    }
   }
 
   constructor(props) {
     super(props)
 
+    const { navigation, favorites } = props
     const { data } = props.navigation.state.params
+
     this.storeId = data
     this.storeInfo = this.props.stores[data].info
 
@@ -33,6 +48,21 @@ class StoreDetailScreen extends React.PureComponent {
     this.onDirection = this.onDirection.bind(this)
     this.onServicePress = this.onServicePress.bind(this)
     this.submitFavorite = this.submitFavorite.bind(this)
+
+    navigation.setParams({
+      favorite: favorites[this.storeId],
+      submitFavorite: this.submitFavorite
+    })
+  }
+
+  shouldComponentUpdate({ navigation, favorites }) {
+    if (this.props.favorites != favorites) {
+      navigation.setParams({
+        favorite: favorites[this.storeId]
+      })
+    }
+
+    return true
   }
 
   submitFavorite() {
@@ -97,8 +127,8 @@ class StoreDetailScreen extends React.PureComponent {
   renderContactRow({ item }) {
     return (
       <View style={styles.contactItem}>
-        <Image source={Images.social.line} style={styles.contactItemIcon} />
-        <Text>{item.title}</Text>
+        <Image source={Images.social[item.type]} style={styles.contactItemIcon} />
+        <Text>{item.value}</Text>
       </View>
     )
   }
@@ -146,8 +176,8 @@ class StoreDetailScreen extends React.PureComponent {
 
   // Show this when data is empty
   renderEmpty = () =>
-    <View style={{ padding: 30 }}>
-      <ActivityIndicator size={30} />
+    <View style={styles.emptySection}>
+      <Text style={styles.emptySectionText}>Nothing to show yet</Text>
     </View>
 
   renderSeparator = () =>
@@ -160,6 +190,7 @@ class StoreDetailScreen extends React.PureComponent {
   // an identifiable key is important if you plan on
   // item reordering.  Otherwise index is fine
   keyExtractor = (item, index) => item.title
+  keyExtractorContact = (item, index) => item.key
 
   // How many items should be kept im memory as we scroll?
   oneScreensWorth = 20
@@ -208,9 +239,9 @@ class StoreDetailScreen extends React.PureComponent {
       >
         <View style={styles.contactModal}>
           <FlatList
-            data={this.props.stores[this.storeId].services}
+            data={this.props.stores[this.storeId].contacts}
             renderItem={this.renderContactRow}
-            keyExtractor={this.keyExtractor}
+            keyExtractor={this.keyExtractorContact}
             initialNumToRender={this.oneScreensWorth}
             ListHeaderComponent={this.renderSeparator}
             ListEmptyComponent={this.renderEmpty}
@@ -234,18 +265,6 @@ class StoreDetailScreen extends React.PureComponent {
   render() {
     return (
       <View style={{ flex: 1 }}>
-        <HeaderBar
-          title="Store Detail"
-          back={() => this.props.navigation.pop()}
-          right={[
-            {
-              color: this.props.favorites[this.storeId] ? 'red' : 'white',
-              icon: 'heart',
-              action: () => this.submitFavorite()
-            }
-          ]}
-        />
-
         <View style={{ flex: 1 }}>
           <ScrollView style={styles.container}>
             {this.renderHeader()}

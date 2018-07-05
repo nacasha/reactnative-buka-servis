@@ -3,7 +3,7 @@ import ReportActions, { ReportTypes } from '../Redux/ReportRedux'
 import { UserSelectors } from '../Redux/UserRedux'
 import { rsf  } from '../Services/ReduxSagaFirebase';
 
-export function* submitRating({ report, serviceId }) {
+export function* submitReport({ report, serviceId }) {
   const userId = yield select(UserSelectors.getUserId)
 
   try {
@@ -22,6 +22,6 @@ export function* submitRating({ report, serviceId }) {
 
 export default function* reportSagas() {
   yield all([
-    takeLatest(ReportTypes.SUBMIT, submitRating),
+    takeLatest(ReportTypes.SUBMIT, submitReport),
   ])
 }

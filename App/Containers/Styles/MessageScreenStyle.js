@@ -14,5 +14,20 @@ export default StyleSheet.create({
   },
   message: {
     fontSize: 13
+  },
+  itemRight: {
+    ...ApplicationStyles.listWithIcon.itemRight,
+    flexDirection: 'row'
+  },
+  itemInfo: {
+    flex: 1
+  },
+  itemTime: {
+    alignContent: 'flex-end',
+    alignItems: 'center',
+    marginRight: Metrics.baseMargin
+  },
+  textTime: {
+    fontSize: 12
   }
 })

@@ -4,47 +4,52 @@ import FirestoreFlat from '../Transforms/FirestoreFlat';
 import { rsf, firestore } from '../Services/ReduxSagaFirebase';
 import { getFeedRating } from './FeedSagas';
 
-// Get available services from selected store
-function* fetchStoreServices(storeId) {
-  const servicesData = yield call(
-    rsf.firestore.getCollection,
-    firestore.collection('services').where('user', '==', storeId)
-  )
+// -------------------------------------------------------------
+// -------------------------------------------------------------
+// Global Variables
 
-  const services = yield all(servicesData.docs.map(function* (item) {
-    // fetch rating data from firebase
-    const key = item.id
-    const rating = yield call(getFeedRating, key)
+let syncChannel = {}
 
-    return { ...item.data(), ...rating, key }
-  }))
+// -------------------------------------------------------------
+// -------------------------------------------------------------
 
-  return services
-}
+const fetchFavorites = (storeId) => fork(
+  rsf.firestore.syncCollection,
+  firestore.collection('favorites').where(storeId, '==', true),
+  {
+    transform: FirestoreFlat,
+    successActionCreator: favorites => (
+      StoreActions.storeSuccess({ favorites }, storeId)
+    )
+  }
+)
 
-// Get total favorites from selected store
-function* syncStoreFavorites(storeId) {
-  yield fork(
-    rsf.firestore.syncCollection,
-    firestore.collection('favorites').where(storeId, '==', true),
-    {
-      successActionCreator: snapshot => {
-        const favorites = FirestoreFlat(snapshot)
+const fetchServices = (storeId) => fork(
+  rsf.firestore.syncCollection,
+  firestore.collection('services').where('user', '==', storeId),
+  {
+    transform: FirestoreFlat,
+    successActionCreator: services => (
+      StoreActions.storeSuccess({ services }, storeId)
+    )
+  }
+)
 
-        return StoreActions.storeSuccess({ favorites }, storeId)
-      }
-    }
-  )
-}
+const fetchContacts = (storeId) => fork(
+  rsf.firestore.syncCollection,
+  firestore.collection('users').doc(storeId).collection('contacts'),
+  {
+    transform: FirestoreFlat,
+    successActionCreator: contacts => (
+      StoreActions.storeSuccess({ contacts }, storeId)
+    )
+  }
+)
 
-function* fetchStoreData(action) {
-  const { storeId } = action
-
-  const services = yield call(fetchStoreServices, storeId)
-  const data = { services }
-
-  yield put(StoreActions.storeSuccess(data, storeId))
-  yield syncStoreFavorites(storeId)
+function* fetchStoreData({ storeId }) {
+  syncChannel.favorites = yield fetchFavorites(storeId)
+  syncChannel.services = yield fetchServices(storeId)
+  syncChannel.contacts = yield fetchContacts(storeId)
 }
 
 export default function* storeSagas() {

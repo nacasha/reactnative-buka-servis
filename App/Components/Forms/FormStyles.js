@@ -55,5 +55,14 @@ export default StyleSheet.create({
   categoryText: {
     marginLeft: Metrics.smallMargin,
     color: '#777'
+  },
+  mapWarning: {
+    flex: 1,
+    alignContent: 'center',
+    justifyContent: 'center'
+  },
+  mapWarningText: {
+    textAlign: 'center',
+    fontSize: 16
   }
 })

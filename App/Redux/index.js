@@ -11,15 +11,15 @@ const resettable = resettableReducer('RESET')
 
 export const reducers = combineReducers({
   nav: require('./NavigationRedux').reducer,
-  message: require('./MessageRedux').reducer,
-  user: require('./UserRedux').reducer,
   auth: require('./AuthRedux').reducer,
+  user: require('./UserRedux').reducer,
+  message: require('./MessageRedux').reducer,
   service: require('./ServiceRedux').reducer,
   rating: resettable(require('./RatingRedux').reducer),
   feed: require('./FeedRedux').reducer,
+  search: require('./SearchRedux').reducer,
   store: require('./StoreRedux').reducer,
   favorite: require('./FavoriteRedux').reducer,
-  contact: require('./ContactRedux').reducer,
   report: require('./ReportRedux').reducer,
   geolocation: require('./GeoLocationRedux').reducer,
   direction: require('./DirectionRedux').reducer,

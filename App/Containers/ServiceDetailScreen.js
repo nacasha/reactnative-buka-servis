@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { View, ScrollView, Image, Text, TouchableOpacity } from 'react-native'
 import { connect } from 'react-redux'
-import HeaderBar from '../Components/HeaderBar'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import RoundedButton from '../Components/RoundedButton'
 import Rating from 'react-native-rating'
@@ -15,12 +14,11 @@ import styles from './Styles/ServiceDetailScreenStyle'
 import { Colors, Images } from '../Themes';
 import { ConvertToPrice } from '../Transforms';
 import ReportForm from '../Components/Forms/ReportForm';
-import { Toast } from 'native-base';
 
 class ServiceDetailScreen extends Component {
-  static navigationOptions = ({ navigation }) => ({
-    header: <HeaderBar title="Detail" back={() => navigation.pop()} />
-  })
+  static navigationOptions = {
+    title: 'Service Detail'
+  }
 
   constructor(props) {
     super(props)

@@ -27,7 +27,7 @@ const screens = {
 
 class TabViewScreen extends Component {
   static navigationOptions = {
-    header: <HeaderBar />
+    title: 'Buka Servis'
   }
 
   renderTabBar = () => <MainTabbar data={screens} />

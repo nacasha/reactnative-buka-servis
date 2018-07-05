@@ -58,14 +58,15 @@ const fetchMessages = (userId) => fork(
       let messages = []
 
       FirestoreFlat(snapshot).map(item => {
-        const messageId = item.key
+        const { key, lastMessage, lastTimestamp, ...users } = item
 
-        const receiver = R.omit([userId, 'key'], item)
+        const messageId = key
+
+        const receiver = R.omit([userId, 'key'], users)
         const uid = R.keys(receiver).toString()
         const name = R.values(receiver).toString()
-        const last = 'Hello'
 
-        messages.push({ messageId, uid, name, last })
+        messages.push({ messageId, uid, name, lastMessage, lastTimestamp })
       })
 
       return UserActions.syncUserMessageSuccess('messages', messages)
@@ -93,7 +94,7 @@ const fetchDetail = (messageId, uid) => fork(
 export function * fetchMessagesDetail() {
   const messages = yield select(UserSelectors.getMessages)
 
-  for (const { messageId, uid} of messages) {
+  for (const { messageId, uid } of messages) {
     messageChannel[messageId] = yield fetchDetail(messageId, uid)
   }
 }

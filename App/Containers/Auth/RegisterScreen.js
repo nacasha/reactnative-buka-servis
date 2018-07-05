@@ -13,9 +13,9 @@ import styles from './Styles/RegisterScreenStyle'
 import AuthActions from '../../Redux/AuthRedux';
 
 class RegisterScreen extends Component {
-  static navigationOptions = ({ navigation }) => ({
-    header: <HeaderBar title="Create an Account" back={() => navigation.pop()} />
-  })
+  static navigationOptions = {
+    title: 'Create an Account'
+  }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.fetching === false && this.props.navigation.isFocused()) {

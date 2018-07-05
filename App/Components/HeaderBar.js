@@ -5,21 +5,6 @@ import styles from './Styles/HeaderBarStyle'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 
 export default class HeaderBar extends PureComponent {
-  // Prop type warnings
-  static propTypes = {
-    title: PropTypes.string.isRequired,
-    back: PropTypes.func,
-  }
-
-  // Defaults for props
-  static defaultProps = {
-    title: 'Buka Servis'
-  }
-
-  constructor(props) {
-    super(props)
-  }
-
   backButtonHandler = () => {
     this.props.dispatch({ type: 'Navigation/BACK' })
   }
@@ -33,6 +18,8 @@ export default class HeaderBar extends PureComponent {
   }
 
   render () {
+    console.log(this.props)
+
     return (
       <View style={styles.container}>
         {this.props.back
@@ -45,7 +32,7 @@ export default class HeaderBar extends PureComponent {
           : <View />
         }
 
-        <Text style={styles.title}>{this.props.title}</Text>
+        <Text style={styles.title}>Buka</Text>
 
         {this.props.right
           ?

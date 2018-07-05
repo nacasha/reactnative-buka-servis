@@ -12,9 +12,9 @@ import ShowToast from '../../Services/ShowToast';
 import R from 'ramda'
 
 class FormContactScreen extends Component {
-  static navigationOptions = ({ navigation }) => ({
-    header: <HeaderBar title="Form Contact" back={() => navigation.pop()} />
-  })
+  static navigationOptions = {
+    title: 'Form Contact'
+  }
 
   constructor(props) {
     super(props)

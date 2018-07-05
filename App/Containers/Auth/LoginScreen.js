@@ -9,9 +9,9 @@ import styles from './Styles/LoginScreenStyle';
 import R from 'ramda'
 
 class LoginScreen extends Component {
-  static navigationOptions = ({ navigation }) => ({
-    header: <HeaderBar title="Login" back={() => navigation.pop()} />
-  })
+  static navigationOptions = {
+    title: 'Login'
+  }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.fetching === false && this.props.navigation.isFocused()) {

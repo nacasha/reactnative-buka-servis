@@ -3,6 +3,7 @@ import React from 'react';
 import { Field, reduxForm } from 'redux-form';
 import RoundedButton from '../RoundedButton';
 import { renderInput, renderLocationPicker, renderPicker, renderTextarea } from './_render';
+import LocationPicker from './Components/LocationPicker';
 
 const validate = values => {
   // store error state
@@ -96,7 +97,7 @@ const RegisterForm = props => {
       />
       <Field
         name="location"
-        component={renderLocationPicker}
+        component={LocationPicker}
       />
 
       <RoundedButton
