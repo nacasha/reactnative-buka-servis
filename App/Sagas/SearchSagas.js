@@ -1,6 +1,6 @@
 import { startSubmit, stopSubmit } from 'redux-form';
-import { call, put, select, take } from 'redux-saga/effects';
-import { eventChannel } from 'redux-saga';
+import { call, put, select, take, throttle } from 'redux-saga/effects';
+import { eventChannel, END } from 'redux-saga';
 import SearchActions, { SearchSelectors } from '../Redux/SearchRedux';
 import StoreActions from '../Redux/StoreRedux';
 import { UserSelectors } from '../Redux/UserRedux';
@@ -24,15 +24,19 @@ export function watchNearby(userLocation, radius) {
       emit({ key, location, distance })
     })
 
+    geoQuery.on('ready', () => {
+      emit(END)
+    })
+
     return () => geoQuery.cancel()
   })
 }
 
 export function* searchNearby() {
   const userLocation = yield select(GeoLocationSelectors.getCoords)
-  const radius = yield select(SearchSelectors.getRadius)
+  const distance = yield select(SearchSelectors.getDistance)
 
-  const channel = yield call(watchNearby, userLocation, radius)
+  const channel = yield call(watchNearby, userLocation, distance)
   try {
     while (true) {
       const store = yield take(channel)
@@ -40,25 +44,34 @@ export function* searchNearby() {
       yield put(SearchActions.nearbySuccess(store))
     }
   } finally {
-    console.log('Nearby End')
+    yield put(SearchActions.success())
   }
 }
 
 export function* fetchStoreInfo({ store }) {
+  const specialist = yield select(SearchSelectors.getSpecialist)
+  const category = yield select(SearchSelectors.getCategory)
+
   // Check if nearby stores have a service available
-  const services = yield call(
-    rsf.firestore.getCollection,
-    firestore.collection('services').where('user', '==', store.key)
-  )
+  let services = null
+  if (specialist == 'all') {
+    services = yield call(
+      rsf.firestore.getCollection,
+      firestore.collection('services')
+        .where('user', '==', store.key)
+        .where('category', '==', category)
+    )
+  } else {
+  services = yield call(
+      rsf.firestore.getCollection,
+      firestore.collection('services')
+        .where('user', '==', store.key)
+        .where('specialist', '==', specialist)
+    )
+  }
 
   if (services.empty == false) {
-    const storeInfo = yield call(
-      rsf.firestore.getCollection,
-      firestore.collection('users').doc(store.key)
-    )
-    const info = storeInfo._data
-
-    yield put(SearchActions.nearbyFilter(store))
-    yield put(StoreActions.storeSuccess({ info }, store.key))
+    yield put(SearchActions.addToResult(store))
+    yield put(StoreActions.fetchStoreData(store.key))
   }
 }

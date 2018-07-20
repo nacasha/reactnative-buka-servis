@@ -4,6 +4,7 @@ import styles from './Styles/ServiceCardFullStyle'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import R from 'ramda'
 import { MoneyFormat, RangeMoneyFormat, ConvertToPrice } from '../Transforms';
+import { Colors } from '../Themes';
 
 
 export default class ServiceCardFull extends Component {
@@ -36,7 +37,7 @@ export default class ServiceCardFull extends Component {
             </View>
             <View style={styles.rating}>
               <Text>{Number(rating || 0).toFixed(1)}</Text>
-              <Icon name="star" style={styles.ratingIcon} />
+              <Icon name="star" color={Colors.gold} style={styles.ratingIcon} />
             </View>
           </View>
         </View>

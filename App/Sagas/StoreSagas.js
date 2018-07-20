@@ -46,14 +46,8 @@ const fetchContacts = (storeId) => fork(
   }
 )
 
-function* fetchStoreData({ storeId }) {
+export function* fetchStoreData({ storeId }) {
   syncChannel.favorites = yield fetchFavorites(storeId)
   syncChannel.services = yield fetchServices(storeId)
   syncChannel.contacts = yield fetchContacts(storeId)
-}
-
-export default function* storeSagas() {
-  yield all([
-    takeLatest(StoreTypes.FETCH_STORE_DATA, fetchStoreData),
-  ])
 }

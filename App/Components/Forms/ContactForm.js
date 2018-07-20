@@ -2,7 +2,7 @@ import { Content } from 'native-base';
 import React from 'react';
 import { Field, reduxForm } from 'redux-form';
 import RoundedButton from '../RoundedButton';
-import { renderInput, renderPicker } from './_render';
+import { Dropdown, TextInput } from './Components'
 
 class ContactForm extends React.Component {
   componentWillMount() {
@@ -35,7 +35,7 @@ class ContactForm extends React.Component {
             { label: 'Twitter', value: 'twitter' },
             { label: 'Path', value: 'path' }
           ]}
-          component={renderPicker}
+          component={Dropdown}
         />
         <Field
           label="Contact"
@@ -43,7 +43,7 @@ class ContactForm extends React.Component {
           options={{
             autoCorrect: false,
           }}
-          component={renderInput}
+          component={TextInput}
         />
 
         <RoundedButton

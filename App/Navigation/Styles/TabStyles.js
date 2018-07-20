@@ -3,7 +3,7 @@ import { Colors } from '../../Themes/'
 
 export default StyleSheet.create({
   style: {
-    elevation: 0,
+    elevation: 4,
     backgroundColor: '#FFF',
   },
   indicatorStyle: {

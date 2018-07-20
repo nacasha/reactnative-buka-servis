@@ -1,114 +1,146 @@
 [
   {
-    "key": "Home",
+    "key": "home",
+    "color": "#9ED220",
+    "title": "Home",
     "data": [
       {
+        "key": "construction",
         "icon": "home-variant",
         "title": "Construction"
       },
       {
+        "key": "water",
         "icon": "water",
         "title": "Water Pump"
       },
       {
+        "key": "electric",
         "icon": "flash",
         "title": "Electric"
       }
     ]
   },
   {
-    "key": "Home Electronic",
+    "key": "electronic",
+    "color": "#FA7556",
+    "title": "Electronics",
     "data": [
       {
+        "key": "washing-machine",
         "icon": "washing-machine",
         "title": "Washing Machine"
       },
       {
+        "key": "television",
         "icon": "television",
         "title": "Television"
       },
       {
+        "key": "radio",
         "icon": "radio",
         "title": "Radio"
       },
       {
+        "key": "air-conditioner",
         "icon": "air-conditioner",
         "title": "Air Conditioner"
       },
       {
+        "key": "amplifier",
         "icon": "amplifier",
         "title": "Amplifier"
       },
       {
+        "key": "camcorder",
         "icon": "camcorder",
         "title": "Camera"
       }
     ]
   },
   {
-    "key": "Computer Electronic",
+    "key": "computer",
+    "color": "#6EBBFF",
+    "title": "Computers",
     "data": [
       {
+        "key": "laptop",
         "icon": "laptop",
         "title": "Laptop"
       },
       {
+        "key": "monitor",
         "icon": "monitor",
         "title": "Monitor"
       },
       {
+        "key": "cpu",
         "icon": "desktop-tower",
         "title": "CPU"
       },
       {
+        "key": "printer",
         "icon": "printer",
         "title": "Printer"
       },
       {
+        "key": "projector",
         "icon": "projector",
         "title": "Projector"
       },
       {
+        "key": "other",
         "icon": "more",
         "title": "Others"
       }
     ]
   },
   {
-    "key": "Handphone",
+    "key": "smartphone",
+    "color": "#5D71FF",
+    "title": "Handphones",
     "data": [
       {
+        "key": "android",
         "icon": "android",
         "title": "Android"
       },
       {
+        "key": "iphone",
         "icon": "apple-ios",
         "title": "IPhone"
       },
       {
+        "key": "blackberry",
         "icon": "blackberry",
         "title": "Blackberry"
       },
       {
+        "key": "windows-phone",
         "icon": "windows",
         "title": "Windows Phone"
       }
     ]
   },
   {
-    "key": "Vehicle",
+    "key": "vehicle",
+    "color": "#2E3043",
+    "title": "Vehicles",
     "data": [
       {
+        "key": "car",
         "icon": "car-side",
         "title": "Car"
       },
       {
+        "key": "motorbike",
         "icon": "motorbike",
         "title": "Motor Bike"
       },
       {
+        "key": "bike",
         "icon": "bike",
-        "title": "bike"
+        "title": "Bike"
       }
     ]
   }

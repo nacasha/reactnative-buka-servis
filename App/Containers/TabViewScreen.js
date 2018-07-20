@@ -1,9 +1,8 @@
 import React, { Component } from 'react'
-import { View, ScrollView, Text, KeyboardAvoidingView, Dimensions } from 'react-native'
-import ScrollableTabView, { ScrollableTabBar } from 'react-native-scrollable-tab-view';
+import { TouchableOpacity, View, ScrollView, Text, KeyboardAvoidingView, Dimensions } from 'react-native'
+import ScrollableTabView from 'react-native-scrollable-tab-view';
 import { connect } from 'react-redux'
-// Add Actions - replace 'Your' with whatever your reducer is called :)
-// import YourActions from '../Redux/YourRedux'
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 
 // Styles
 import styles from './Styles/TabViewScreenStyle'
@@ -15,7 +14,6 @@ import HelpScreen from './HelpScreen'
 import AccountScreen from './AccountScreen'
 
 // Component
-import HeaderBar from '../Components/HeaderBar'
 import MainTabbar from '../Components/MainTabbar'
 
 const screens = {
@@ -26,11 +24,29 @@ const screens = {
 }
 
 class TabViewScreen extends Component {
-  static navigationOptions = {
-    title: 'Buka Servis'
-  }
+  static navigationOptions = ({ navigation: { navigate } }) => ({
+    title: 'Buka Servis',
+    // headerRight: (
+    //   <TouchableOpacity onPress={() => navigate({
+    //     key: 'FormContactScreen',
+    //     routeName: 'FormContactScreen'
+    //   })}>
+    //     <Icon
+    //       name='heart-box'
+    //       size={27}
+    //       color={'#FFF'}
+    //       style={styles.headerIcon}
+    //     />
+    //   </TouchableOpacity>
+    // )
+  })
 
-  renderTabBar = () => <MainTabbar data={screens} />
+  renderTabBar = () => (
+    <MainTabbar
+      data={screens}
+      underlineStyle={{ height: 2, backgroundColor: 'red' }}
+    />
+  )
 
   render () {
     return (

@@ -5,7 +5,7 @@ import { MessageTypes } from '../Redux/MessageRedux';
 import { UserSelectors } from '../Redux/UserRedux';
 import { rsf } from '../Services/ReduxSagaFirebase';
 
-function* sendMessage({ data, messageId, storeId, storeName }) {
+export function* sendMessage({ data, messageId, storeId, storeName }) {
   const userData = yield select(UserSelectors.getUser)
   const allMessages = yield select(UserSelectors.getMessages)
 
@@ -38,10 +38,4 @@ function* sendMessage({ data, messageId, storeId, storeName }) {
       { ...message, createdAt: firebase.firestore.FieldValue.serverTimestamp() },
       { merge: true }
     )
-}
-
-export default function* messageSagas() {
-  yield all([
-    takeLatest(MessageTypes.SEND_MESSAGE, sendMessage),
-  ])
 }

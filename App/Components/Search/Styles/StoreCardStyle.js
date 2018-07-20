@@ -7,62 +7,72 @@ export default StyleSheet.create({
   },
   card: {
     borderRadius: Metrics.borderRadius,
-    overflow: 'hidden',
     height: 115,
     backgroundColor: '#FFF',
-    elevation: 3
-  },
-  cardHeader: {
+    elevation: 4,
     padding: 15,
-    justifyContent: 'center',
-    alignItems: 'center',
-    flexDirection: 'row',
-    backgroundColor: Colors.headerbar
-  },
-  cardFooter: {
-    padding: 15,
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center'
+    marginHorizontal: 10,
+    marginTop: 25
   },
   cardButton: {
-    padding: 10,
+    flexDirection: 'row',
+    marginHorizontal: 20,
+    right: 0,
+    height: 50,
+    elevation: 5,
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'absolute'
   },
-  cardButtonText: {
-    color: Colors.darkBlue,
-    fontSize: 15,
-    textAlign: 'center',
-    fontWeight: 'bold'
+  cardButtonItem: {
+    padding: 7,
+    marginLeft: 10,
+    backgroundColor: 'white',
+    borderRadius: 50,
+    elevation: 5,
   },
-  storeInfo: {
-    flex: 1,
-    marginHorizontal: 10
+  cardHeader: {
+    flexDirection: 'row',
+  },
+  cardFooter: {
+    marginTop: Metrics.smallMargin,
+    flexDirection: 'row',
   },
   storeName: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: '#FFF',
+    color: '#333'
   },
-  storeImage: {
-    width: 35,
-    height: 35,
-    borderRadius: 35,
-    borderWidth: 1,
-    padding: 3,
-    borderColor: '#FFF'
-  },
-  storeDistance: {
+  storeAddress: {
     fontSize: 13,
-    color: '#EEE'
+    color: '#777'
   },
-  overlay: {
-    width: Metrics.screenWidth - 45,
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: 150,
-    position: 'absolute',
-    flex: 1,
-    zIndex: 10,
-    backgroundColor: 'rgba(0,0,0,0.5)'
+  footerItem: {
+    flex: 1
+  },
+  footerItemTitle: {
+    fontSize: 12,
+    color: '#777'
+  },
+  footerItemText: {
+    fontSize: 16,
+    fontWeight: 'bold'
+  },
+  smallText: {
+    fontSize: 13,
+    fontWeight: 'normal',
+    color: '#777'
+  },
+  iconFavorite: {
+    paddingLeft: 3,
+    fontSize: 13,
+    fontWeight: 'normal',
+    color: 'red'
+  },
+  iconService: {
+    paddingLeft: 3,
+    fontSize: 13,
+    fontWeight: 'normal',
+    color: Colors.darkBlue
   }
 })

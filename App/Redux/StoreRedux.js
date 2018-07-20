@@ -4,6 +4,12 @@ import Immutable from 'seamless-immutable'
 /* ------------- Types and Action Creators ------------- */
 
 const { Types, Creators } = createActions({
+  addToStore: ['data', 'storeId'],
+
+  updateFavorites: ['payload'],
+  updateContacts: ['payload'],
+  updateServices: ['payload'],
+
   fetchStoreData: ['storeId'],
 
   storeSuccess: ['data', 'storeId'],

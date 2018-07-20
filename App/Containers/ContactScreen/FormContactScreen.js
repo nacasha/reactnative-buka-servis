@@ -1,15 +1,18 @@
+// Modules import
 import React, { Component } from 'react'
-import { View, ScrollView, Text, KeyboardAvoidingView } from 'react-native'
+import { View, ScrollView } from 'react-native'
 import { connect } from 'react-redux'
-import HeaderBar from '../../Components/HeaderBar'
-// Add Actions - replace 'Your' with whatever your reducer is called :)
+import R from 'ramda'
+
+// Components
+import ContactForm from '../../Components/Forms/ContactForm'
+import ShowToast from '../../Services/ShowToast'
+
+// Redux Actions
 import ContactActions from '../../Redux/ContactRedux'
 
 // Styles
 import styles from './Styles/FormContactScreenStyle'
-import ContactForm from '../../Components/Forms/ContactForm'
-import ShowToast from '../../Services/ShowToast';
-import R from 'ramda'
 
 class FormContactScreen extends Component {
   static navigationOptions = {

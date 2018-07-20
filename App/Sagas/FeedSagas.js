@@ -58,9 +58,3 @@ export function* feedsRequest(action) {
     yield put(FeedActions.feedFailure(error))
   }
 }
-
-export default function* feedSagas() {
-  yield all([
-    takeLatest(FeedTypes.FEED_REQUEST, feedsRequest),
-  ])
-}

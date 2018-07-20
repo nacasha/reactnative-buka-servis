@@ -108,14 +108,6 @@ class StoreDetailScreen extends React.Component {
     })
   }
 
-  /* ***********************************************************
-  * STEP 2
-  * `renderRow` function. How each cell/row should be rendered
-  * It's our best practice to place a single component here:
-  *
-  * e.g.
-    return <MyCustomCell title={item.title} description={item.description} />
-  *************************************************************/
   renderRow = ({ item }) => {
     return (
       <View style={styles.item}>

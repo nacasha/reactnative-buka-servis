@@ -5,7 +5,7 @@ export default StyleSheet.create({
   ...ApplicationStyles.screen,
   container: {
     flex: 1,
-    backgroundColor: Colors.background,
+    backgroundColor: '#ECEEF5',
   },
   sectionHeader: {
     flexDirection: 'row',
@@ -29,6 +29,6 @@ export default StyleSheet.create({
     padding: 5
   },
   listContent: {
-    paddingTop: Metrics.smallMargin
+    paddingVertical: Metrics.smallMargin
   }
 })

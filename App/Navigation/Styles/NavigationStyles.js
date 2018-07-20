@@ -4,7 +4,7 @@ import { Colors } from '../../Themes/'
 export default {
   headerStyle: {
     backgroundColor: '#2293F4',
-    elevation: 0
+    elevation: 5
   },
   headerTitleStyle: {
     fontWeight: 'normal'

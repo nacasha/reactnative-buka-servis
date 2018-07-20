@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native'
+import { StatusBar, StyleSheet } from 'react-native'
 import { ApplicationStyles, Metrics, Colors } from '../../../Themes/'
 
 export default StyleSheet.create({
@@ -42,10 +42,13 @@ export default StyleSheet.create({
     fontSize: 15,
     color: '#999'
   },
+  cardContainer: {
+    marginHorizontal: Metrics.baseMargin
+  },
   cardSwiper: {
-    height: 150,
+    height: 170,
     backgroundColor: 'transparent',
-    position: 'absolute'
+    position: 'absolute',
   },
   mapContainer: {
     justifyContent: 'center',
@@ -55,4 +58,12 @@ export default StyleSheet.create({
   map: {
     ...StyleSheet.absoluteFillObject,
   },
+  statusbar: {
+    height: StatusBar.currentHeight + 10,
+    width: Metrics.screenWidth,
+    position: 'absolute',
+    top: 0,
+    paddingLeft: 15,
+    paddingRight: 15,
+  }
 })

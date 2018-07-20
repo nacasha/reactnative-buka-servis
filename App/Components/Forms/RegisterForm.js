@@ -2,8 +2,7 @@ import { Content } from 'native-base';
 import React from 'react';
 import { Field, reduxForm } from 'redux-form';
 import RoundedButton from '../RoundedButton';
-import { renderInput, renderLocationPicker, renderPicker, renderTextarea } from './_render';
-import LocationPicker from './Components/LocationPicker';
+import { LocationPicker, Dropdown, TextArea, TextInput } from './Components';
 
 const validate = values => {
   // store error state
@@ -56,7 +55,7 @@ const RegisterForm = props => {
           autoCorrect: false,
           autoCapitalize: 'none',
         }}
-        component={renderInput}
+        component={TextInput}
       />
       <Field
         label="Password"
@@ -66,7 +65,7 @@ const RegisterForm = props => {
           autoCapitalize: 'none',
           secureTextEntry: true
         }}
-        component={renderInput}
+        component={TextInput}
       />
       <Field
         label="Full Name"
@@ -74,7 +73,7 @@ const RegisterForm = props => {
         options={{
           autoCorrect: false,
         }}
-        component={renderInput}
+        component={TextInput}
       />
       <Field
         label="Gender"
@@ -83,7 +82,7 @@ const RegisterForm = props => {
           { label: 'Male', value: 'Male' },
           { label: 'Female', value: 'Female' }
         ]}
-        component={renderPicker}
+        component={Dropdown}
       />
       <Field
         label="Address"
@@ -93,7 +92,7 @@ const RegisterForm = props => {
           multiline: true,
           autoGrow: true
         }}
-        component={renderTextarea}
+        component={TextArea}
       />
       <Field
         name="location"

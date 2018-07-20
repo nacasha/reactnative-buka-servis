@@ -22,18 +22,18 @@ export default class MainTabbar extends Component {
   }
 
   iconColor(progress) {
-    const red = 59 + (204 - 59) * progress
-    const green = 89 + (204 - 89) * progress
-    const blue = 152 + (204 - 152) * progress
+    const red = 86 + (204 - 86) * progress
+    const green = 149 + (204 - 149) * progress
+    const blue = 255 + (204 - 255) * progress
     return `rgb(${red}, ${green}, ${blue})`
   }
 
   renderTabs = () => this.props.tabs.map((tab, i) =>
-    <TouchableOpacity key={tab} onPress={() => this.props.goToPage(i)} style={styles.tab}>
+    <TouchableOpacity activeOpacity={0.3} key={tab} onPress={() => this.props.goToPage(i)} style={styles.tab}>
       <Icon
         name={this.props.data[tab].icon}
         size={20}
-        color={this.props.activeTab === i ? 'rgb(59,89,152)' : 'rgb(204,204,204)'}
+        color={this.props.activeTab === i ? 'rgb(86, 149, 255)' : 'rgb(204,204,204)'}
         ref={(icon) => { this.icons[i] = icon }}
       />
       <Text style={styles.tabLabel}>{this.props.data[tab].label}</Text>

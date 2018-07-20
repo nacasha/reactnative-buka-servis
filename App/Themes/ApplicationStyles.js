@@ -63,7 +63,7 @@ const ApplicationStyles = {
       color: Colors.text
     },
     footer: {
-      backgroundColor: '#FFF',
+      backgroundColor: '#ECEEF5',
       height: 70,
       paddingHorizontal: 5,
       paddingVertical: Metrics.smallMargin,

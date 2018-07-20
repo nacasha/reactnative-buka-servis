@@ -2,8 +2,7 @@ import { Content } from 'native-base';
 import React from 'react';
 import { Field, reduxForm } from 'redux-form';
 import RoundedButton from '../RoundedButton';
-import { renderInput, renderPicker, renderTextarea, renderLocationPicker } from './_render';
-import LocationPicker from './Components/LocationPicker';
+import { LocationPicker, Dropdown, TextArea, TextInput } from './Components';
 
 class ProfileForm extends React.Component {
   componentWillMount() {
@@ -27,7 +26,7 @@ class ProfileForm extends React.Component {
           options={{
             autoCorrect: false,
           }}
-          component={renderInput}
+          component={TextInput}
         />
         <Field
           label="Gender"
@@ -36,7 +35,7 @@ class ProfileForm extends React.Component {
             { label: 'Male', value: 'Male' },
             { label: 'Female', value: 'Female' }
           ]}
-          component={renderPicker}
+          component={Dropdown}
         />
         <Field
           label="Address"
@@ -46,7 +45,7 @@ class ProfileForm extends React.Component {
             multiline: true,
             autoGrow: true
           }}
-          component={renderTextarea}
+          component={TextArea}
         />
         <Field
           name="location"

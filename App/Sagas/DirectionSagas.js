@@ -3,7 +3,7 @@ import { all, put, select, takeLatest } from 'redux-saga/effects';
 import DirectionActions, { DirectionTypes } from '../Redux/DirectionRedux';
 import { GeoLocationSelectors } from '../Redux/GeoLocationRedux';
 
-function* fetchDirection({ storeLocation, storeId }) {
+export function* fetchDirection({ storeLocation, storeId }) {
   const GOOGLE_MAPS_APIKEY = 'AIzaSyB87wxGyZZtnFPqkUFSUrXtByjx3BgZgB8'
   const userCoords = yield select(GeoLocationSelectors.getCoords)
 
@@ -26,10 +26,4 @@ function* fetchDirection({ storeLocation, storeId }) {
   } catch (error) {
     return error
   }
-}
-
-export default function* directionSagas() {
-  yield all([
-    takeLatest(DirectionTypes.FETCH, fetchDirection),
-  ])
 }

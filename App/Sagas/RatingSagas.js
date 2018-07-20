@@ -35,10 +35,3 @@ export function* submitRating({ rating, serviceId }) {
     yield put(RatingActions.submitFailure(error))
   }
 }
-
-export default function* ratingSagas() {
-  yield all([
-    takeLatest(RatingTypes.SYNC_RATING, syncRating),
-    takeLatest(RatingTypes.SUBMIT, submitRating),
-  ])
-}

@@ -11,14 +11,9 @@ export default StyleSheet.create({
     fontSize: 13
   },
   tabs: {
+    elevation: 20,
     flexDirection: 'row',
     backgroundColor: '#FFF',
     paddingTop: 5,
-    borderWidth: 1,
-    borderTopWidth: 1,
-    borderBottomWidth: 0,
-    borderLeftWidth: 0,
-    borderRightWidth: 0,
-    borderTopColor: '#DDD',
   },
 })

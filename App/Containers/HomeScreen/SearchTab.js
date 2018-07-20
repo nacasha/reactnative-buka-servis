@@ -1,18 +1,26 @@
 import React, { Component } from 'react'
-import { ScrollView, Text, KeyboardAvoidingView } from 'react-native'
+import { TouchableOpacity, View, ScrollView, Text, FlatList } from 'react-native'
 import { connect } from 'react-redux'
 import SearchActions from '../../Redux/SearchRedux'
-import { Picker, Form, Item, Label } from 'native-base'
+import { Picker, Form, Item, Label, Input, Button } from 'native-base'
 import RoundedButton from '../../Components/RoundedButton';
+import Slider from 'react-native-slider'
+import CATEGORIES from '../../Fixtures/categories.json'
+import R from 'ramda'
+import ViewOverflow from 'react-native-view-overflow'
 
-// Styles
 import styles from './SearchTabStyle'
+import { Colors } from '../../Themes';
+import CategoryPill from '../../Components/Search/CategoryPill';
+import SpecialistPill from '../../Components/Search/SpecialistPill';
 
 class SearchTab extends Component {
   constructor(props) {
     super(props)
 
     this.onPressSearchNearby = this.onPressSearchNearby.bind(this)
+    this.renderSpecialistPill = this.renderSpecialistPill.bind(this)
+    this.renderServicePill = this.renderServicePill.bind(this)
   }
 
   onPressSearchNearby() {
@@ -22,29 +30,118 @@ class SearchTab extends Component {
     })
   }
 
-  render () {
-    return (
-      <ScrollView style={styles.container}>
-        <Item style={{ borderBottomWidth: 0, marginBottom: 10 }}>
-          <Label>Radius</Label>
-          <Picker
-            mode="dialog"
-            selectedValue={this.props.radius}
-            onValueChange={value => this.props.changeRadius(value)}
-          >
-            <Picker.Item label="200 meter" value={0.2} />
-            <Picker.Item label="500 meter" value={0.5} />
-            <Picker.Item label="1 Kilometers" value={1} />
-            <Picker.Item label="1.5 Kilometers" value={1.5} />
-            <Picker.Item label="2 Kilometers" value={2} />
-            <Picker.Item label="3 Kilometers" value={3} />
-          </Picker>
-        </Item>
+  renderItemSeparator() {
+    return <View style={{ margin: 5 }} />
+  }
 
-        <RoundedButton
-          text="Search Nearby"
-          onPress={this.onPressSearchNearby}
-        />
+  renderServicePill({ item }) {
+    const { category, setCategory, setSpecialist } = this.props
+
+    return (
+      <TouchableOpacity
+        onPress={() => {
+          setCategory(item.key)
+          setSpecialist('all')
+        }}
+      >
+        <CategoryPill data={item} selected={category} />
+      </TouchableOpacity>
+    )
+  }
+
+  renderSpecialistPill({ item }) {
+    const { specialist, setSpecialist } = this.props
+
+    return (
+      <TouchableOpacity onPress={() => setSpecialist(item.key)}>
+        <SpecialistPill data={item} selected={specialist} />
+      </TouchableOpacity>
+    )
+  }
+
+  renderServiceList() {
+    return (
+      <FlatList
+        CellRendererComponent={ViewOverflow}
+        renderItem={this.renderServicePill}
+        extraData={this.props.category}
+        data={CATEGORIES}
+        ItemSeparatorComponent={this.renderItemSeparator}
+        showsHorizontalScrollIndicator={false}
+        horizontal
+      />
+    )
+  }
+
+  renderSpecialist() {
+    const listData = R.find(R.propEq('key', this.props.category))(CATEGORIES)
+    const all = {
+      key: 'all',
+      icon: 'all-inclusive',
+      title: 'All'
+    }
+
+    return (
+      <FlatList
+        renderItem={this.renderSpecialistPill}
+        extraData={this.props.specialist}
+        data={[all, ...listData.data]}
+        ItemSeparatorComponent={this.renderItemSeparator}
+        showsHorizontalScrollIndicator={false}
+        keyExtractor={item => item.key}
+        horizontal
+      />
+    )
+  }
+
+  render() {
+    return (
+      <ScrollView>
+        <View style={styles.container}>
+          <View style={styles.section}>
+            <View style={styles.section}>
+              <Text style={styles.sectionLabel}>Services</Text>
+              {this.renderServiceList()}
+            </View>
+
+            <View style={styles.section}>
+              <Text style={styles.sectionLabel}>Specialist</Text>
+              {this.renderSpecialist()}
+            </View>
+            <ViewOverflow />
+
+            <View style={styles.section}>
+              <Text style={styles.sectionLabel}>Distance</Text>
+              <Slider
+                minimumValue={1}
+                maximumValue={5}
+                value={3}
+                thumbTintColor={Colors.darkBlue}
+                minimumTrackTintColor={Colors.lightBlue}
+                thumbStyle={{ elevation: 2, width: 30 }}
+                style={{ marginBottom: -7 }}
+                trackStyle={{ height: 8, borderRadius: 10 }}
+                onSlidingComplete={value => this.props.setDistance(value)}
+              />
+              <View style={{ flexDirection: 'row' }}>
+                <View flex={1}>
+                  <Text style={styles.rangeText}>1 km</Text>
+                </View>
+                <View flex={1} style={{ alignItems: 'center' }}>
+                  <Text style={styles.rangeText}>2.5 km</Text>
+                </View>
+                <View flex={1} style={{ alignItems: 'flex-end' }}>
+                  <Text style={styles.rangeText}>5 km</Text>
+                </View>
+              </View>
+            </View>
+          </View>
+
+          <RoundedButton
+            text="Search Nearby"
+            onPress={this.onPressSearchNearby}
+          />
+        </View>
       </ScrollView>
     )
   }
@@ -52,13 +149,16 @@ class SearchTab extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    radius: state.search.radius
+    specialist: state.search.specialist,
+    category: state.search.category,
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    changeRadius: (r) => dispatch(SearchActions.changeRadius(r)),
+    setSpecialist: (s) => dispatch(SearchActions.setSpecialist(s)),
+    setCategory: (c) => dispatch(SearchActions.setCategory(c)),
+    setDistance: (d) => dispatch(SearchActions.setDistance(d)),
     nearby: () => dispatch(SearchActions.nearby())
   }
 }

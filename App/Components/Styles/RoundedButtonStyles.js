@@ -6,7 +6,8 @@ export default StyleSheet.create({
     flex: 1,
     height: 45,
     borderRadius: 5,
-    justifyContent: 'center'
+    justifyContent: 'center',
+    elevation: 2,
   },
   buttonText: {
     color: '#FFF',
