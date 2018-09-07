@@ -136,10 +136,19 @@ class SearchTab extends Component {
             </View>
           </View>
 
-          <RoundedButton
-            text="Search Nearby"
-            onPress={this.onPressSearchNearby}
-          />
+          { this.props.coords.latitude == 0
+            ?
+            <RoundedButton
+              background={Colors.error}
+              text="Enable GPS"
+              onPress={() => { }}
+            />
+            :
+            <RoundedButton
+              text="Search Nearby"
+              onPress={this.onPressSearchNearby}
+            />
+          }
         </View>
       </ScrollView>
     )
@@ -150,6 +159,7 @@ const mapStateToProps = (state) => {
   return {
     specialist: state.search.specialist,
     category: state.search.category,
+    coords: state.geolocation.coords
   }
 }
 

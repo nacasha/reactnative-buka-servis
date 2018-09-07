@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { ScrollView, View, Text, KeyboardAvoidingView } from 'react-native'
+import { View, Alert } from 'react-native'
 import { connect } from 'react-redux'
 import { GiftedChat, Day, Bubble } from 'react-native-gifted-chat'
 import HeaderBar from '../Components/HeaderBar'
@@ -19,6 +19,17 @@ class MessageDetailScreen extends Component {
     this.messageId = messageId
     this.storeName = storeName
     this.storeId = storeId
+
+    if (this.props.user.uid == this.storeId) {
+      Alert.alert(
+        'Error',
+        'Unable to send messages to self',
+        [
+          { text: 'Close', style: 'cancel', onPress: () => this.props.navigation.pop() }
+        ],
+        { cancelable: true, onDismiss: () => this.props.navigation.pop() }
+      )
+    }
   }
 
   onSend(messages = []) {

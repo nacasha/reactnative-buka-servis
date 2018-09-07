@@ -3,19 +3,23 @@ import { call, put } from 'redux-saga/effects'
 import AuthActions from '../Redux/AuthRedux'
 import { firestore, rsf } from '../Services/ReduxSagaFirebase'
 
-export function* signIn(action) {
-  const { email, password } = action
+export function* signIn({ payload }) {
+  const { email, password, onSuccess, onFailure } = payload
   const signIn = firebase.auth().signInAndRetrieveDataWithEmailAndPassword
 
   try {
     const data = yield call([firebase.auth(), signIn], email, password)
 
     if (!data.user.emailVerified) {
+      onFailure('Email not verified')
       yield call(rsf.auth.signOut)
       yield put(AuthActions.authFailure('Email not verified'))
+    } else {
+      onSuccess()
     }
   }
   catch (error) {
+    onFailure()
     yield put(AuthActions.authFailure(error))
   }
 }

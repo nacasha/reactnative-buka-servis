@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import RoundedButton from '../Components/RoundedButton'
 import Rating from 'react-native-rating'
+import StarRating from 'react-native-star-rating'
 import Modal from 'react-native-modal'
 import RatingActions from '../Redux/RatingRedux'
 import ReportActions from '../Redux/ReportRedux'
@@ -107,11 +108,15 @@ class ServiceDetailScreen extends Component {
   renderRatingInfo() {
     return (
       <View style={styles.ratingSection}>
-        <Rating
-          initial={this.ratingAverage}
-          editable={false}
-          selectedStar={Images.rating.starFilled}
-          unselectedStar={Images.rating.starUnfilled}
+        <StarRating
+          disabled={false}
+          maxStars={5}
+          starSize={28}
+          fullStarColor={Colors.yellow}
+          emptyStarColor="#AAA"
+          rating={this.ratingAverage}
+          starStyle={styles.starStyle}
+          containerStyle={{ marginBottom: 10 }}
         />
         <View style={styles.ratingInfo}>
           <Icon name="star" style={styles.ratingInfoIcon} />

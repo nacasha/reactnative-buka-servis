@@ -30,7 +30,6 @@ class HomeScreen extends Component {
         renderTabBar={this.renderTabBar}>
 
         <MainTab tabLabel="HOME" navigation={this.props.navigation}/>
-        {/* <CategoryTab tabLabel="CATEGORY" navigation={this.props.navigation}/> */}
         <SearchTab tabLabel="NEARBY" navigation={this.props.navigation}/>
       </ScrollableTabView>
     )

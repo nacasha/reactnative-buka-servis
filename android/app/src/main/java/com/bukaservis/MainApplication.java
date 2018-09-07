@@ -15,6 +15,7 @@ import com.i18n.reactnativei18n.ReactNativeI18n;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.airbnb.android.react.maps.MapsPackage;
 import com.BV.LinearGradient.LinearGradientPackage;
+import com.showlocationservicesdialogbox.LocationServicesDialogBoxPackage;
 
 import java.util.Arrays;
 import java.util.List;
@@ -38,7 +39,8 @@ public class MainApplication extends Application implements ReactApplication {
           new ReactNativeI18n(),
           new VectorIconsPackage(),
           new MapsPackage(),
-          new LinearGradientPackage()
+          new LinearGradientPackage(),
+          new LocationServicesDialogBoxPackage()
       );
     }
 
