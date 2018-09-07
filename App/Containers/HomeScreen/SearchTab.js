@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { TouchableOpacity, View, ScrollView, Text, FlatList } from 'react-native'
 import { connect } from 'react-redux'
 import SearchActions from '../../Redux/SearchRedux'
-import { Picker, Form, Item, Label, Input, Button } from 'native-base'
 import RoundedButton from '../../Components/RoundedButton';
 import Slider from 'react-native-slider'
 import CATEGORIES from '../../Fixtures/categories.json'

@@ -1,5 +1,5 @@
 import React from 'react';
-import { ActivityIndicator, FlatList, Image, ScrollView, Text, TouchableNativeFeedback, TouchableOpacity, View } from 'react-native';
+import { FlatList, Image, ScrollView, Text, TouchableNativeFeedback, TouchableOpacity, View } from 'react-native';
 import Modal from 'react-native-modal';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { connect } from 'react-redux';
@@ -9,7 +9,6 @@ import FavoriteActions from '../Redux/FavoriteRedux';
 import ModalActions from '../Redux/ModalRedux';
 import StoreActions from '../Redux/StoreRedux';
 import { Colors, Images } from '../Themes';
-// Styles
 import styles from './Styles/StoreDetailScreenStyle';
 
 class StoreDetailScreen extends React.Component {

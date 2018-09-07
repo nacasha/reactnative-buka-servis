@@ -59,7 +59,7 @@ export default StyleSheet.create({
     ...StyleSheet.absoluteFillObject,
   },
   statusbar: {
-    height: StatusBar.currentHeight + 10,
+    height: StatusBar.currentHeight + 30,
     width: Metrics.screenWidth,
     position: 'absolute',
     top: 0,

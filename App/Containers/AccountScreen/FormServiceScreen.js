@@ -1,14 +1,11 @@
 import React, { Component } from 'react'
-import { ScrollView, Text, View, KeyboardAvoidingView } from 'react-native'
-import { Toast } from 'native-base'
+import { ScrollView, View } from 'react-native'
 import { connect } from 'react-redux'
-import HeaderBar from '../../Components/HeaderBar'
 import ServiceForm from '../../Components/Forms/ServiceForm'
 import R from 'ramda'
 import ServiceActions from '../../Redux/ServiceRedux'
 import ShowToast from '../../Services/ShowToast'
 
-// Styles
 import styles from './Styles/FormServiceScreenStyle'
 
 class FormServiceScreen extends Component {

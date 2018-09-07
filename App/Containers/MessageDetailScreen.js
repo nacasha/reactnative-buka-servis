@@ -3,10 +3,8 @@ import { ScrollView, View, Text, KeyboardAvoidingView } from 'react-native'
 import { connect } from 'react-redux'
 import { GiftedChat, Day, Bubble } from 'react-native-gifted-chat'
 import HeaderBar from '../Components/HeaderBar'
-// Add Actions - replace 'Your' with whatever your reducer is called :)
 import MessageActions from '../Redux/MessageRedux'
 
-// Styles
 import styles from './Styles/MessageDetailScreenStyle'
 
 class MessageDetailScreen extends Component {

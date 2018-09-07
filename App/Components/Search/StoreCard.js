@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, Image, TouchableOpacity, ActivityIndicator } from 'react-native'
+import { View, Text, TouchableOpacity, ActivityIndicator } from 'react-native'
 import styles from './Styles/StoreCardStyle'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import R from 'ramda'
@@ -74,19 +74,19 @@ export default class StoreCard extends Component {
         </View>
 
         <View style={styles.cardButton}>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={this.props.onPressDirection}>
             <View style={styles.cardButtonItem}>
               <Icon name="directions" size={20} />
             </View>
           </TouchableOpacity>
 
-          <TouchableOpacity>
+          <TouchableOpacity onPress={this.props.onPress}>
             <View style={styles.cardButtonItem}>
               <Icon name="library-books" size={20} />
             </View>
           </TouchableOpacity>
 
-          <TouchableOpacity>
+          <TouchableOpacity onPress={this.props.onPress}>
             <View style={styles.cardButtonItem}>
               <Icon name="heart" size={20} />
             </View>

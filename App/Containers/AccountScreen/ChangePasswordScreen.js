@@ -1,11 +1,9 @@
 import React, { Component } from 'react'
-import { ScrollView, Text, KeyboardAvoidingView } from 'react-native'
+import { ScrollView, Text } from 'react-native'
 import { connect } from 'react-redux'
-import HeaderBar from '../../Components/HeaderBar'
 import RoundedButton from '../../Components/RoundedButton';
 import AuthActions from '../../Redux/AuthRedux'
 
-// Styles
 import styles from './Styles/ChangePasswordScreenStyle'
 import ShowToast from '../../Services/ShowToast';
 
@@ -20,7 +18,6 @@ class ChangePasswordScreen extends Component {
     const { userEmail } = props.navigation.state.params || {}
 
     this.userEmail = userEmail
-
     this.sendResetPassword = this.sendResetPassword.bind(this)
   }
 

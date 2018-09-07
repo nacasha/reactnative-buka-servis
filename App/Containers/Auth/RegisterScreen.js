@@ -1,14 +1,10 @@
 import React, { Component } from 'react'
 import { Toast } from 'native-base';
-import { View, ScrollView, Text, KeyboardAvoidingView, ActivityIndicator } from 'react-native'
+import { View, ScrollView} from 'react-native'
 import { connect } from 'react-redux'
-// Add Actions - replace 'Your' with whatever your reducer is called :)
-// import YourActions from '../Redux/YourRedux'
-import HeaderBar from '../../Components/HeaderBar'
 import RegisterForm from '../../Components/Forms/RegisterForm'
 import R from 'ramda'
 
-// Styles
 import styles from './Styles/RegisterScreenStyle'
 import AuthActions from '../../Redux/AuthRedux';
 

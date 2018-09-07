@@ -40,17 +40,14 @@ import styles from './Styles/NavigationStyles'
 
 // Manifest of possible screens
 const PrimaryNav = StackNavigator({
-  FavoritesScreen: { screen: FavoritesScreen },
-  SearchFulltextScreen: { screen: SearchFulltextScreen },
   SearchNearbyScreen: { screen: SearchNearbyScreen },
-
-  StoreDirectionScreen: { screen: StoreDirectionScreen },
 
   FormContactScreen: { screen: FormContactScreen },
   ListContactScreen: { screen: ListContactScreen },
   // Main Screen
   TabViewScreen: { screen: TabViewScreen },
   StoreDetailScreen: { screen: StoreDetailScreen },
+  StoreDirectionScreen: { screen: StoreDirectionScreen },
   ServiceDetailScreen: { screen: ServiceDetailScreen },
   MessageDetailScreen: { screen: MessageDetailScreen },
 

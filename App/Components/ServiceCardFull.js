@@ -2,10 +2,8 @@ import React, { Component } from 'react'
 import { View, Text, TouchableNativeFeedback } from 'react-native'
 import styles from './Styles/ServiceCardFullStyle'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
-import R from 'ramda'
-import { MoneyFormat, RangeMoneyFormat, ConvertToPrice } from '../Transforms';
+import { ConvertToPrice } from '../Transforms';
 import { Colors } from '../Themes';
-
 
 export default class ServiceCardFull extends Component {
   shouldComponentUpdate(nextProps) {

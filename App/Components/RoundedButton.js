@@ -5,10 +5,6 @@ import styles from './Styles/RoundedButtonStyles'
 import { Colors } from '../Themes';
 import _ from 'lodash'
 
-// Note that this file (App/Components/RoundedButton) needs to be
-// imported in your app somewhere, otherwise your component won't be
-// compiled and added to the examples dev screen.
-
 export default class RoundedButton extends PureComponent {
   static propTypes = {
     onPress: PropTypes.func,

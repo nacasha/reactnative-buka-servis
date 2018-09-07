@@ -9,7 +9,6 @@ import RatingActions from '../Redux/RatingRedux'
 import ReportActions from '../Redux/ReportRedux'
 import R from 'ramda'
 
-// Styles
 import styles from './Styles/ServiceDetailScreenStyle'
 import { Colors, Images } from '../Themes';
 import { ConvertToPrice } from '../Transforms';

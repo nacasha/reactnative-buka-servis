@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import GeoLocationAtions from '../../Redux/GeoLocationRedux';
 import SearchActions, { nearbyFilter } from '../../Redux/SearchRedux';
 import ShowToast from '../../Services/ShowToast';
-import { Images, Metrics } from '../../Themes';
+import { Images, Metrics, Colors } from '../../Themes';
 import styles from './Styles/SearchNearbyScreenStyle';
 import StoreCard from '../../Components/Search/StoreCard';
 import Carousel from 'react-native-snap-carousel'
@@ -42,6 +42,7 @@ class SearchNearbyScreen extends Component {
 
     this.renderCard = this.renderCard.bind(this)
     this.onCardPress = this.onCardPress.bind(this)
+    this.onCardPressDirection = this.onCardPressDirection.bind(this)
   }
 
   shouldComponentUpdate(nextProps) {
@@ -56,6 +57,17 @@ class SearchNearbyScreen extends Component {
     })
   }
 
+  onCardPressDirection(storeId, storeLocation) {
+    this.props.navigation.navigate({
+      key: 'StoreDirectionScreen',
+      routeName: 'StoreDirectionScreen',
+      params: {
+        storeId: storeId,
+        storeLocation: storeLocation
+      }
+    })
+  }
+
   //#region RENDER
   renderCard({ item }) {
     const info = this.props.storeInfo[item.key]
@@ -65,6 +77,7 @@ class SearchNearbyScreen extends Component {
         data={item}
         info={info}
         onPress={() => this.onCardPress(item.key)}
+        onPressDirection={() => this.onCardPressDirection(item.key, info.info.location)}
       />
     )
   }
@@ -106,11 +119,6 @@ class SearchNearbyScreen extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <StatusBar
-          barStyle="light-content"
-          backgroundColor="transparent"
-          translucent
-        />
         <View style={styles.mapContainer}>
           <MapView
             ref={e => this.mapView = e}

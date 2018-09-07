@@ -7,9 +7,7 @@ import DirectionActions from '../Redux/DirectionRedux';
 import GeoLocationAtions from '../Redux/GeoLocationRedux';
 import ShowToast from '../Services/ShowToast';
 import { Images } from '../Themes';
-// Styles
 import styles from './Styles/StoreDirectionScreenStyle';
-
 
 class StoreDirectionScreen extends Component {
   static navigationOptions = {
