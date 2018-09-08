@@ -4,6 +4,7 @@ import ReduxNavigation from '../Navigation/ReduxNavigation'
 import { connect } from 'react-redux'
 import StartupActions from '../Redux/StartupRedux'
 import ReduxPersist from '../Config/ReduxPersist'
+import SplashScreen from 'react-native-splash-screen'
 
 // Styles
 import styles from './Styles/RootContainerStyles'
@@ -15,6 +16,8 @@ class RootContainer extends Component {
     if (!ReduxPersist.active) {
       this.props.startup()
     }
+
+    SplashScreen.hide();
   }
 
   render () {

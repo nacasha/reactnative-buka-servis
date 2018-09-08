@@ -12,6 +12,7 @@ import styles from './SearchTabStyle'
 import { Colors } from '../../Themes';
 import CategoryPill from '../../Components/Search/CategoryPill';
 import SpecialistPill from '../../Components/Search/SpecialistPill';
+import { requestLocationService } from '../../Services/DeviceRequest';
 
 class SearchTab extends Component {
   constructor(props) {
@@ -141,7 +142,7 @@ class SearchTab extends Component {
             <RoundedButton
               background={Colors.error}
               text="Enable GPS"
-              onPress={() => { }}
+              onPress={() => { requestLocationService() }}
             />
             :
             <RoundedButton

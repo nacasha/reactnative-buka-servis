@@ -16,6 +16,7 @@ import com.oblador.vectoricons.VectorIconsPackage;
 import com.airbnb.android.react.maps.MapsPackage;
 import com.BV.LinearGradient.LinearGradientPackage;
 import com.showlocationservicesdialogbox.LocationServicesDialogBoxPackage;
+import org.devio.rn.splashscreen.SplashScreenReactPackage;
 
 import java.util.Arrays;
 import java.util.List;
@@ -40,7 +41,8 @@ public class MainApplication extends Application implements ReactApplication {
           new VectorIconsPackage(),
           new MapsPackage(),
           new LinearGradientPackage(),
-          new LocationServicesDialogBoxPackage()
+          new LocationServicesDialogBoxPackage(),
+          new SplashScreenReactPackage()
       );
     }
 

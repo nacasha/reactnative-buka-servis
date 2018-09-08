@@ -1,3 +1,4 @@
+import { ToastAndroid } from 'react-native'
 import { BackHandler, DeviceEventEmitter } from 'react-native';
 import LocationServicesDialogBox from "react-native-android-location-services-dialog-box";
 
@@ -13,8 +14,8 @@ export function requestLocationService() {
     preventBackClick: false,
     providerListener: false
   }).then(function (success) {
-    console.log(success)
+    ToastAndroid.show('Location service enabled', 2000)
   }).catch((error) => {
-    console.log(error.message)
-  });
+    ToastAndroid.show('Some features are unavailable', 2000)
+  })
 }
