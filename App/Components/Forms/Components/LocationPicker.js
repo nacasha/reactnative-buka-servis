@@ -40,8 +40,8 @@ class LocationPicker extends React.PureComponent {
               ? <MapView
                 style={styles.map}
                 region={{
-                  latitude: latitude,
-                  longitude: longitude,
+                  latitude: input.value.latitude || latitude,
+                  longitude: input.value.longitude || longitude,
                   latitudeDelta: 0.001,
                   longitudeDelta: 0.001,
                 }}
@@ -49,8 +49,8 @@ class LocationPicker extends React.PureComponent {
                 liteMode={true}>
                 <MapView.Marker
                   coordinate={{
-                    latitude: latitude,
-                    longitude: longitude
+                    latitude: input.value.latitude || latitude,
+                    longitude: input.value.longitude || longitude
                   }}
                   image={Images.mapMarkerUser}
                 />
@@ -81,14 +81,13 @@ class LocationPicker extends React.PureComponent {
                 style={styles.map}
                 onRegionChangeComplete={(region) => input.onChange(
                   {
-                    open: true,
                     latitude: region.latitude,
                     longitude: region.longitude
                   }
                 )}
                 initialRegion={{
-                  latitude: latitude,
-                  longitude: longitude,
+                  latitude: input.value.latitude || latitude,
+                  longitude: input.value.longitude || longitude,
                   latitudeDelta: 0.002,
                   longitudeDelta: 0.002,
                 }}>

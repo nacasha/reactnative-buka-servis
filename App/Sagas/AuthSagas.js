@@ -1,7 +1,7 @@
 import firebase from 'react-native-firebase'
 import { call, put } from 'redux-saga/effects'
 import AuthActions from '../Redux/AuthRedux'
-import { firestore, rsf } from '../Services/ReduxSagaFirebase'
+import { rsf } from '../Services/ReduxSagaFirebase'
 
 export function* signIn({ payload }) {
   const { email, password, onSuccess, onFailure } = payload
@@ -30,7 +30,7 @@ export function* signOut() {
     yield put(AuthActions.successSignout())
   }
   catch (error) {
-    yield put(AuthActions.authFailure())
+    yield put(AuthActions.authFailure(error))
   }
 }
 

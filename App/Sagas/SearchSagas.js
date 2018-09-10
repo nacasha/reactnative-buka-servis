@@ -1,6 +1,6 @@
 import { startSubmit, stopSubmit } from 'redux-form';
-import { call, put, select, take, throttle } from 'redux-saga/effects';
-import { eventChannel, END } from 'redux-saga';
+import { call, put, select, take, throttle, takeLatest } from 'redux-saga/effects';
+import { delay, eventChannel, END } from 'redux-saga';
 import SearchActions, { SearchSelectors } from '../Redux/SearchRedux';
 import StoreActions from '../Redux/StoreRedux';
 import { UserSelectors } from '../Redux/UserRedux';
@@ -44,9 +44,15 @@ export function* searchNearby() {
       yield put(SearchActions.nearbySuccess(store))
     }
   } finally {
-    yield put(SearchActions.success())
+    // yield put(SearchActions.success())
   }
 }
+
+export function* searchNearbyComplete() {
+  yield call(delay, 500)
+  yield put(SearchActions.success())
+}
+
 
 export function* fetchStoreInfo({ store }) {
   const specialist = yield select(SearchSelectors.getSpecialist)
@@ -74,4 +80,6 @@ export function* fetchStoreInfo({ store }) {
     yield put(SearchActions.addToResult(store))
     yield put(StoreActions.fetchStoreData(store.key))
   }
+
+  yield put(SearchActions.doneFetchingStoreInfo())
 }

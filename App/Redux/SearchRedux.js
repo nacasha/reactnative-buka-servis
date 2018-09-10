@@ -12,10 +12,8 @@ const { Types, Creators } = createActions({
   nearby: null,
   nearbySuccess: ['store'],
 
-  fullText: null,
-  fullTextSuccess: ['store'],
-
   addToResult: ['store'],
+  doneFetchingStoreInfo: null,
 
   request: null,
   success: null,
@@ -32,9 +30,9 @@ export const INITIAL_STATE = Immutable({
   fetching: false,
 
   // metadata search
-  category: 'vehicle',
+  category: 'home',
   specialist: 'all',
-  distance: 1,
+  distance: 3,
 
   // results
   nearby: [],

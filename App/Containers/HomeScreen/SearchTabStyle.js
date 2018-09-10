@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native'
-import { ApplicationStyles } from '../../Themes'
+import { ApplicationStyles, Metrics } from '../../Themes'
 
 export default StyleSheet.create({
   ...ApplicationStyles.screen,
@@ -19,5 +19,19 @@ export default StyleSheet.create({
     marginBottom: 8,
     fontSize: 14,
     fontWeight: 'bold',
+  },
+  searchingModal: {
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  searchingText: {
+    color: '#FFF',
+    fontSize: 19,
+    marginTop: Metrics.baseMargin
+  },
+  cancelSearchText: {
+    fontSize: 16,
+    color: '#DDD',
+    marginTop: Metrics.doubleBaseMargin
   }
 })

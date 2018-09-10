@@ -30,23 +30,33 @@ class SearchNearbyScreen extends Component {
   constructor(props) {
     super(props)
 
-    props.startFetching()
-    // Check if user location is available or no
-    if (props.userLatitude === 0) {
-      // Show warning to user
-      ShowToast('danger', 'Unable to get user location', 5000)
-    } else {
-      props.resetSearch()
-      props.nearby()
-    }
+    props.navigation.addListener(
+      'willBlur',
+      () => {
+        StatusBar.setTranslucent(false)
+        StatusBar.setBackgroundColor(Colors.statusbar)
+      }
+    )
+
+    props.navigation.addListener(
+      'willFocus',
+      () => {
+        StatusBar.setTranslucent(true)
+        StatusBar.setBackgroundColor('transparent')
+      }
+    )
+
+    // props.startFetching()
+
+    // props.resetSearch()
+    // props.nearby()
+
+    this.latitudeDelta = 0.019 * this.props.distance
+    this.longitudeDelta = 0.019 * this.props.distance
 
     this.renderCard = this.renderCard.bind(this)
     this.onCardPress = this.onCardPress.bind(this)
     this.onCardPressDirection = this.onCardPressDirection.bind(this)
-  }
-
-  shouldComponentUpdate(nextProps) {
-      return true
   }
 
   onCardPress(data) {
@@ -126,8 +136,8 @@ class SearchNearbyScreen extends Component {
             initialRegion={{
               latitude: this.props.userLatitude,
               longitude: this.props.userLongitude,
-              latitudeDelta: 0.009,
-              longitudeDelta: 0.009,
+              latitudeDelta: this.latitudeDelta,
+              longitudeDelta: this.longitudeDelta,
             }}
           >
             <MapView.Circle

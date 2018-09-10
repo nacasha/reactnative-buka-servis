@@ -33,7 +33,7 @@ import { fetchDirection } from './DirectionSagas'
 import { sendMessage } from './MessageSagas'
 import { syncUserData, fetchMessagesDetail, updateProfile } from './UserSagas'
 import { SearchTypes } from '../Redux/SearchRedux'
-import { searchNearby, fetchStoreInfo } from './SearchSagas'
+import { searchNearby, fetchStoreInfo, searchNearbyComplete } from './SearchSagas'
 
 /* ------------- API ------------- */
 
@@ -72,6 +72,7 @@ export default function * root () {
 
     // Search
     takeLatest(SearchTypes.NEARBY, searchNearby),
+    takeLatest(SearchTypes.DONE_FETCHING_STORE_INFO, searchNearbyComplete),
     takeEvery(SearchTypes.NEARBY_SUCCESS, fetchStoreInfo),
 
     // Authentication

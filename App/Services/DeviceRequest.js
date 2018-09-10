@@ -1,5 +1,4 @@
-import { ToastAndroid } from 'react-native'
-import { BackHandler, DeviceEventEmitter } from 'react-native';
+import { ToastAndroid, DeviceEventEmitter } from 'react-native';
 import LocationServicesDialogBox from "react-native-android-location-services-dialog-box";
 
 export function requestLocationService() {
@@ -12,7 +11,7 @@ export function requestLocationService() {
     openLocationServices: true,
     preventOutSideTouch: true,
     preventBackClick: false,
-    providerListener: false
+    providerListener: true
   }).then(function (success) {
     ToastAndroid.show('Location service enabled', 2000)
   }).catch((error) => {

@@ -33,7 +33,7 @@ class LoginScreen extends Component {
   }
 
   onSuccess() {
-    ShowToast('success', 'Welcome login')
+    ShowToast('success', 'Welcome')
     this.props.navigation.pop()
   }
 
