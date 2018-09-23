@@ -24,7 +24,7 @@ export const INITIAL_STATE = Immutable({
     longitude: 0
   },
   error: null,
-  busy: false
+  busy: true
 })
 
 /* ------------- Selectors ------------- */

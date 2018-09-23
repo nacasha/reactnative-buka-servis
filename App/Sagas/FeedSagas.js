@@ -32,7 +32,7 @@ export function* feedsRequest(action) {
   try {
     const feedsDocument = yield call(
       rsf.firestore.getCollection,
-      'services'
+      firestore.collection('services').orderBy('createdAt', 'desc').limit(10),
     )
 
     const feeds = yield all(feedsDocument.docs.map(function* (item) {

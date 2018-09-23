@@ -123,7 +123,7 @@ class ServiceDetailScreen extends Component {
           <Text>{Number(this.ratingAverage || 0).toFixed(1)}</Text>
           <View style={styles.ratingGap}></View>
           <Icon name="account-multiple" style={styles.ratingInfoIcon} />
-          <Text>{this.ratingCount}</Text>
+          <Text>{this.ratingCount || '0'}</Text>
         </View>
         <TouchableOpacity onPress={this.openRatingModal}>
           <Text style={styles.textButton}>

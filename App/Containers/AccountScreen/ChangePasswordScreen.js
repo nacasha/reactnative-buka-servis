@@ -31,7 +31,7 @@ class ChangePasswordScreen extends Component {
   render () {
     return (
       <ScrollView style={styles.container}>
-        <Text>
+        <Text style={{ marginBottom: 10 }}>
           To change your account's password, we will
           send you confirmation link to reset your password to
           your email. Click button below to proceed

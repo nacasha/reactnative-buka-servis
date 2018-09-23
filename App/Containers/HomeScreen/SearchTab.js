@@ -37,6 +37,9 @@ class SearchTab extends Component {
     if (this.props.modalState != nextProps.modalState) {
       return true
     }
+    if (this.props.geo_busy != nextProps.geo_busy) {
+      return true
+    }
 
     return false
   }
@@ -149,7 +152,7 @@ class SearchTab extends Component {
 
   render() {
     return (
-      <ScrollView>
+      <ScrollView style={styles.scrollContainer}>
         <View style={styles.container}>
           <View style={styles.section}>
             <View style={styles.section}>
@@ -190,18 +193,28 @@ class SearchTab extends Component {
             </View>
           </View>
 
-          { this.props.coords.latitude == 0
+          { this.props.geo_busy
             ?
             <RoundedButton
-              background={Colors.error}
-              text="Enable GPS"
-              onPress={() => { requestLocationService() }}
+              background="#A7A7A7"
+              text="Waiting for User Location"
+              onPress={() => { }}
+              disabled
             />
             :
-            <RoundedButton
-              text="Search Nearby"
-              onPress={this.onPressSearchNearby}
-            />
+            this.props.coords.latitude == 0
+              ?
+              <RoundedButton
+                background={Colors.error}
+                text="Enable GPS"
+                onPress={() => { requestLocationService() }}
+              />
+
+              :
+              <RoundedButton
+                text="Search Nearby"
+                onPress={this.onPressSearchNearby}
+              />
           }
         </View>
         {this.renderModal()}
@@ -217,6 +230,7 @@ const mapStateToProps = (state) => {
     specialist: state.search.specialist,
     category: state.search.category,
     coords: state.geolocation.coords,
+    geo_busy: state.geolocation.busy,
     results: state.search.results,
     distance: state.search.distance
   }

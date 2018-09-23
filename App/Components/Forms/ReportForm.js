@@ -44,7 +44,8 @@ const ReportForm = props => {
         name="type"
         items={[
           { label: 'Fake Information', value: 'Fake Information' },
-          { label: 'Pishing', value: 'Pishing' }
+          { label: 'Fraud', value: 'Fraud' },
+          { label: 'No Response', value: 'No Response' }
         ]}
         component={Dropdown}
       />

@@ -8,10 +8,14 @@ import { Colors } from '../Themes';
 export default class ServiceCardFull extends Component {
   shouldComponentUpdate(nextProps) {
     if (this.props.data.title == nextProps.data.title) {
-      return false
+      return true
     }
 
-    return true
+    if (this.props.data.rating == nextProps.data.rating) {
+      return true
+    }
+
+    return false
   }
 
   render () {

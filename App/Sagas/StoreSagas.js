@@ -2,7 +2,6 @@ import { fork, put, call, all, takeLatest } from 'redux-saga/effects'
 import StoreActions, { StoreTypes } from '../Redux/StoreRedux'
 import FirestoreFlat from '../Transforms/FirestoreFlat';
 import { rsf, firestore } from '../Services/ReduxSagaFirebase';
-import { getFeedRating } from './FeedSagas';
 
 // -------------------------------------------------------------
 // -------------------------------------------------------------
@@ -46,7 +45,19 @@ const fetchContacts = (storeId) => fork(
   }
 )
 
+const fetchUserInfo = (storeId) => fork(
+  rsf.firestore.syncDocument,
+  `users/${storeId}`,
+  {
+    successActionCreator: user => {
+      const info = { ...user.data(), uid: user.id }
+      return StoreActions.storeSuccess({ info }, storeId)
+    }
+  }
+)
+
 export function* fetchStoreData({ storeId }) {
+  syncChannel.userInfo = yield fetchUserInfo(storeId)
   syncChannel.favorites = yield fetchFavorites(storeId)
   syncChannel.services = yield fetchServices(storeId)
   syncChannel.contacts = yield fetchContacts(storeId)

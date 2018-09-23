@@ -41,9 +41,11 @@ export function* addService(action) {
     response: null
   }
 
+  const createdAt = firebase.firestore.FieldValue.serverTimestamp()
+
   yield firebase.firestore()
     .collection('services').add({
-      ...action.data, user
+      ...action.data, user, createdAt
     })
     .then(response => state = { ok: true, response })
     .catch(response => state = { ok: false, response })

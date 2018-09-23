@@ -18,8 +18,6 @@ export default class HeaderBar extends PureComponent {
   }
 
   render () {
-    console.log(this.props)
-
     return (
       <View style={styles.container}>
         {this.props.back

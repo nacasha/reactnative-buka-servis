@@ -20,7 +20,6 @@ class StoreDirectionScreen extends Component {
 
     if (props.userLatitude === 0) {
       ShowToast('danger', 'Unable to get user location', 5000)
-      this.props.getCurrentPosition()
     }
 
     this.storeId = storeId

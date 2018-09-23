@@ -28,16 +28,16 @@ const validate = values => {
   address = values.address || ''
 
   if (!email.includes('@') && email !== '') {
-    error.email = 'email tidak valid'
+    error.email = 'email not valid'
   }
-  if (password.length < 5 && password !== '') {
-    error.password = 'minimal 5 karakter'
+  if (password.length < 6 && password !== '') {
+    error.password = 'please enter minimum of 6 characters'
   }
   if (name.length < 3 && name !== '') {
-    error.name = 'nama terlalu pendek'
+    error.name = 'name is too short'
   }
   if (address.length <= 10 && address !== '') {
-    error.address = 'minimal 10 karakter'
+    error.address = 'address is too short'
   }
 
   return error

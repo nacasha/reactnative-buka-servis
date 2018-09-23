@@ -3,6 +3,9 @@ import { ApplicationStyles, Metrics } from '../../Themes'
 
 export default StyleSheet.create({
   ...ApplicationStyles.screen,
+  scrollContainer: {
+    backgroundColor: '#ECEEF5',
+  },
   container: {
     ...ApplicationStyles.screen.container,
     backgroundColor: '#ECEEF5',

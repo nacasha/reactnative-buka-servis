@@ -1,5 +1,5 @@
 import React from 'react';
-import { FlatList, Image, ScrollView, Text, TouchableNativeFeedback, TouchableOpacity, View } from 'react-native';
+import { ToastAndroid, FlatList, Image, ScrollView, Text, TouchableNativeFeedback, TouchableOpacity, View } from 'react-native';
 import Modal from 'react-native-modal';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { connect } from 'react-redux';
@@ -10,6 +10,8 @@ import ModalActions from '../Redux/ModalRedux';
 import StoreActions from '../Redux/StoreRedux';
 import { Colors, Images } from '../Themes';
 import styles from './Styles/StoreDetailScreenStyle';
+import { requestLocationService } from '../Services/DeviceRequest';
+import ShowToast from '../Services/ShowToast';
 
 class StoreDetailScreen extends React.Component {
   static navigationOptions = ({ navigation }) => {
@@ -97,14 +99,22 @@ class StoreDetailScreen extends React.Component {
   }
 
   onDirection() {
-    this.props.navigation.navigate({
-      key: 'StoreDirectionScreen',
-      routeName: 'StoreDirectionScreen',
-      params: {
-        storeId: this.storeId,
-        storeLocation: this.storeInfo.location
+    if (this.props.coords.latitude == 0) {
+      if (this.props.geo_busy) {
+        ToastAndroid.show('Waiting for user location', 2500)
+      } else {
+        requestLocationService()
       }
-    })
+    } else {
+      this.props.navigation.navigate({
+        key: 'StoreDirectionScreen',
+        routeName: 'StoreDirectionScreen',
+        params: {
+          storeId: this.storeId,
+          storeLocation: this.storeInfo.location
+        }
+      })
+    }
   }
 
   renderRow = ({ item }) => {
@@ -279,6 +289,8 @@ class StoreDetailScreen extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
+    coords: state.geolocation.coords,
+    geo_busy: state.geolocation.busy,
     modalState: state.modal,
     loggedIn: state.user.loggedIn,
     stores: state.store.stores,

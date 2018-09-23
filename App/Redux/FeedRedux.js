@@ -16,7 +16,7 @@ export default Creators
 
 export const INITIAL_STATE = Immutable({
   feeds: null,
-  fetching: null,
+  fetching: true,
   error: null
 })
 

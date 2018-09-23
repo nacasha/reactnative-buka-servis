@@ -21,20 +21,12 @@ export function* getCurrentPosition() {
       return locationChannel.put(GeoLocationActions.success(coords))
     },
     (error) => {
-      Alert.alert(
-        'No Location Service',
-        'Please enable GPS before using application',
-        [
-          { text: 'Enable', onPress: () => { requestLocationService() } },
-          { text: 'Close', style: 'cancel' },
-        ],
-        { cancelable: false }
-      )
+      requestLocationService()
 
       return locationChannel.put(GeoLocationActions.failure(error))
     },
     {
-      timeout: 20000,
+      timeout: 60000,
       maximumAge: 1000
     }
   )

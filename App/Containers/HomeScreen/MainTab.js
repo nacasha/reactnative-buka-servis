@@ -1,17 +1,32 @@
 import React from 'react'
-import { ScrollView, ActivityIndicator, View, Text, FlatList } from 'react-native'
+import { View, Text, FlatList } from 'react-native'
 import { connect } from 'react-redux'
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import ServiceCardFull from '../../Components/ServiceCardFull'
 import styles from './MainTabStyle'
+import FeedActions from '../../Redux/FeedRedux';
 
 class MainTab extends React.PureComponent {
-  onPress = (data) => () => {
-    this.props.navigation.navigate({
+  constructor(props) {
+    super(props)
+
+    this.onPress = this.onPress.bind(this)
+    this.onRefresh = this.onRefresh.bind(this)
+  }
+
+  onPress(data) {
+    const { navigation } = this.props
+
+    navigation.navigate({
       key: 'ServiceDetailScreen',
       routeName: 'ServiceDetailScreen',
       params: { data }
     })
+  }
+
+  onRefresh() {
+    const { feedRequest } = this.props
+
+    feedRequest()
   }
 
   renderItem = ({item}) => {
@@ -22,29 +37,17 @@ class MainTab extends React.PureComponent {
 
     return (
       <View style={styles.item}>
-        <ServiceCardFull data={data} onPress={this.onPress(item)} />
-      </View>
-    )
-  }
-
-  renderSectionHeader ({section}) {
-    return (
-      <View style={styles.sectionHeader}>
-        <Icon name="star" size={15} style={styles.sectionIcon} />
-        <Text style={styles.sectionLabel}>{section.key}</Text>
+        <ServiceCardFull data={data} onPress={() => this.onPress(item)} />
       </View>
     )
   }
 
   renderEmpty = () =>
     <View style={styles.emptySection}>
-      <ActivityIndicator size={30} />
+      <Text>Nothing to show yet</Text>
     </View>
 
   renderSeparator = () =>
-    <View style={styles.itemSeparator} />
-
-  renderSectionFooter = () =>
     <View style={styles.itemSeparator} />
 
   keyExtractor = item => item.key
@@ -53,23 +56,27 @@ class MainTab extends React.PureComponent {
 
   render () {
     return (
-      <ScrollView style={styles.container}>
+      <View style={styles.container}>
         <FlatList
-          style={styles.listContent}
+          refreshing={this.props.fetching}
+          onRefresh={this.onRefresh}
           data={this.props.feeds}
           renderItem={this.renderItem}
           keyExtractor={this.keyExtractor}
           initialNumToRender={this.oneScreensWorth}
           ListEmptyComponent={this.renderEmpty}
           ItemSeparatorComponent={this.renderSeparator}
+          ListHeaderComponent={this.renderSeparator}
+          ListFooterComponent={this.renderSeparator}
         />
-      </ScrollView>
+      </View>
     )
   }
 }
 
 const mapStateToProps = (state) => {
   return {
+    fetching: state.feed.fetching,
     feeds: state.feed.feeds,
     stores: state.store.stores
   }
@@ -77,6 +84,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    feedRequest: () => dispatch(FeedActions.feedRequest())
   }
 }
 

@@ -22,10 +22,10 @@ const validate = values => {
     nm = ''
   }
   if (ema.length < 8 && ema !== '') {
-    error.email = 'terlalu pendek'
+    error.email = 'too short'
   }
   if (!ema.includes('@') && ema !== '') {
-    error.email = 'email tidak valid'
+    error.email = 'email not valid'
   }
   return error
 }
