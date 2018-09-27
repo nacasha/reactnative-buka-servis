@@ -44,7 +44,8 @@ export function* searchNearby() {
       yield put(SearchActions.nearbySuccess(store))
     }
   } finally {
-    // yield put(SearchActions.success())
+    console.log('selesai')
+    yield put(SearchActions.doneFetchingStoreInfo())
   }
 }
 

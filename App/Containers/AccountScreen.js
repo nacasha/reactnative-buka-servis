@@ -113,8 +113,8 @@ class AccountScreen extends React.PureComponent {
 
   onVersion() {
     Alert.alert(
-      'Version 1.0',
-      'Updated 29 May 2018',
+      'Version 0.9',
+      'Updated 25 September 2018',
       [
         { text: 'Ok', style: 'cancel' },
       ],
