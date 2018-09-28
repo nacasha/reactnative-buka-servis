@@ -3,6 +3,7 @@ package com.bukaservis;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.entria.views.RNViewOverflowPackage;
 import io.invertase.firebase.RNFirebasePackage;
 import io.invertase.firebase.firestore.RNFirebaseFirestorePackage;
 import io.invertase.firebase.auth.RNFirebaseAuthPackage;
@@ -13,6 +14,10 @@ import com.facebook.soloader.SoLoader;
 import com.i18n.reactnativei18n.ReactNativeI18n;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.airbnb.android.react.maps.MapsPackage;
+import com.BV.LinearGradient.LinearGradientPackage;
+import com.showlocationservicesdialogbox.LocationServicesDialogBoxPackage;
+import org.devio.rn.splashscreen.SplashScreenReactPackage;
+import com.avishayil.rnrestart.ReactNativeRestartPackage;
 
 import java.util.Arrays;
 import java.util.List;
@@ -29,12 +34,17 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
-            new RNFirebasePackage(),
-            new RNFirebaseFirestorePackage(),
-            new RNFirebaseAuthPackage(),
-            new ReactNativeI18n(),
-            new VectorIconsPackage(),
-            new MapsPackage()
+          new RNViewOverflowPackage(),
+          new RNFirebasePackage(),
+          new RNFirebaseFirestorePackage(),
+          new RNFirebaseAuthPackage(),
+          new ReactNativeI18n(),
+          new VectorIconsPackage(),
+          new MapsPackage(),
+          new LinearGradientPackage(),
+          new LocationServicesDialogBoxPackage(),
+          new SplashScreenReactPackage(),
+          new ReactNativeRestartPackage()
       );
     }
 

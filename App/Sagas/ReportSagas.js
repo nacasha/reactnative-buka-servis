@@ -19,9 +19,3 @@ export function* submitReport({ report, serviceId }) {
     yield put(ReportActions.submitFailure(error))
   }
 }
-
-export default function* reportSagas() {
-  yield all([
-    takeLatest(ReportTypes.SUBMIT, submitReport),
-  ])
-}

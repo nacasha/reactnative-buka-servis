@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-// import PropTypes from 'prop-types';
 import { View, Text, Image } from 'react-native'
 import styles from './Styles/LoginRequiredStyle'
 import RoundedButton from './RoundedButton'

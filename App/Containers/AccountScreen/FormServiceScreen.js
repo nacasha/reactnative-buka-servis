@@ -1,14 +1,11 @@
 import React, { Component } from 'react'
-import { ScrollView, Text, View, KeyboardAvoidingView } from 'react-native'
-import { Toast } from 'native-base'
+import { ScrollView, View } from 'react-native'
 import { connect } from 'react-redux'
-import HeaderBar from '../../Components/HeaderBar'
 import ServiceForm from '../../Components/Forms/ServiceForm'
 import R from 'ramda'
 import ServiceActions from '../../Redux/ServiceRedux'
 import ShowToast from '../../Services/ShowToast'
 
-// Styles
 import styles from './Styles/FormServiceScreenStyle'
 
 class FormServiceScreen extends Component {
@@ -28,12 +25,8 @@ class FormServiceScreen extends Component {
   }
 
   onSubmit = (values, dispatch) => {
-    if (values.category.category == undefined) {
-      values = R.dissoc('category', values)
-    }
-
     // Required form input
-    const formInput = ['title', 'description', 'price', 'category']
+    const formInput = ['title', 'description', 'price', 'specialist']
 
     // Get keys from submitted form (redux-form)
     values.priceRange = values.priceRange || ''
@@ -43,7 +36,7 @@ class FormServiceScreen extends Component {
     const isFormValid = R.equals(R.intersection(formInput, formKeys), formInput)
 
     if (isFormValid) {
-      this.props.add({ ...values, category: values.category.category })
+      this.props.add(values)
     } else {
       ShowToast('warning', 'Fill the form')
     }

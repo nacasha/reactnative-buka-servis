@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Change the color value for your need -->
+    <color name="colorPrimary">#2293F4</color>
+    <color name="colorPrimaryDark">#1B7BCA</color>
+    <color name="colorAccent">#2293F4</color>
+    <color name="primary_dark">#000000</color>
+    <color name="status_bar_color">#1B7BCA</color>
+</resources>

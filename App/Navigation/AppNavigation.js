@@ -1,5 +1,6 @@
 import React from 'react'
 import { StackNavigator } from 'react-navigation'
+import FavoritesScreen from '../Containers/FavoritesScreen'
 
 // Contact Screen
 import FormContactScreen from '../Containers/ContactScreen/FormContactScreen'
@@ -39,16 +40,14 @@ import styles from './Styles/NavigationStyles'
 
 // Manifest of possible screens
 const PrimaryNav = StackNavigator({
-  SearchFulltextScreen: { screen: SearchFulltextScreen },
   SearchNearbyScreen: { screen: SearchNearbyScreen },
-
-  StoreDirectionScreen: { screen: StoreDirectionScreen },
 
   FormContactScreen: { screen: FormContactScreen },
   ListContactScreen: { screen: ListContactScreen },
   // Main Screen
   TabViewScreen: { screen: TabViewScreen },
   StoreDetailScreen: { screen: StoreDetailScreen },
+  StoreDirectionScreen: { screen: StoreDirectionScreen },
   ServiceDetailScreen: { screen: ServiceDetailScreen },
   MessageDetailScreen: { screen: MessageDetailScreen },
 

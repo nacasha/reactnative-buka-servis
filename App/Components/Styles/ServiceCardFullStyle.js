@@ -3,9 +3,10 @@ import { Metrics, Colors } from '../../Themes';
 
 export default StyleSheet.create({
   container: {
+    elevation: 2,
     flex: 1,
     padding: Metrics.smallMargin,
-    backgroundColor: Colors.cardBackground,
+    backgroundColor: Colors.background,
     borderRadius: Metrics.borderRadius
   },
   title: {

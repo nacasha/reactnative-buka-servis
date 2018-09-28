@@ -44,7 +44,7 @@ class EditServiceScreen extends Component {
 
   onSubmit = (values, dispatch) => {
     // Required form input
-    const formInput = ['title', 'description', 'price', 'category']
+    const formInput = ['title', 'description', 'price', 'specialist']
 
     // Get keys from submitted form (redux-form)
     const formKeys = R.keys(values)
@@ -53,8 +53,8 @@ class EditServiceScreen extends Component {
     const isFormValid = R.equals(R.intersection(formInput, formKeys), formInput)
 
     if (isFormValid) {
-      values = R.dissoc('key', values)
-      this.props.update({ ...values, category: values.category.category }, this.serviceId)
+      const { key, ...data } = values
+      this.props.update(data, key)
     } else {
       Toast.show({
         text: 'Fill the form',

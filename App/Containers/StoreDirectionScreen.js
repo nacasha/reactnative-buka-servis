@@ -7,9 +7,7 @@ import DirectionActions from '../Redux/DirectionRedux';
 import GeoLocationAtions from '../Redux/GeoLocationRedux';
 import ShowToast from '../Services/ShowToast';
 import { Images } from '../Themes';
-// Styles
 import styles from './Styles/StoreDirectionScreenStyle';
-
 
 class StoreDirectionScreen extends Component {
   static navigationOptions = {
@@ -22,7 +20,6 @@ class StoreDirectionScreen extends Component {
 
     if (props.userLatitude === 0) {
       ShowToast('danger', 'Unable to get user location', 5000)
-      this.props.getCurrentPosition()
     }
 
     this.storeId = storeId

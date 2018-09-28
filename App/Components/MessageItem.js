@@ -4,7 +4,6 @@ import { View, Text, Image, TouchableNativeFeedback } from 'react-native'
 import styles from './Styles/MessageItemStyle'
 
 export default class MessageItem extends Component {
-  // Prop type warnings
   static propTypes = {
     image: PropTypes.string.isRequired,
     username: PropTypes.string.isRequired,

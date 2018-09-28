@@ -1,7 +1,6 @@
 import React from 'react'
-import { View, Text, FlatList, TouchableNativeFeedback, Image } from 'react-native'
+import { View, Text, FlatList, TouchableOpacity, TouchableNativeFeedback, Image } from 'react-native'
 import { connect } from 'react-redux'
-import HeaderBar from '../../Components/HeaderBar'
 import { SwipeRow } from 'native-base'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import styles from './Styles/ListContactScreenStyle'
@@ -76,7 +75,7 @@ class ListContactScreen extends React.PureComponent {
   renderItemSeparator = () =>
     <View style={styles.itemSeparator} />
 
-  keyExtractor = (item, index) => item.key
+  keyExtractor = (item) => item.key
 
   oneScreensWorth = 20
 

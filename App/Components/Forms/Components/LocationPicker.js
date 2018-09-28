@@ -1,14 +1,14 @@
-import { Label } from 'native-base';
-import React from 'react';
-import { Image, TouchableOpacity, View, Text } from 'react-native';
-import MapView from 'react-native-maps';
-import Modal from 'react-native-modal';
-import { connect } from 'react-redux';
-import RoundedButton from '../../../Components/RoundedButton';
-import { Images } from '../../../Themes';
-import styles from '../FormStyles';
-import ModalActions from '../../../Redux/ModalRedux';
-import GeoLocationActions from '../../../Redux/GeoLocationRedux';
+import React from 'react'
+import { Label } from 'native-base'
+import { Image, TouchableOpacity, View, Text } from 'react-native'
+import MapView from 'react-native-maps'
+import Modal from 'react-native-modal'
+import { connect } from 'react-redux'
+import RoundedButton from '../../RoundedButton'
+import { Images } from '../../../Themes'
+import styles from './FormStyles'
+import ModalActions from '../../../Redux/ModalRedux'
+import GeoLocationActions from '../../../Redux/GeoLocationRedux'
 
 class LocationPicker extends React.PureComponent {
   constructor(props) {
@@ -36,7 +36,7 @@ class LocationPicker extends React.PureComponent {
 
         <TouchableOpacity onPress={this.openModal}>
           <View style={styles.mapContainer}>
-            { latitude !== 0 && longitude !== 0
+            { (latitude !== 0 && longitude !== 0)
               ? <MapView
                 style={styles.map}
                 region={{
@@ -58,7 +58,7 @@ class LocationPicker extends React.PureComponent {
               :
               <View style={styles.mapWarning}>
                 <Text style={styles.mapWarningText}>
-                    Unable to get user location, please enable GPS and tap here
+                  Unable to get user location, please enable GPS and tap here
                 </Text>
               </View>
             }
@@ -76,11 +76,11 @@ class LocationPicker extends React.PureComponent {
         >
           <View style={{ flex: 1, backgroundColor: '#FFF' }}>
             <View style={styles.mapContainerFull}>
+              {(latitude !== 0 && longitude !== 0) &&
               <MapView
                 style={styles.map}
                 onRegionChangeComplete={(region) => input.onChange(
                   {
-                    open: true,
                     latitude: region.latitude,
                     longitude: region.longitude
                   }
@@ -92,6 +92,7 @@ class LocationPicker extends React.PureComponent {
                   longitudeDelta: 0.002,
                 }}>
               </MapView>
+              }
               <Image source={Images.mapMarkerUser} style={styles.mapMarker} />
             </View>
             <View style={styles.modalFooter}>
@@ -110,8 +111,8 @@ class LocationPicker extends React.PureComponent {
 const mapStateToProps = (state) => {
   return {
     modalState: state.modal.locationPicker,
-    latitude: state.geolocation.latitude,
-    longitude: state.geolocation.longitude
+    latitude: state.geolocation.coords.latitude,
+    longitude: state.geolocation.coords.longitude
   }
 }
 

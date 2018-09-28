@@ -1,14 +1,12 @@
 import React from 'react'
 import { View, Text, FlatList, TouchableNativeFeedback, TouchableOpacity } from 'react-native'
 import { connect } from 'react-redux'
-import HeaderBar from '../../Components/HeaderBar'
 import { SwipeRow } from 'native-base'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { MoneyFormat, RangeMoneyFormat } from '../../Transforms'
 import _ from 'lodash'
 import ServiceActions from '../../Redux/ServiceRedux'
 
-// Styles
 import styles from './Styles/ListServiceScreenStyle'
 import { Metrics, Colors } from '../../Themes';
 

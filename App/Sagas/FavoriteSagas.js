@@ -4,7 +4,7 @@ import { UserSelectors } from '../Redux/UserRedux'
 import { rsf, firestore } from '../Services/ReduxSagaFirebase';
 import { Toast } from 'native-base';
 
-function* syncFavorite() {
+export function* syncFavorite() {
   const user = yield select(UserSelectors.getUser)
 
   if (user) {
@@ -24,7 +24,7 @@ function* syncFavorite() {
   }
 }
 
-function* submitFavorite({ favoriteState, storeId }) {
+export function* submitFavorite({ favoriteState, storeId }) {
   const userId = yield select(UserSelectors.getUserId)
 
   const update = {}
@@ -48,11 +48,4 @@ function* submitFavorite({ favoriteState, storeId }) {
   catch (error) {
     yield put(FavoriteActions.submitFailure(error))
   }
-}
-
-export default function* favoriteSagas() {
-  yield all([
-    takeLatest(FavoriteTypes.SYNC, syncFavorite),
-    takeLatest(FavoriteTypes.SUBMIT, submitFavorite),
-  ])
 }

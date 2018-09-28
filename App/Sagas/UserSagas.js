@@ -33,9 +33,14 @@ const fetchFavorites = (userId) => fork(
   rsf.firestore.syncDocument,
   firestore.collection('favorites').doc(userId),
   {
-    successActionCreator: snapshot => (
-      UserActions.syncUserDataSuccess('favorites', snapshot.data())
-    )
+    successActionCreator: snapshot => {
+      let value = snapshot.data()
+      if (value == undefined) {
+        value = {}
+      }
+
+      return UserActions.syncUserDataSuccess('favorites', value)
+    }
   }
 )
 
@@ -127,9 +132,6 @@ export function* updateProfile({ payload }) {
   finally {
     yield put(stopSubmit('profile'))
   }
-}
-
-export function* updatePassword() {
 }
 
 // -------------------------------------------------------------

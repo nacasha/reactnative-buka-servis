@@ -15,9 +15,9 @@
   "tabbarAccount": "Account",
 
   "helpTitle_App": "Application benefits",
-  "helpContent_App": "This application to be usefull for  ...",
+  "helpContent_App": "With this application, you can search for the nearest service store around you.\n\nThis application will display information about the shop that you want to go.",
   "helpTitle_Chat": "Send messages to store",
-  "helpContent_Chat": "This application to be usefull for  ...",
+  "helpContent_Chat": "To be able send a message to the service owner, you must sign in to your account or create the new one if you don't have. \n1. Choose between available services in Home Screen or Nearby Screen\n2.Tap 'Owner Info' and tap 'Send Message' to send message to the selected owner.",
   "helpTitle_Store": "How to register service",
-  "helpContent_Store": "This application to be usefull for  ..."
+  "helpContent_Store": "To be able to add your own services. First, sign in to your account or create the new one if you don't have.\n\n1. Go to Settings Tab\n2. In service section, choose 'Add Service' and the form will appear on the screen\n3. Fill the given form and tap 'Submit'"
 }

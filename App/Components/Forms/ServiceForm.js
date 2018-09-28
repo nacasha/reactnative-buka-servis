@@ -3,7 +3,7 @@ import { Content } from 'native-base';
 import React from 'react';
 import { Field, reduxForm } from 'redux-form';
 import RoundedButton from '../RoundedButton';
-import { renderCategoryPicker, renderInput, renderTextarea } from './_render';
+import { CategoryPicker, TextInput, TextArea } from './Components'
 
 const validate = values => {
   // store error state
@@ -20,7 +20,6 @@ const validate = values => {
   let description = values.description
   let price = values.price
   let priceRange = values.priceRange
-  let category = values.category
 
   title = values.title || ''
   description = values.description || ''
@@ -48,10 +47,8 @@ class ServiceForm extends React.Component {
   componentWillMount() {
     const { data, initialize } = this.props
 
-    initialize({ category: {} })
-
     if (Object.keys(data).length > 0) {
-      initialize({ ...data, category: { category: data.category }})
+      initialize({ ...data })
     }
   }
 
@@ -67,7 +64,7 @@ class ServiceForm extends React.Component {
             autoCorrect: false,
             autoCapitalize: 'none',
           }}
-          component={renderInput}
+          component={TextInput}
         />
         <Field
           label="Description"
@@ -77,7 +74,7 @@ class ServiceForm extends React.Component {
             multiline: true,
             autoGrow: true
           }}
-          component={renderTextarea}
+          component={TextArea}
         />
         <Field
           label="Price"
@@ -86,7 +83,7 @@ class ServiceForm extends React.Component {
             autoCorrect: false,
             keyboardType: 'numeric'
           }}
-          component={renderInput}
+          component={TextInput}
         />
         <Field
           label="Price Range (Optional)"
@@ -97,12 +94,12 @@ class ServiceForm extends React.Component {
             placeholder: 'Fill this to make price range',
             placeholderTextColor: '#CCC'
           }}
-          component={renderInput}
+          component={TextInput}
         />
         <Field
           label="Category"
-          name="category"
-          component={renderCategoryPicker}
+          name="specialist"
+          component={CategoryPicker}
         />
 
         <RoundedButton

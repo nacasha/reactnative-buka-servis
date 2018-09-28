@@ -1,8 +1,8 @@
 import React from 'react';
 import { Content } from 'native-base';
-  import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
+import { TouchableOpacity, Text, StyleSheet } from 'react-native';
 import { Field, reduxForm } from 'redux-form';
-import { renderInput, renderPicker, renderTextarea } from './_render';
+import { Dropdown, TextArea } from './Components'
 import { Colors, Metrics } from '../../Themes';
 
 const styles = StyleSheet.create({
@@ -44,9 +44,10 @@ const ReportForm = props => {
         name="type"
         items={[
           { label: 'Fake Information', value: 'Fake Information' },
-          { label: 'Pishing', value: 'Pishing' }
+          { label: 'Fraud', value: 'Fraud' },
+          { label: 'No Response', value: 'No Response' }
         ]}
-        component={renderPicker}
+        component={Dropdown}
       />
       <Field
         label="Description"
@@ -56,7 +57,7 @@ const ReportForm = props => {
           multiline: true,
           autoGrow: true
         }}
-        component={renderTextarea}
+        component={TextArea}
       />
 
       <TouchableOpacity onPress={handleSubmit(onSubmit)}>

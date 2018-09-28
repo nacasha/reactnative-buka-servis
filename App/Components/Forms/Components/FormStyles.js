@@ -1,4 +1,4 @@
-import { Metrics, Colors, Fonts, ApplicationStyles } from '../../Themes'
+import { Metrics, Colors, Fonts } from '../../../Themes'
 import { StyleSheet } from 'react-native'
 
 export default StyleSheet.create({

@@ -90,5 +90,8 @@ export default StyleSheet.create({
     padding: Metrics.baseMargin,
     backgroundColor: '#FFF',
     borderRadius: Metrics.borderRadius,
+  },
+  starStyle: {
+    marginHorizontal: 5
   }
 })

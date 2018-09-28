@@ -1,5 +1,5 @@
 import React from 'react';
-import { ActivityIndicator, FlatList, Image, ScrollView, Text, TouchableNativeFeedback, TouchableOpacity, View } from 'react-native';
+import { ToastAndroid, FlatList, Image, ScrollView, Text, TouchableNativeFeedback, TouchableOpacity, View } from 'react-native';
 import Modal from 'react-native-modal';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { connect } from 'react-redux';
@@ -9,8 +9,9 @@ import FavoriteActions from '../Redux/FavoriteRedux';
 import ModalActions from '../Redux/ModalRedux';
 import StoreActions from '../Redux/StoreRedux';
 import { Colors, Images } from '../Themes';
-// Styles
 import styles from './Styles/StoreDetailScreenStyle';
+import { requestLocationService } from '../Services/DeviceRequest';
+import ShowToast from '../Services/ShowToast';
 
 class StoreDetailScreen extends React.Component {
   static navigationOptions = ({ navigation }) => {
@@ -98,24 +99,24 @@ class StoreDetailScreen extends React.Component {
   }
 
   onDirection() {
-    this.props.navigation.navigate({
-      key: 'StoreDirectionScreen',
-      routeName: 'StoreDirectionScreen',
-      params: {
-        storeId: this.storeId,
-        storeLocation: this.storeInfo.location
+    if (this.props.coords.latitude == 0) {
+      if (this.props.geo_busy) {
+        ToastAndroid.show('Waiting for user location', 2500)
+      } else {
+        requestLocationService()
       }
-    })
+    } else {
+      this.props.navigation.navigate({
+        key: 'StoreDirectionScreen',
+        routeName: 'StoreDirectionScreen',
+        params: {
+          storeId: this.storeId,
+          storeLocation: this.storeInfo.location
+        }
+      })
+    }
   }
 
-  /* ***********************************************************
-  * STEP 2
-  * `renderRow` function. How each cell/row should be rendered
-  * It's our best practice to place a single component here:
-  *
-  * e.g.
-    return <MyCustomCell title={item.title} description={item.description} />
-  *************************************************************/
   renderRow = ({ item }) => {
     return (
       <View style={styles.item}>
@@ -288,6 +289,8 @@ class StoreDetailScreen extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
+    coords: state.geolocation.coords,
+    geo_busy: state.geolocation.busy,
     modalState: state.modal,
     loggedIn: state.user.loggedIn,
     stores: state.store.stores,

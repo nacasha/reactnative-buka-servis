@@ -2,11 +2,11 @@ import React from 'react';
 import { View } from 'react-native';
 import { Field, reduxForm } from 'redux-form';
 import RoundedButton from '../RoundedButton';
-import { renderInput } from './_render';
+import { TextInput } from './Components';
 
 
 /**
- * Form Valifation
+ * Form Validation
  */
 const validate = values => {
   const error = {}
@@ -22,10 +22,10 @@ const validate = values => {
     nm = ''
   }
   if (ema.length < 8 && ema !== '') {
-    error.email = 'terlalu pendek'
+    error.email = 'too short'
   }
   if (!ema.includes('@') && ema !== '') {
-    error.email = 'email tidak valid'
+    error.email = 'email not valid'
   }
   return error
 }
@@ -33,39 +33,48 @@ const validate = values => {
 /**
  * Form Render
  */
-const LoginForm = props => {
-  const { handleSubmit, submitting, pristine, onSubmit, fetching } = props
+class LoginForm extends React.Component {
+  render() {
+    const { handleSubmit, submitting, pristine, onSubmit, fetching } = this.props
 
-  return (
-    <View>
-      <Field
-        label="Email"
-        name="email"
-        options={{
-          autoCorrect: false,
-          autoCapitalize: 'none',
-        }}
-        component={renderInput}
-      />
-      <Field
-        label="Password"
-        name="password"
-        options={{
-          autoCorrect: false,
-          autoCapitalize: 'none',
-          secureTextEntry: true
-        }}
-        component={renderInput}
-      />
+    return (
+      <View>
+        <Field
+          label="Email"
+          name="email"
+          options={{
+            ref: ref => this.emailInput = ref,
+            autoCorrect: false,
+            autoCapitalize: 'none',
+            returnKeyType: 'next',
+            onSubmitEditing: () => {
+              this.passwordInput._root.focus()
+            }
+          }}
+          component={TextInput}
+        />
+        <Field
+          label="Password"
+          name="password"
+          options={{
+            ref: ref => this.passwordInput = ref,
+            autoCorrect: false,
+            autoCapitalize: 'none',
+            secureTextEntry: true,
+            onSubmitEditing: handleSubmit(onSubmit)
+          }}
+          component={TextInput}
+        />
 
-      <RoundedButton
-        text="Login"
-        disabled={fetching}
-        busy={fetching}
-        onPress={handleSubmit(onSubmit)}
-      />
-    </View>
-  )
+        <RoundedButton
+          text="Login"
+          disabled={fetching}
+          busy={fetching}
+          onPress={handleSubmit(onSubmit)}
+        />
+      </View>
+    )
+  }
 }
 
 export default reduxForm({

@@ -27,7 +27,6 @@ class MessageScreen extends React.PureComponent {
 
     return (
       <TouchableNativeFeedback
-        background={TouchableNativeFeedback.Ripple()}
         onPress={this.openMessage(messageId, name, uid)}>
         <View style={styles.item}>
           <View style={styles.itemLeft} pointerEvents="none">

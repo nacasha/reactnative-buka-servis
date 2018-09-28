@@ -32,7 +32,7 @@ export function* feedsRequest(action) {
   try {
     const feedsDocument = yield call(
       rsf.firestore.getCollection,
-      'services'
+      firestore.collection('services').orderBy('createdAt', 'desc').limit(10),
     )
 
     const feeds = yield all(feedsDocument.docs.map(function* (item) {
@@ -57,10 +57,4 @@ export function* feedsRequest(action) {
   catch (error) {
     yield put(FeedActions.feedFailure(error))
   }
-}
-
-export default function* feedSagas() {
-  yield all([
-    takeLatest(FeedTypes.FEED_REQUEST, feedsRequest),
-  ])
 }

@@ -5,7 +5,6 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import _ from 'lodash'
 import { RangeMoneyFormat, MoneyFormat } from '../Transforms';
 
-
 export default class ServiceCardSmall extends Component {
   constructor(props) {
     super(props)
