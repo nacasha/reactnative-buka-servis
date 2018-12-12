@@ -3,6 +3,10 @@
 
 * Standard compliant React Native App Utilizing [Ignite](https://github.com/infinitered/ignite)
 
+## :arrow_down: Download APK
+
+[Release](https://github.com/nacasha/reactnative-buka-servis/releases/tag/1.0)
+
 ## :computer: Technologies Used
 
 1. Ignite
@@ -17,7 +21,6 @@
 **Step 2:** cd to the cloned repo:
 
 **Step 3:** Install the Application with `yarn` or `npm i`
-
 
 ## :arrow_forward: How to Run App
 
